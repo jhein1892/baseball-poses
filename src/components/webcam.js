@@ -54,7 +54,7 @@ function WebcamSample() {
 
     const detect = async (detector) => {
         try{
-            
+
             if(typeof videoElement.current !== undefined 
                 && videoElement.current !== null 
             ) {
@@ -71,8 +71,7 @@ function WebcamSample() {
                     canvasRef.current.height = videoHeight; 
         
                     const poses = await detector.estimatePoses(video); 
-                    // console.log(poses); 
-
+                    
                     if(canvasRef.current !== null){
                         const ctx = canvasRef.current.getContext('2d')
                         drawing(poses, ctx)
