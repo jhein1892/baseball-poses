@@ -1,3 +1,5 @@
+import { train } from "@tensorflow/tfjs";
+
 // points for model
 const bodyParts = {
     head:[3,1,0,2,4],
@@ -10,11 +12,18 @@ const bodyParts = {
 
 
 export const drawing = (predictions, ctx, training) => {
-    console.log(training)
+    // console.log(training)
+    // if(predictions.length === 0){
+    //     return
+    // }
+
     if(predictions.length > 0){
         // console.log(predictions[0].keypoints)
         let keypoints = predictions[0].keypoints
-        
+        // if(training.includes('shoulders')){
+        //     keypoints = keypoints.slice(5, 11)
+        //     // console.log(keypoints)
+        // }
         // loop through body parts
         for(let j = 0; j < Object.keys(bodyParts).length; j++){
             // console.log(Object.keys(bodyParts)[j])
@@ -25,52 +34,80 @@ export const drawing = (predictions, ctx, training) => {
                 const secondConnectionIndex = bodyParts[part][k+1]
                     
                 // console.log(keypoints[firstConnectionIndex]['x'])
-                ctx.beginPath();
-                ctx.moveTo(
-                    keypoints[firstConnectionIndex]['x'],
-                    keypoints[firstConnectionIndex]['y']
-                )
-                ctx.lineTo(
-                    keypoints[secondConnectionIndex]['x'],
-                    keypoints[secondConnectionIndex]['y']
-                )
-
-                if()
 
 
-
-                if(secondConnectionIndex === 6){
-                    if(keypoints[firstConnectionIndex]['y'] < keypoints[secondConnectionIndex]['y']){
-                        ctx.strokeStyle = 'red'
-                    } else {
-                        ctx.strokeStyle = 'green'
-                    }
-                } else if (secondConnectionIndex === 14) {
-                    if(keypoints[firstConnectionIndex]['x'] < keypoints[secondConnectionIndex]['x']){
-                        ctx.strokeStyle = 'green'
-                    } else {
-                        ctx.strokeStyle = 'red'
-                    }
+                if(training === 'shoulders'){
                     
+                    if(secondConnectionIndex === 6){
+                        if(keypoints[firstConnectionIndex]['y'] < keypoints[secondConnectionIndex]['y']){
+                            ctx.beginPath();
+                            ctx.moveTo(
+                                keypoints[firstConnectionIndex]['x'],
+                                keypoints[firstConnectionIndex]['y']
+                            )
+                            ctx.lineTo(
+                                keypoints[secondConnectionIndex]['x'],
+                                keypoints[secondConnectionIndex]['y']
+                            )
+                            ctx.strokeStyle = 'red';
+                        } else {
+                            ctx.beginPath();
+                            ctx.moveTo(
+                                keypoints[firstConnectionIndex]['x'],
+                                keypoints[firstConnectionIndex]['y']
+                            )
+                            ctx.lineTo(
+                                keypoints[secondConnectionIndex]['x'],
+                                keypoints[secondConnectionIndex]['y']
+                            )
+                            ctx.strokeStyle = 'green';
+                        }
+                    } 
+                    ctx.lineWidth = 4;
+                    ctx.stroke()
                 } else {
-                    ctx.strokeStyle = 'black'
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(
+                        keypoints[firstConnectionIndex]['x'],
+                        keypoints[firstConnectionIndex]['y']
+                    )
+                    ctx.lineTo(
+                        keypoints[secondConnectionIndex]['x'],
+                        keypoints[secondConnectionIndex]['y']
+                    )
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
                 }
-                ctx.lineWidth = 4;
-                ctx.stroke()
+    //  else if (secondConnectionIndex === 14) {
+    //                 if(keypoints[firstConnectionIndex]['x'] < keypoints[secondConnectionIndex]['x']){
+    //                     ctx.strokeStyle = 'green'
+    //                 } else {
+    //                     ctx.strokeStyle = 'red'
+    //                 }
+                    
+    //             } else {
+    //                 ctx.strokeStyle = 'black'
+    //             }
+                // ctx.lineWidth = 4;
+                // ctx.stroke()
             }
         }
         // console.log(keypoints)
-        for(let i = 0; i < keypoints.length; i++){
-            // console.log(keypoints[i])
-            let x = keypoints[i]['x']
-            let y = keypoints[i]['y']
-            if(i < 11){
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, 3*Math.PI);
-                ctx.fillStyle = 'red';
-                ctx.fill();
-            }
-        }
+        // let i = training.include('shoulders') ? 5 : 0
+        // let y = training.include('shoulders') ? 11 : keypoints.length;
+        // for(i; i < y; i++){
+        //     // console.log(keypoints[i])
+        //     let x = keypoints[i]['x']
+        //     let y = keypoints[i]['y']
+        //     // if(i < 11){
+        //         ctx.beginPath();
+        //         ctx.arc(x, y, 5, 0, 3*Math.PI);
+        //         ctx.fillStyle = 'red';
+        //         ctx.fill();
+        //     // }
+        // }
     }
 }
 
