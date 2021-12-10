@@ -5,6 +5,17 @@ import '@tensorflow/tfjs-backend-webgl';
 import {drawing} from '../components/utils'
 import { train } from '@tensorflow/tfjs';
 
+
+// Try circling the outside process of detector through a non-async function
+// then we might be able to catch the value for disabled
+
+// 1) Should be able to switch between the options and have different lines be set
+// 2) I would like to figure out how to gather the results and display some of them below
+// 3) Figure out how to tell when someone is going to be set, and know that this
+// is when we need to start keeping track
+
+
+
 function WebcamSample() {
     let backupTraining;
     // console.log(training.length)
@@ -14,7 +25,7 @@ function WebcamSample() {
     // console.log(backupTraining)
     let [isShowVideo, setIsShowVideo] = useState(false);
     const [training, setTraining] = useState()
-    const [disabled, setDisabled] = useState(true);
+    let [disabled, setDisabled] = useState(true); 
     const videoElement = useRef(null);
     const canvasRef = useRef(null)
     
@@ -64,9 +75,7 @@ function WebcamSample() {
         let stream = videoElement.current.stream;
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
-        console.log(detector)
-        clearTimeout()
-        // setIsShowVideo(false);
+        setDisabled(true)
     }
 
     const runPoseDetector = async () => {
@@ -74,9 +83,14 @@ function WebcamSample() {
                         .createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
         console.log('Model loaded')
 
-        setInterval(() => {
-            detect(detector);
-        }, 100)
+        // process.nextTick(() => {
+                detect(detector);
+        //         console.log(disabled)
+        // })
+    }
+
+    const isDiabled = function() {
+        return disabled
     }
 
     const detect = async (detector) => {
@@ -101,7 +115,7 @@ function WebcamSample() {
                     let myTraining = training ? training : backupTraining;
                     if(canvasRef.current !== null && training !== undefined){
                         const ctx = canvasRef.current.getContext('2d')
-                        console.log(training)
+                        // console.log(training)
                         drawing(poses, ctx, myTraining)
                     }
                 }
@@ -109,28 +123,28 @@ function WebcamSample() {
         } catch {
             console.log('Not loaded yet')
         }
+        if(!disabled){
+            setImmediate(() => {
+                detect(detector)
+                console.log(disabled)
+            })
+        }
     }
     // if(training.length > 0){
 
     //     runPoseDetector();
     // }
 
-    runPoseDetector();
+    
 
     useEffect(() => {
         console.log(training)
         if(training !== undefined){
+            // runPoseDetector();
             setDisabled(false)
         }
     }, [training])
 
-    // useEffect(() => {
-    //     if(training.length > 0){
-    //         runPoseDetector();
-    //         setDisabled(false)
-    //     }
-    // }, [backupTraining])
-    // console.log(training)
     return (
         <div>
             <div className="camView">
