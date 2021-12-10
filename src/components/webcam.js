@@ -1,18 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
 import {drawing} from '../components/utils'
 
-function WebcamSample() {
-
+function WebcamSample({ training }) {
     let [isShowVideo, setIsShowVideo] = useState(false);
     const videoElement = useRef(null);
     const canvasRef = useRef(null)
     
     let detector; 
-    
-    let isRunning = false; 
 
     const detectorConfig = {
         modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
@@ -71,10 +68,10 @@ function WebcamSample() {
                     canvasRef.current.height = videoHeight; 
         
                     const poses = await detector.estimatePoses(video); 
-                    
+
                     if(canvasRef.current !== null){
                         const ctx = canvasRef.current.getContext('2d')
-                        drawing(poses, ctx)
+                        drawing(poses, ctx, training)
                     }
                 }
             }

@@ -1,14 +1,16 @@
 // points for model
 const bodyParts = {
-    head:[0,1,2,3,4],
-    upper:[5,6,7,8,9,10],
-    lower:[11,12,13,14,15,16]
+    head:[3,1,0,2,4],
+    upper:[9,7,5,6,8,10],
+    lowerLeft:[11,13,15],
+    lowerRight:[12,14,16]
 }
 
 // const poses
 
 
-export const drawing = (predictions, ctx) => {
+export const drawing = (predictions, ctx, training) => {
+    console.log(training)
     if(predictions.length > 0){
         // console.log(predictions[0].keypoints)
         let keypoints = predictions[0].keypoints
@@ -19,10 +21,10 @@ export const drawing = (predictions, ctx) => {
             let part = Object.keys(bodyParts)[j];
             for(let k = 0; k < bodyParts[part].length - 1; k++){
                 const firstConnectionIndex = bodyParts[part][k];
-
+                
                 const secondConnectionIndex = bodyParts[part][k+1]
                     
-                console.log(keypoints[firstConnectionIndex]['x'])
+                // console.log(keypoints[firstConnectionIndex]['x'])
                 ctx.beginPath();
                 ctx.moveTo(
                     keypoints[firstConnectionIndex]['x'],
@@ -32,7 +34,27 @@ export const drawing = (predictions, ctx) => {
                     keypoints[secondConnectionIndex]['x'],
                     keypoints[secondConnectionIndex]['y']
                 )
-                ctx.stokeStyle = 'plum'
+
+                if()
+
+
+
+                if(secondConnectionIndex === 6){
+                    if(keypoints[firstConnectionIndex]['y'] < keypoints[secondConnectionIndex]['y']){
+                        ctx.strokeStyle = 'red'
+                    } else {
+                        ctx.strokeStyle = 'green'
+                    }
+                } else if (secondConnectionIndex === 14) {
+                    if(keypoints[firstConnectionIndex]['x'] < keypoints[secondConnectionIndex]['x']){
+                        ctx.strokeStyle = 'green'
+                    } else {
+                        ctx.strokeStyle = 'red'
+                    }
+                    
+                } else {
+                    ctx.strokeStyle = 'black'
+                }
                 ctx.lineWidth = 4;
                 ctx.stroke()
             }
@@ -42,11 +64,12 @@ export const drawing = (predictions, ctx) => {
             // console.log(keypoints[i])
             let x = keypoints[i]['x']
             let y = keypoints[i]['y']
-
-            ctx.beginPath();
-            ctx.arc(x, y, 5, 0, 3*Math.PI);
-            ctx.fillStyle = 'red';
-            ctx.fill();
+            if(i < 11){
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 3*Math.PI);
+                ctx.fillStyle = 'red';
+                ctx.fill();
+            }
         }
     }
 }

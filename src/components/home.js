@@ -1,39 +1,38 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Webcam from "react-webcam"
-import * as poseDetection from '@tensorflow-models/pose-detection'
+import React, { useState } from 'react'
 import '@tensorflow/tfjs-backend-webgl';
 import "../styles/home.css"
 import WebcamSample from '../components/webcam'
 
-import {drawing} from '../components/utils'
-
-const videoConstraints = {
-    width: 1280,
-    height: 720,
-    facingMode: "user"
-}
-
-
-
 function Home(){
+    const [training, setTraining] = useState([])
+
+    const handleChange = (event) => {
+        let targetTraining = event.target.name
+        if(!training.includes(targetTraining)){
+            setTraining([...training, targetTraining ])
+        } else {
+            let updatedTraining = training.filter((type) => {
+                if(type !== targetTraining){
+                    return type;
+                }
+            })
+            setTraining(updatedTraining)
+        }
+    }
+
 
     return (
         <div>
             <h1>Home</h1>
-            <WebcamSample />
-            {/* <Webcam
-                id="video"
-                audio={false}
-                height={720}
-                ref={webcamRef}
-                width={1280}
-                preload={'none'}
-                onLoad={console.log(video !== null)}
-                videoConstraints={videoConstraints}
-            /> */}
-                {/* <button onClick={() => runPoseDetector()}>start detection</button> */}
-                {/* <button onClick={() => setLoaded(false)}>stop detection</button> */}
-
+            <WebcamSample training={training} />
+            <div>
+                <p>Shoulders</p>
+                <input type='checkbox' name='shoulders' onChange={handleChange}/>
+            </div>           
+            <div>
+                <p>Front Hip</p>
+                <input type='checkbox' name='hip' onChange={handleChange}/>
+            </div>
         </div>
     )
 }
