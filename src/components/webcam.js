@@ -90,14 +90,11 @@ function WebcamSample() {
         console.log('Model loaded')
         
         console.log(disabled.current === false)
-        if(disabled.current === false){
-            setInterval(() => {
-                console.log('here')
-                        detect(detector);
-            }, 100)
-        } else {
-            console.log('Model Ended')
-        }
+       
+        setInterval(() => {
+            console.log('here')
+                    detect(detector);
+        }, 100)
     }
 
 
