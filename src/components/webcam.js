@@ -3,11 +3,7 @@ import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
 import {drawing} from '../components/utils'
-import { train } from '@tensorflow/tfjs';
 
-
-// Try circling the outside process of detector through a non-async function
-// then we might be able to catch the value for disabled
 
 // 1) Should be able to switch between the options and have different lines be set
 // 2) I would like to figure out how to gather the results and display some of them below
@@ -18,11 +14,6 @@ import { train } from '@tensorflow/tfjs';
 
 function WebcamSample() {
     let backupTraining;
-    // console.log(training.length)
-    // if(training.length > 0){
-    //     backupTraining = training
-    // }
-    // console.log(backupTraining)
     let [isShowVideo, setIsShowVideo] = useState(false);
     const [training, setTraining] = useState()
     const disabled = useRef(true)
@@ -50,28 +41,11 @@ function WebcamSample() {
         let targetTraining = event.target.name
         setTraining(targetTraining);
         backupTraining = targetTraining;
-
-
-
-        // if we want to have an array
-        // if(!training.includes(targetTraining)){
-        //     setTraining([...training, targetTraining ])
-        // } else {
-        //     let updatedTraining = training.filter((type) => {
-        //         if(type !== targetTraining){
-        //             return type;
-        //         }
-        //     })
-        //     setTraining(updatedTraining)
-        // }
     }
 
     const startCam = () => {
         setIsShowVideo(true)
         console.log('here Cam Start', isShowVideo)
-        // disabled.current = false
-        // runPoseDetector();
-
     }
 
     const stopCam = () => {
