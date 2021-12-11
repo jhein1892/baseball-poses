@@ -6,3 +6,13 @@
     background: #0000ff29;
     width: 640px;
 }
+
+#video {
+    height: 480px;
+}
+
+
+.webcam__container {
+    display: flex;
+    flex-direction: column;
+}

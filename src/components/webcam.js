@@ -10,8 +10,6 @@ import {drawing} from '../components/utils'
 // 3) Figure out how to tell when someone is going to be set, and know that this
 // is when we need to start keeping track
 
-
-
 function WebcamSample() {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
@@ -20,8 +18,6 @@ function WebcamSample() {
     let [buttonDisabled, setButtonDisabled] = useState(true); 
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
-    
-    let detector; 
 
     const detectorConfig = {
         modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
@@ -45,28 +41,34 @@ function WebcamSample() {
 
     const startCam = () => {
         setIsShowVideo(true)
-        console.log('here Cam Start', isShowVideo)
+        if(videoElement.current !== null){
+            videoElement.current.stream.active = true
+        }
+        disabled.current = false; 
+
+        runPoseDetector()
     }
 
     const stopCam = () => {
-        let stream = videoElement.current.stream;
+        let stream = videoElement.current.video.srcObject;
         const tracks = stream.getTracks();
+        
         tracks.forEach(track => track.stop());
+        videoElement.current.video.srcObject = null;
+        
         disabled.current = true; 
-    }
-    const isDiabled = function() {
-        console.log(disabled.current)
+        
+        //Will need to fix this later
+        document.getElementById('canvas').display = 'none';
     }
 
     const runPoseDetector = async () => {
         const detector = await poseDetection
                         .createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
-        console.log('Model loaded')
-        
-        console.log(disabled.current === false)
-       
-        const detectInterval = setInterval(() => {
+
+        let detectInterval = setInterval(() => {
                                 if(disabled.current === false){
+                                   
                                     detect(detector);
                                 } else {
                                     console.log('Model Closed'); 
@@ -74,17 +76,21 @@ function WebcamSample() {
                                     clearInterval(detectInterval);
                                 }
                                 }, 100)
+        
     }
 
 
     const detect = async (detector) => {
+        
         try{
+            
             if(typeof videoElement.current !== undefined 
                 && videoElement.current !== null 
             ) {
+                
                 if(videoElement.current.stream !== null){
+
                     const video = videoElement.current.video;
-                    // console.log(video.videoWidth)
                     const videoWidth = videoElement.current.video.videoWidth;
                     const videoHeight = videoElement.current.video.videoHeight;
         
@@ -100,9 +106,7 @@ function WebcamSample() {
                         const ctx = canvasRef.current.getContext('2d')
                         if(disabled.current === true){
                             ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
                         }
-                        // console.log(training)
                         drawing(poses, ctx, myTraining)
                     }
                 }
@@ -121,7 +125,7 @@ function WebcamSample() {
     }, [training])
 
     return (
-        <div>
+        <div className='webcam__container'>
             <div className="camView">
                 {isShowVideo &&
                     <>
