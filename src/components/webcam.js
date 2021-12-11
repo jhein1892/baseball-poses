@@ -25,10 +25,10 @@ function WebcamSample() {
     // console.log(backupTraining)
     let [isShowVideo, setIsShowVideo] = useState(false);
     const [training, setTraining] = useState()
-    // let [disabled, setDisabled] = useState(true); 
+    const disabled = useRef(true)
+    let [buttonDisabled, setButtonDisabled] = useState(true); 
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
-    const disabled = useRef(true)
     
     let detector; 
 
@@ -69,7 +69,7 @@ function WebcamSample() {
     const startCam = () => {
         setIsShowVideo(true)
         console.log('here Cam Start', isShowVideo)
-        disabled.current = false
+        // disabled.current = false
         // runPoseDetector();
 
     }
@@ -91,10 +91,15 @@ function WebcamSample() {
         
         console.log(disabled.current === false)
        
-        setInterval(() => {
-            console.log('here')
-                    detect(detector);
-        }, 100)
+        const detectInterval = setInterval(() => {
+                                if(disabled.current === false){
+                                    detect(detector);
+                                } else {
+                                    console.log('Model Closed'); 
+                                    detect(detector);
+                                    clearInterval(detectInterval);
+                                }
+                                }, 100)
     }
 
 
@@ -119,6 +124,10 @@ function WebcamSample() {
                     let myTraining = training ? training : backupTraining;
                     if(canvasRef.current !== null && training !== undefined){
                         const ctx = canvasRef.current.getContext('2d')
+                        if(disabled.current === true){
+                            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+                        }
                         // console.log(training)
                         drawing(poses, ctx, myTraining)
                     }
@@ -127,24 +136,13 @@ function WebcamSample() {
         } catch {
             console.log('Not loaded yet')
         }
-            // setImmediate(() => {
-            //     detect(detector)
-            //     console.log(disabled.current)
-            // })
-        
     }
-    // if(training.length > 0){
-
-    //     runPoseDetector();
-    // }
-
-    
 
     useEffect(() => {
-        console.log(training)
         if(training !== undefined){
             runPoseDetector();
-            disabled.current = false
+            disabled.current = false;
+            setButtonDisabled(false);
         }
     }, [training])
 
@@ -163,7 +161,7 @@ function WebcamSample() {
                     </>
                 }
             </div>
-            <button onClick={startCam}>Start Video</button>
+            <button onClick={startCam} disabled={buttonDisabled}>Start Video</button>
             <button onClick={() => {stopCam()}}>Stop Video</button>
             <div>
                 <p>Full Assessment</p>
