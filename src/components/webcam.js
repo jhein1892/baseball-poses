@@ -25,9 +25,10 @@ function WebcamSample() {
     // console.log(backupTraining)
     let [isShowVideo, setIsShowVideo] = useState(false);
     const [training, setTraining] = useState()
-    let [disabled, setDisabled] = useState(true); 
+    // let [disabled, setDisabled] = useState(true); 
     const videoElement = useRef(null);
-    const canvasRef = useRef(null)
+    const canvasRef = useRef(null);
+    const disabled = useRef(true)
     
     let detector; 
 
@@ -75,27 +76,26 @@ function WebcamSample() {
         let stream = videoElement.current.stream;
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
-        setDisabled(true)
+        disabled.current = false; 
     }
 
     const runPoseDetector = async () => {
         const detector = await poseDetection
                         .createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
         console.log('Model loaded')
-
-        // process.nextTick(() => {
-                detect(detector);
-        //         console.log(disabled)
-        // })
+        
+        setTimeout(function() {
+            detect(detector)
+            console.log(disabled.current)
+        }, 100)
     }
 
-    const isDiabled = function() {
-        return disabled
-    }
+    // const isDiabled = function() {
+    //     return disabled
+    // }
 
     const detect = async (detector) => {
         try{
-
             if(typeof videoElement.current !== undefined 
                 && videoElement.current !== null 
             ) {
@@ -123,12 +123,11 @@ function WebcamSample() {
         } catch {
             console.log('Not loaded yet')
         }
-        if(!disabled){
-            setImmediate(() => {
-                detect(detector)
-                console.log(disabled)
-            })
-        }
+            // setImmediate(() => {
+            //     detect(detector)
+            //     console.log(disabled.current)
+            // })
+        
     }
     // if(training.length > 0){
 
@@ -140,8 +139,8 @@ function WebcamSample() {
     useEffect(() => {
         console.log(training)
         if(training !== undefined){
-            // runPoseDetector();
-            setDisabled(false)
+            runPoseDetector();
+            disabled.current = false
         }
     }, [training])
 
@@ -160,7 +159,7 @@ function WebcamSample() {
                     </>
                 }
             </div>
-            <button onClick={startCam} disabled={disabled}>Start Video</button>
+            <button onClick={startCam}>Start Video</button>
             <button onClick={() => {stopCam()}}>Stop Video</button>
             <div>
                 <p>Full Assessment</p>
