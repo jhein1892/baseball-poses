@@ -69,14 +69,19 @@ function WebcamSample() {
     const startCam = () => {
         setIsShowVideo(true)
         console.log('here Cam Start', isShowVideo)
-        runPoseDetector()
+        disabled.current = false
+        // runPoseDetector();
+
     }
 
     const stopCam = () => {
         let stream = videoElement.current.stream;
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
-        disabled.current = false; 
+        disabled.current = true; 
+    }
+    const isDiabled = function() {
+        console.log(disabled.current)
     }
 
     const runPoseDetector = async () => {
@@ -84,15 +89,17 @@ function WebcamSample() {
                         .createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
         console.log('Model loaded')
         
-        setTimeout(function() {
-            detect(detector)
-            console.log(disabled.current)
-        }, 100)
+        console.log(disabled.current === false)
+        if(disabled.current === false){
+            setInterval(() => {
+                console.log('here')
+                        detect(detector);
+            }, 100)
+        } else {
+            console.log('Model Ended')
+        }
     }
 
-    // const isDiabled = function() {
-    //     return disabled
-    // }
 
     const detect = async (detector) => {
         try{
