@@ -2,19 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
-import {drawing} from '../components/utils'
+import {drawing} from '../functions/utils'
 
-
-// 1) Should be able to switch between the options and have different lines be set
 // 2) I would like to figure out how to gather the results and display some of them below
 // 3) Figure out how to tell when someone is going to be set, and know that this
 // is when we need to start keeping track
-
-function WebcamSample() {
+function WebcamSection({training}) {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
     let [set, setSet] = useState(false)
-    const [training, setTraining] = useState();
     const [count, setCount] = useState(0); 
     const disabled = useRef(true)
     let [buttonDisabled, setButtonDisabled] = useState(true); 
@@ -26,19 +22,10 @@ function WebcamSample() {
         enableTracking: true,
         trackerType: poseDetection.TrackerType.BoundingBox
     }
-    
-    
     const videoConstraints = {
         width: 640,
         height: 480,
         facingMode: "user"
-    }
-
-
-    const handleChange = (event) => {
-        let targetTraining = event.target.name
-        setTraining(targetTraining);
-        backupTraining = targetTraining;
     }
 
     const startCam = () => {
@@ -66,8 +53,9 @@ function WebcamSample() {
                                     detect(detector);
                                 } else {
                                     console.log('Model Closed'); 
-                                    detect(detector);
                                     clearInterval(detectInterval);
+                                    const ctx = canvasRef.current.getContext('2d')
+                                    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
                                 }
                                 }, 100)
         
@@ -104,9 +92,6 @@ function WebcamSample() {
                     let myTraining = training ? training : backupTraining;
                     if(canvasRef.current !== null && training !== undefined){
                         const ctx = canvasRef.current.getContext('2d')
-                        if(disabled.current === true){
-                            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                        }
                         drawing(poses, ctx, myTraining)
                     }
                 }
@@ -127,32 +112,22 @@ function WebcamSample() {
 
     return (
         <div className='webcam__container'>
-            <div className="camView">
+            <div className="cam__view">
                 {isShowVideo &&
-                    <>
+                    
                     <Webcam id='video' audio={false} ref={videoElement} videoConstraints={videoConstraints} />
-                    <canvas
-                    id='canvas'
-                    ref={canvasRef}
-                    height={420}
-                    width={640}
-                    />
-                    </>
                 }
+                        <canvas
+                        id='canvas'
+                        ref={canvasRef}
+                        height={420}
+                        width={640}
+                        />
+            
             </div>
-            <button onClick={startCam} disabled={buttonDisabled}>Start Video</button>
-            <button onClick={() => {stopCam()}}>Stop Video</button>
             <div>
-                <p>Full Assessment</p>
-                <input type='checkbox' name='full' onChange={handleChange}/>
-            </div>
-            <div>
-                <p>Shoulders</p>
-                <input type='checkbox' name='shoulders' onChange={handleChange}/>
-            </div>           
-            <div>
-                <p>Front Hip</p>
-                <input type='checkbox' name='hip' onChange={handleChange}/>
+                <button onClick={startCam} disabled={buttonDisabled}>Start Video</button>
+                <button onClick={() => {stopCam()}}>Stop Video</button>
             </div>
             {set &&
                 <>
@@ -164,4 +139,4 @@ function WebcamSample() {
     );
 };
 
-export default WebcamSample;
+export default WebcamSection;

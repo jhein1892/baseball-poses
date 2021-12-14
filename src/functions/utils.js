@@ -83,34 +83,9 @@ export const drawing = (predictions, ctx, training) => {
                     ctx.lineWidth = 4;
                     ctx.stroke();
                 }
-    //  else if (secondConnectionIndex === 14) {
-    //                 if(keypoints[firstConnectionIndex]['x'] < keypoints[secondConnectionIndex]['x']){
-    //                     ctx.strokeStyle = 'green'
-    //                 } else {
-    //                     ctx.strokeStyle = 'red'
-    //                 }
-                    
-    //             } else {
-    //                 ctx.strokeStyle = 'black'
-    //             }
-                // ctx.lineWidth = 4;
-                // ctx.stroke()
+
             }
         }
-        // console.log(keypoints)
-        // let i = training.include('shoulders') ? 5 : 0
-        // let y = training.include('shoulders') ? 11 : keypoints.length;
-        // for(i; i < y; i++){
-        //     // console.log(keypoints[i])
-        //     let x = keypoints[i]['x']
-        //     let y = keypoints[i]['y']
-        //     // if(i < 11){
-        //         ctx.beginPath();
-        //         ctx.arc(x, y, 5, 0, 3*Math.PI);
-        //         ctx.fillStyle = 'red';
-        //         ctx.fill();
-        //     // }
-        // }
     }
 }
 

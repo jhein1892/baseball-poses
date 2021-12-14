@@ -1,7 +1,15 @@
+/* home.js */
+.home__wrapper {
+    display: flex;
+    flex-direction: row;justify-content: space-around ;
+    padding-top: 2%;
+}
+
+/* Webcam.js */
 #canvas {
     position: absolute;
-    top: 80px;
-    left: 400px;
+    top: 28px;
+    left: 708px;
     height: 480px;
     background: #0000ff29;
     width: 640px;
@@ -11,8 +19,58 @@
     height: 480px;
 }
 
+.cam__view {
+    height: 480px;
+    width: 640px;
+    background-color: aqua;
+}
+
 
 .webcam__container {
     display: flex;
     flex-direction: column;
 }
+
+/* trainingType.js */
+
+.trainingType__container {
+    background-color: aquamarine;
+    width: 30%;
+}
+.trainingType__inner {
+    
+}
+
+.training_selection {
+    padding-bottom: 2%;
+}
+
+.training_selection div {
+    display: flex;
+}
+
+.training_selection input {
+    align-self: center;
+    margin-right: 5%;
+    margin-left: 2%;
+}
+
+.training_selection h4 {
+    margin: 1%;
+}
+
+.training_selection p {
+    width: 75%;
+    /* margin-left: 11%; */
+    margin: 0 11%;
+    text-align: left;
+}
+
+/* .trainingType__container > div {
+    display: flex;
+    flex-direction: row;
+}
+
+.trainingType__container input {
+    align-self: center
+} */
