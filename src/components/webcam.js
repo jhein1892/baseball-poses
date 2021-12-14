@@ -92,7 +92,6 @@ function WebcamSample() {
                 if(videoElement.current.stream !== null){
 
                     const video = videoElement.current.video;
-                    console.log(videoElement.current.video)
                     const videoWidth = videoElement.current.video.videoWidth;
                     const videoHeight = videoElement.current.video.videoHeight;
         
@@ -120,6 +119,7 @@ function WebcamSample() {
 
     useEffect(() => {
         if(training !== undefined){
+            backupTraining = training;
             runPoseDetector();
             disabled.current = false;
             setButtonDisabled(false);
