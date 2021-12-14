@@ -13,7 +13,9 @@ import {drawing} from '../components/utils'
 function WebcamSample() {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
-    const [training, setTraining] = useState()
+    let [set, setSet] = useState(false)
+    const [training, setTraining] = useState();
+    const [count, setCount] = useState(0); 
     const disabled = useRef(true)
     let [buttonDisabled, setButtonDisabled] = useState(true); 
     const videoElement = useRef(null);
@@ -41,11 +43,7 @@ function WebcamSample() {
 
     const startCam = () => {
         setIsShowVideo(true)
-        // if(videoElement.current !== null){
-        //     videoElement.current.stream.active = true
-        // }
         disabled.current = false; 
-
         runPoseDetector()
     }
 
@@ -53,14 +51,9 @@ function WebcamSample() {
         setIsShowVideo(false)
         let stream = videoElement.current.video.srcObject;
         const tracks = stream.getTracks();
-        
         tracks.forEach(track => track.stop());
         videoElement.current.video.srcObject = null;
-        
         disabled.current = true; 
-        
-        //Will need to fix this later
-        document.getElementById('canvas').display = 'none';
     }
 
     const runPoseDetector = async () => {
@@ -79,7 +72,6 @@ function WebcamSample() {
                                 }, 100)
         
     }
-
 
     const detect = async (detector) => {
         
@@ -102,6 +94,13 @@ function WebcamSample() {
                     canvasRef.current.height = videoHeight; 
         
                     const poses = await detector.estimatePoses(video); 
+                    if(Math.abs(poses[0].keypoints[9]['x'] - poses[0].keypoints[10]['x']) < 70 &&
+                    Math.abs(poses[0].keypoints[9]['y'] - poses[0].keypoints[10]['y']) < 5){
+                        setSet(true);
+                    } else {
+                        setCount(0); 
+                        console.log(count)
+                    }
                     let myTraining = training ? training : backupTraining;
                     if(canvasRef.current !== null && training !== undefined){
                         const ctx = canvasRef.current.getContext('2d')
@@ -155,6 +154,12 @@ function WebcamSample() {
                 <p>Front Hip</p>
                 <input type='checkbox' name='hip' onChange={handleChange}/>
             </div>
+            {set &&
+                <>
+                <h1>SET</h1>
+                <p>{count}</p>
+                </>
+            }
         </div>
     );
 };

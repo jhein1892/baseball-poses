@@ -65,7 +65,10 @@ export const drawing = (predictions, ctx, training) => {
                     } 
                     ctx.lineWidth = 4;
                     ctx.stroke()
-                } else {
+                }
+                
+                
+                else {
                     
                     ctx.beginPath();
                     ctx.moveTo(
