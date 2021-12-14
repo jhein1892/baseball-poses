@@ -9,19 +9,19 @@
 #canvas {
     position: absolute;
     top: 28px;
-    left: 708px;
-    height: 480px;
+    left: 531px;
     background: #0000ff29;
-    width: 640px;
+    height: 550px;
+    width: 875px;
 }
 
 #video {
-    height: 480px;
+    height: 550px;
 }
 
 .cam__view {
-    height: 480px;
-    width: 640px;
+    height: 550px;
+    width: 875px;
     background-color: aqua;
 }
 

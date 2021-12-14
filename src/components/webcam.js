@@ -120,8 +120,8 @@ function WebcamSection({training}) {
                         <canvas
                         id='canvas'
                         ref={canvasRef}
-                        height={420}
-                        width={640}
+                        height={550}
+                        width={875}
                         />
             
             </div>
