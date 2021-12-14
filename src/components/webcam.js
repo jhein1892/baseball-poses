@@ -41,15 +41,16 @@ function WebcamSample() {
 
     const startCam = () => {
         setIsShowVideo(true)
-        if(videoElement.current !== null){
-            videoElement.current.stream.active = true
-        }
+        // if(videoElement.current !== null){
+        //     videoElement.current.stream.active = true
+        // }
         disabled.current = false; 
 
         runPoseDetector()
     }
 
     const stopCam = () => {
+        setIsShowVideo(false)
         let stream = videoElement.current.video.srcObject;
         const tracks = stream.getTracks();
         
