@@ -4,9 +4,10 @@ import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
 import {drawing} from '../functions/utils'
 
-// 2) I would like to figure out how to gather the results and display some of them below
-// 3) Figure out how to tell when someone is going to be set, and know that this
+// 1) I would like to figure out how to gather the results and display some of them below
+// 2) Figure out how to tell when someone is going to be set, and know that this
 // is when we need to start keeping track
+// 3) Add in form control for the buttons in Training Types so that only one can be picked at a time
 function WebcamSection({training}) {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
@@ -23,8 +24,8 @@ function WebcamSection({training}) {
         trackerType: poseDetection.TrackerType.BoundingBox
     }
     const videoConstraints = {
-        width: 640,
-        height: 480,
+        width: `${'60vw'}`,
+        height: '75vh',
         facingMode: "user"
     }
 
@@ -106,8 +107,14 @@ function WebcamSection({training}) {
             backupTraining = training;
             runPoseDetector();
             disabled.current = false;
-            setButtonDisabled(false);
+            // console.log(training ,training.length)
+            if(training.length > 0){
+                setButtonDisabled(false)
+            } else {
+                setButtonDisabled(true);
+            }
         }
+
     }, [training])
 
     return (

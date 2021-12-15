@@ -8,7 +8,7 @@ function Home(){
     return (
         <div className='home__wrapper'>
             <TrainingTypes setTraining={setTraining}/>
-            <WebcamSection training={training}/>
+            <WebcamSection training={training} training={training}/>
         </div>
     )
 }

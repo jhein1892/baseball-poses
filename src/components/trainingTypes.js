@@ -1,12 +1,19 @@
 import React, {useState} from 'react'
 
 
-function TrainingTypes({setTraining}){
-    // const [training, setTraining] = useState();
+function TrainingTypes({setTraining, training}){
+    const [checked, setChecked] = useState('')
     
     const handleChange = (event) => {
         let targetTraining = event.target.name
-        setTraining(targetTraining);
+        if(event.target.checked === true){
+            setTraining(targetTraining);
+            setChecked(targetTraining)
+        } else {
+            setTraining('')
+            setChecked('')
+        }
+
         // backupTraining = targetTraining;
     }
 
@@ -18,35 +25,63 @@ function TrainingTypes({setTraining}){
             <div className='trainingType__inner'>
                 <div className='training_selection'>
                     <div>
-                        <input type='checkbox' name='full' onChange={handleChange}/>
+                        <input 
+                            key='full' 
+                            type='checkbox' 
+                            name='full' 
+                            onChange={handleChange}
+                            checked={checked === 'full'}
+                        />
                         <h4>Full Assessment:</h4>
                     </div>
                     <p>A full assessment if your complete delivery will be run.</p>
                 </div>
                 <div className='training_selection'>
                     <div>
-                        <input type='checkbox' disabled name='legLift' onChange={handleChange}/>
+                        <input 
+                            type='checkbox' 
+                            disabled 
+                            name='legLift' 
+                            onChange={handleChange}
+                            checked={checked === 'legLift'}
+                        />
                         <h4>Leg Lift</h4>
                     </div>
                     <p>An assessment of your front leg angle from set to balance point will be run.</p>
                 </div>
                 <div className='training_selection'>
                     <div>
-                        <input type='checkbox' disabled name='bal-land' onChange={handleChange}/>
+                        <input 
+                            type='checkbox' 
+                            disabled 
+                            name='bal-land' 
+                            onChange={handleChange}
+                            checked={checked === 'bal-land'}
+                        />
                         <h4>Balance-Landing</h4>
                     </div>
                     <p>An assessment of your mechanics from your balance point to your landing spot will be done</p>
                 </div>
                 <div className='training_selection'>
                     <div>
-                        <input type='checkbox' disabled name='land-fin' onChange={handleChange}/>
+                        <input 
+                            type='checkbox' 
+                            disabled 
+                            name='land-fin' 
+                            onChange={handleChange}
+                            checked={checked === 'land-fin'}
+                        />
                         <h4>Landing-Finish</h4>
                     </div>
                     <p>An assessment of your position from your landing spot until your release point will be done</p>
                 </div>
                 <div className='training_selection'>
                     <div>
-                        <input type='checkbox' name='shoulders' onChange={handleChange}/>
+                        <input 
+                            type='checkbox' 
+                            name='shoulders' 
+                            onChange={handleChange}
+                            checked={checked === 'shoulders'}/>
                         <h4>Shoulders</h4>
                     </div>
                     <p>An assessment of your shoulder position and tilt will be done throughout your entire delivery</p>
