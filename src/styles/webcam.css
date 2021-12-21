@@ -1,0 +1,34 @@
+/* Webcam.js */
+#canvas {
+    position: absolute;
+    top: 28px;
+    left: 596px;
+    /* background: #0000ff29; */
+    height: 75vh;
+    width: 55vw;
+}
+
+#video {
+    height: 75vh;
+    width: 55vw;
+}
+
+.cam__view {
+    height: 75vh;
+    width: 55vw;
+    /* background-color: aqua; */
+    border: 4px dotted #238adc;
+    border-radius: 8px;
+    margin-bottom: 1%;
+}
+
+
+.webcam__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.button__container {
+    display: flex;
+    justify-content: center;
+}

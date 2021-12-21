@@ -1,103 +1,13 @@
-/* General Styling */
-button {
-    padding: 1%;
-    width: 30%;
-    color: #238adc;
-    background-color: inherit;
-    margin: 1%;
-    border-radius: 8px;
-    border: 1px solid #238adc;
-    /* border: none */
-}
-
-button:disabled {
-    background-color: #ededed;
-    border: 1px solid grey;
-    color: grey
-}
-
-/* home.js */
 .home__wrapper {
     display: flex;
-    flex-direction: row;justify-content: space-around ;
+    flex-direction: column;
+    justify-content: space-around ;
     padding-top: 2%;
 }
 
-/* Webcam.js */
-#canvas {
-    position: absolute;
-    top: 28px;
-    left: 596px;
-    /* background: #0000ff29; */
-    height: 75vh;
-    width: 55vw;
-}
-
-#video {
-    height: 75vh;
-    width: 55vw;
-}
-
-.cam__view {
-    height: 75vh;
-    width: 55vw;
-    /* background-color: aqua; */
-    border: 4px dotted #238adc;
-    border-radius: 8px;
-    margin-bottom: 1%;
-}
-
-
-.webcam__container {
-    display: flex;
-    flex-direction: column;
-}
-
-/* trainingType.js */
-
-.trainingType__container {
-    /* background-color: #238adc; */
-    border-right: 2px solid #238adc;
-    width: 30%;
-    height: 75vh;
-}
-
-.trainingType__container > p {
-    width: 90%;
-    margin: auto;
-    
-}
-
-.training_selection {
-    padding-bottom: 2%;
-}
-
-.training_selection div {
-    display: flex;
-}
-
-.training_selection input {
-    align-self: center;
-    margin-right: 5%;
-    margin-left: 2%;
-}
-
-.training_selection h4 {
-    margin: 1%;
-}
-
-.training_selection p {
-    width: 75%;
-    /* margin-left: 11%; */
-    margin: 0 11%;
-    text-align: left;
-}
-
-/* .trainingType__container > div {
+.home__top {
     display: flex;
     flex-direction: row;
+    justify-content: space-around ;
 }
 
-.trainingType__container input {
-    align-self: center
-} */

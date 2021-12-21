@@ -1,0 +1,17 @@
+.trainingData_wrapper {
+    text-align: center;
+}
+
+#training_table {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#training_table th, td{
+    min-width: 7.2vw;
+    max-width: 7.2vw;
+    padding: 1%;
+}

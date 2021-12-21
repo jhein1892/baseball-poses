@@ -2,22 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
-import {drawing} from '../functions/utils'
+import {drawing} from '../functions/utils';
+import '../styles/webcam.css'
 
 // 1) I would like to figure out how to gather the results and display some of them below
 // 2) Figure out how to tell when someone is going to be set, and know that this
 // is when we need to start keeping track
-// 3) Add in form control for the buttons in Training Types so that only one can be picked at a time
-function WebcamSection({training}) {
+function WebcamSection({training, positions, handleChange}) {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
-    let [set, setSet] = useState(false)
-    const [count, setCount] = useState(0); 
+    // let [set, setSet] = useState(false)
+    // const [count, setCount] = useState(0); 
     const disabled = useRef(true)
     let [buttonDisabled, setButtonDisabled] = useState(true); 
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
-
+    const mySet = useRef(null);
     const detectorConfig = {
         modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
         enableTracking: true,
@@ -32,11 +32,14 @@ function WebcamSection({training}) {
     const startCam = () => {
         setIsShowVideo(true)
         disabled.current = false; 
-        runPoseDetector()
+        runPoseDetector();
     }
 
     const stopCam = () => {
         setIsShowVideo(false)
+        // console.log(mySet.current)
+        handleChange([], 'set')
+        
         let stream = videoElement.current.video.srcObject;
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
@@ -85,11 +88,11 @@ function WebcamSection({training}) {
                     const poses = await detector.estimatePoses(video); 
                     if(Math.abs(poses[0].keypoints[9]['x'] - poses[0].keypoints[10]['x']) < 70 &&
                     Math.abs(poses[0].keypoints[9]['y'] - poses[0].keypoints[10]['y']) < 5){
-                        setSet(true);
-                    } else {
-                        setCount(0); 
-                        console.log(count)
-                    }
+                            if(!mySet.current){
+                                mySet.current = poses[0].keypoints
+                                handleChange(poses[0].keypoints, 'set')
+                            }
+                    } 
                     let myTraining = training ? training : backupTraining;
                     if(canvasRef.current !== null && training !== undefined){
                         const ctx = canvasRef.current.getContext('2d')
@@ -132,16 +135,10 @@ function WebcamSection({training}) {
                         />
             
             </div>
-            <div>
+            <div className='button__container'>
                 <button onClick={startCam} disabled={buttonDisabled}>Start Video</button>
                 <button onClick={() => {stopCam()}}>Stop Video</button>
             </div>
-            {set &&
-                <>
-                <h1>SET</h1>
-                <p>{count}</p>
-                </>
-            }
         </div>
     );
 };

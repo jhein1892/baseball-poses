@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-
+import '../styles/trainingType.css'
 
 function TrainingTypes({setTraining, training}){
     const [checked, setChecked] = useState('')
@@ -13,8 +13,6 @@ function TrainingTypes({setTraining, training}){
             setTraining('')
             setChecked('')
         }
-
-        // backupTraining = targetTraining;
     }
 
 
