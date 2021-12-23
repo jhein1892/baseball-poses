@@ -86,13 +86,9 @@ function WebcamSection({training, positions, handleChange}) {
                     canvasRef.current.height = videoHeight; 
         
                     const poses = await detector.estimatePoses(video); 
-                    if(Math.abs(poses[0].keypoints[9]['x'] - poses[0].keypoints[10]['x']) < 70 &&
-                    Math.abs(poses[0].keypoints[9]['y'] - poses[0].keypoints[10]['y']) < 5){
-                            if(!mySet.current){
-                                mySet.current = poses[0].keypoints
-                                handleChange(poses[0].keypoints, 'set')
-                            }
-                    } 
+                    if(poses){
+                        handleChange(poses[0].keypoints)
+                    }
                     let myTraining = training ? training : backupTraining;
                     if(canvasRef.current !== null && training !== undefined){
                         const ctx = canvasRef.current.getContext('2d')

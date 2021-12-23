@@ -5,12 +5,11 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 function TrainingSteps({positions}){
 
     useEffect(() => {
-        console.log(positions)
+        // console.log(positions)
     }, [positions])
 
 
     function subSteps(key){
-        console.log(key)
         if(key === 'set'){
             let leftShoulder = positions[key][5];
             let rightShoulder = positions[key][6];
