@@ -12,7 +12,8 @@ function Home(){
         set:{
             isTrue: false, 
             values:[],
-            count: 0
+            count: 0,
+            isReady: false
         },
         balance:{
             isTrue: false, 
@@ -55,33 +56,45 @@ function Home(){
        
             if (Math.abs(key.L_wrist['x'] - key.R_wrist['x']) < 70 &&
                 Math.abs(key.L_wrist['y'] - key.R_wrist['y']) < 5) { 
-                    console.log(positions.set.isTrue)
-                if(!positions.set.isTrue){
-                    // This isn't working, I need to pull out the boolean value, reassign then plug it back in. I think the best way might be to make a fake version of posisions, then just change it to the real one once done. 
-                    setPositions({...positions,
-                                    set: {
-                                        ...positions.set,
-                                        isTrue : true, 
-                                        values : keypoints,
-                                        count : positions.set.count++
-                                    }
-                    })
+                if(positions.set.isTrue === false){
+                    console.log('isTrue is false')
+                    positions.set.values = keypoints;
+                    positions.set.count = 1; 
+                    positions.set.isTrue = true; 
                 } else {
-                    console.log('here')
+                    // Starting hand set positions. 
                     let strL_wrist = positions.set.values[9]
                     let strR_wrist = positions.set.values[10]
-                    let strDiff = strL_wrist['x']/10
-                    console.log(strDiff)
+                    // Average X positions
+                    let strX = (strL_wrist['x'] + strR_wrist['x']) / 2;
+                    let curX = (key.L_wrist['x'] + key.R_wrist['x']) / 2;
+                    // Average Y positions
+                    let strY = (strL_wrist['y'] + strR_wrist['y']) / 2;
+                    let curY = (key.L_wrist['y'] + key.R_wrist['y']) / 2;
+                    if(Math.abs(strX - curX) < (strX/10) && Math.abs(strY - curY) < (strY/10)){
+                        setPositions({...positions,
+                            set: {
+                                ...positions.set,
+                                count : positions.set.count++
+                            }})
+                    }
+                    if(positions.set.count >= 20 && positions.set.isReady === false){
+                        positions.set.isReady = true;
+                    }
+
+                    // console.log(positions.set.isReady); 
                 }                       
                 
-            }
-            // setPositions({ ...positions, [name]: keypoints });
-       
+            } else {
+                // console.log('not together')
+                positions.set.count = 0; 
+                positions.set.isTrue = false; 
+            }  
     }
 
-    useEffect(() => {
-        console.log(positions)
-    }, [positions])
+    // useEffect(() => {
+    //     console.log(positions)
+    // }, [positions])
     return (
         <div className='home__wrapper'>
             <div className='home__top'>

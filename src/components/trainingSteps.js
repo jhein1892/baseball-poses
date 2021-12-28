@@ -5,20 +5,20 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 function TrainingSteps({positions}){
 
     useEffect(() => {
-        // console.log(positions)
+        console.log(positions)
     }, [positions])
 
 
     function subSteps(key){
         if(key === 'set'){
-            let leftShoulder = positions[key][5];
-            let rightShoulder = positions[key][6];
-            let leftFoot = positions[key][15];
-            let rightFoot = positions[key][16];
+            let leftShoulder = positions[key]['values'][5];
+            let rightShoulder = positions[key]['values'][6];
+            let leftFoot = positions[key]['values'][15];
+            let rightFoot = positions[key]['values'][16];
             let shouldersClass;
             let feetClass; 
 
-            if(positions[key].length > 0){
+            if(positions[key]['isReady'] === true){
                 let shoulderDistance = Math.abs(leftShoulder['x'] - rightShoulder['x']); 
                 let footDistance = Math.abs(leftFoot['x'] - rightFoot['x'])
                 console.log(Math.abs(shoulderDistance - footDistance))
@@ -47,6 +47,10 @@ function TrainingSteps({positions}){
             <div className={feetClass}>
                 <CheckCircleIcon />
                 <h4>Feet Shoulder Width</h4>
+            </div>
+            <div className={feetClass}>
+                <CheckCircleIcon />
+                <h4>1 Second Pause</h4>
             </div>
             </>
             )
