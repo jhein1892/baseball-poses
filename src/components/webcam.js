@@ -18,7 +18,7 @@ function WebcamSection({training, positions, handleChange}) {
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
     const mySet = useRef(null);
-    
+
     const detectorConfig = {
         modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
         enableTracking: true,
@@ -91,7 +91,7 @@ function WebcamSection({training, positions, handleChange}) {
                         handleChange(poses[0].keypoints)
                     }
                     let myTraining = training ? training : backupTraining;
-                    if(canvasRef.current !== null && training !== undefined){
+                    if(canvasRef.current !== null && myTraining !== undefined){
                         const ctx = canvasRef.current.getContext('2d')
                         drawing(poses, ctx, myTraining)
                     }

@@ -86,7 +86,7 @@ function Home(){
                 
             } 
             else {
-                // console.log('not together')
+                console.log('not together')
                 positions.set.count = 0; 
                 positions.set.isTrue = false; 
             }  
@@ -94,17 +94,22 @@ function Home(){
         // Set Position established. Ready to move to balance point.
 
         // As soon as we hit this value to detection glitches out. 
+        //  I wonder if moving these to outside functions is going to help this out. 
         else if (positions.set.isReady === true && positions.balance.isBalanced === false){
-            console.log('here', positions.balance.values[16]['y'])
-            let currentDirection = key.R_ankle('y') - positions.balance.values[16]['y'];
-            if(currentDirection > 0){
-                console.log("Leg Moving Up")
-            } else {
-                console.log('Leg Moving Up')
-            }
-                positions.balance.values = keypoints
+            console.log('here', positions.balance)
+            let currentDirection = key.R_ankle['y'] - positions.balance.values[16]['y'];
+            console.log(currentDirection)
+            // if(currentDirection > 0){
+            //     console.log("Leg Moving Up")
+            // } else {
+            //     console.log('Leg Moving Up')
+            // }
+                // positions.balance.values = keypoints;
+            setPositions({...positions, balance: {...positions.balance, values: keypoints}})
         } else if (positions.balance.isBalanced === true){
             console.log('BALANCE POINT'); 
+        } else {
+            console.log('Nothing')
         }
 
     }
