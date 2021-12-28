@@ -5,7 +5,6 @@ import WebcamSection from '../components/webcam';
 import TrainingTypes from '../components/trainingTypes';
 import TrainingSteps from '../components/trainingSteps'; 
 import TrainingData from '../components/trainingData'; 
-import { KeyTwoTone } from '@mui/icons-material';
 function Home(){
     const [training, setTraining] = useState()
     const [positions, setPositions] = useState({
@@ -13,11 +12,13 @@ function Home(){
             isTrue: false, 
             values:[],
             count: 0,
-            isReady: false
+            isReady: false,
+
         },
         balance:{
             isTrue: false, 
-            values:[]
+            values:[],
+            isBalanced: false
         },
         landing:{
             isTrue: false, 
@@ -30,7 +31,11 @@ function Home(){
     })
 
     function handleChange(keypoints){
-        let key = {
+        if(keypoints === undefined){
+            console.log('undefined')
+            return 0;
+        }
+        let key = { 
             nose: keypoints[0],
             L_eye: keypoints[1],
             R_eye: keypoints[2],
@@ -49,11 +54,8 @@ function Home(){
             L_ankle: keypoints[15],
             R_ankle: keypoints[16]
         }
-        if(keypoints === undefined){
-            return 0;
-        }
-            // console.log(keypoints)
-       
+        // Pre Set position
+        if(positions.set.isReady === false){
             if (Math.abs(key.L_wrist['x'] - key.R_wrist['x']) < 70 &&
                 Math.abs(key.L_wrist['y'] - key.R_wrist['y']) < 5) { 
                 if(positions.set.isTrue === false){
@@ -62,15 +64,13 @@ function Home(){
                     positions.set.count = 1; 
                     positions.set.isTrue = true; 
                 } else {
-                    // Starting hand set positions. 
                     let strL_wrist = positions.set.values[9]
                     let strR_wrist = positions.set.values[10]
-                    // Average X positions
                     let strX = (strL_wrist['x'] + strR_wrist['x']) / 2;
                     let curX = (key.L_wrist['x'] + key.R_wrist['x']) / 2;
-                    // Average Y positions
                     let strY = (strL_wrist['y'] + strR_wrist['y']) / 2;
                     let curY = (key.L_wrist['y'] + key.R_wrist['y']) / 2;
+    
                     if(Math.abs(strX - curX) < (strX/10) && Math.abs(strY - curY) < (strY/10)){
                         setPositions({...positions,
                             set: {
@@ -79,22 +79,36 @@ function Home(){
                             }})
                     }
                     if(positions.set.count >= 20 && positions.set.isReady === false){
+                        positions.balance.values = keypoints;
                         positions.set.isReady = true;
                     }
-
-                    // console.log(positions.set.isReady); 
                 }                       
                 
-            } else {
+            } 
+            else {
                 // console.log('not together')
                 positions.set.count = 0; 
                 positions.set.isTrue = false; 
             }  
+        }
+        // Set Position established. Ready to move to balance point.
+
+        // As soon as we hit this value to detection glitches out. 
+        else if (positions.set.isReady === true && positions.balance.isBalanced === false){
+            console.log('here', positions.balance.values[16]['y'])
+            let currentDirection = key.R_ankle('y') - positions.balance.values[16]['y'];
+            if(currentDirection > 0){
+                console.log("Leg Moving Up")
+            } else {
+                console.log('Leg Moving Up')
+            }
+                positions.balance.values = keypoints
+        } else if (positions.balance.isBalanced === true){
+            console.log('BALANCE POINT'); 
+        }
+
     }
 
-    // useEffect(() => {
-    //     console.log(positions)
-    // }, [positions])
     return (
         <div className='home__wrapper'>
             <div className='home__top'>

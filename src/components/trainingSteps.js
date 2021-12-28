@@ -56,17 +56,21 @@ function TrainingSteps({positions}){
             )
         }
         else if (key === 'balance'){
+            let balanceClass = 'training_subSteps'
+            if(positions[key]['isBalanced'] === true){
+                balanceClass += ' active'
+            }
             return (
                 <>
-                <div className='training_subSteps'>
+                <div className={balanceClass}>
                     <CheckCircleIcon />
                     <h4>Knee at/above 90</h4>
                 </div>
-                <div className='training_subSteps'>
+                <div className={balanceClass}>
                     <CheckCircleIcon />
                     <h4>Knee behind hip</h4>
                 </div>
-                <div className='training_subSteps'>
+                <div className={balanceClass}>
                     <CheckCircleIcon />
                     <h4>Even Shoulders</h4>
                 </div>

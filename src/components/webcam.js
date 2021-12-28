@@ -18,6 +18,7 @@ function WebcamSection({training, positions, handleChange}) {
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
     const mySet = useRef(null);
+    
     const detectorConfig = {
         modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
         enableTracking: true,
@@ -38,7 +39,7 @@ function WebcamSection({training, positions, handleChange}) {
     const stopCam = () => {
         setIsShowVideo(false)
         // console.log(mySet.current)
-        handleChange([], 'set')
+        // handleChange([], 'set')
         
         let stream = videoElement.current.video.srcObject;
         const tracks = stream.getTracks();
