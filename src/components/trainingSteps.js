@@ -5,25 +5,27 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 function TrainingSteps({positions}){
 
     useEffect(() => {
-        console.log(positions)
+        // console.log(positions)
     }, [positions])
 
 
     function subSteps(key){
         if(key === 'set'){
-            let leftShoulder = positions[key]['values'][5];
-            let rightShoulder = positions[key]['values'][6];
-            let leftFoot = positions[key]['values'][15];
-            let rightFoot = positions[key]['values'][16];
+            let leftShoulder = positions[key].values['L_shoulder'];
+            let rightShoulder = positions[key].values['R_shoulder'];
+            let leftFoot = positions[key].values['L_ankle'];
+            let rightFoot = positions[key].values['R_ankle']; 
             let shouldersClass;
-            let feetClass; 
+            let feetClass;
+            let pauseClass; 
 
             if(positions[key]['isReady'] === true){
                 let shoulderDistance = Math.abs(leftShoulder['x'] - rightShoulder['x']); 
                 let footDistance = Math.abs(leftFoot['x'] - rightFoot['x'])
-                console.log(Math.abs(shoulderDistance - footDistance))
+                // console.log(Math.abs(shoulderDistance - footDistance))
                 console.log(shoulderDistance, footDistance)
-                if(Math.abs(shoulderDistance - footDistance) < (shoulderDistance * .1) ){
+                pauseClass = 'training_subSteps active';
+                if(Math.abs(shoulderDistance - footDistance) < (shoulderDistance * .2) ){
                     feetClass = 'training_subSteps active'
                 } else {
                     feetClass = 'training_subSteps warning'
@@ -48,7 +50,7 @@ function TrainingSteps({positions}){
                 <CheckCircleIcon />
                 <h4>Feet Shoulder Width</h4>
             </div>
-            <div className={feetClass}>
+            <div className={pauseClass}>
                 <CheckCircleIcon />
                 <h4>1 Second Pause</h4>
             </div>
@@ -56,9 +58,11 @@ function TrainingSteps({positions}){
             )
         }
         else if (key === 'balance'){
-            let balanceClass = 'training_subSteps'
+            let balanceClass = 'training_subSteps'; 
+            
             if(positions[key]['isBalanced'] === true){
-                balanceClass += ' active'
+                balanceClass += ' active';
+                console.log(positions.balance.values)
             }
             return (
                 <>
