@@ -58,7 +58,6 @@ function TrainingSteps({positions, throwingDirection}){
             )
         }
         else if (key === 'balance'){
-            console.log(front)
             let right_shoulder = positions.balance.values.right_shoulder;
             let left_shoulder = positions.balance.values.left_shoulder;
             let front_hip = positions.balance.values[`${front}_hip`];
@@ -92,7 +91,7 @@ function TrainingSteps({positions, throwingDirection}){
                     kneeYClass += " warning"
                 }
 
-                console.log(positions.balance.values)
+                // console.log(positions.balance.values)
             }
             return (
                 <>
@@ -112,6 +111,9 @@ function TrainingSteps({positions, throwingDirection}){
                 )
         } 
         else if (key === 'landing'){
+            if(positions.landing['isLanded'] === true){
+                console.log(positions.landing.values);
+            }
             return (
                 <>
                 <div className='training_subSteps'>

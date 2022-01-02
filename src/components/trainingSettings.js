@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../styles/trainingSettings.css'
 
 function TrainingSettings({setSetting}) {
-    const [checked, setChecked] = useState('');
+    const [checked, setChecked] = useState('left');
 
     const handleChange = (event) => {
         let targetTraining = event.target.name

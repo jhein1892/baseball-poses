@@ -90,7 +90,8 @@ function WebcamSection({training, positions, handleChange}) {
         
                     const poses = await detector.estimatePoses(video); 
                     if(poses){
-                        handleChange(poses[0].keypoints)
+                        console.log(poses)
+                        handleChange(poses[0].keypoints, poses[0].keypoints3D);
                     }
                     let myTraining = training ? training : backupTraining;
                     // if(canvasRef.current !== null && myTraining !== undefined){

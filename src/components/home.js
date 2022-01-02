@@ -9,8 +9,9 @@ import TrainingSettings from '../components/trainingSettings';
 function Home(){
     const [training, setTraining] = useState();
     const [setting, setSetting] = useState();
-    let front = setting === 'left' ? 'right' : 'left';
-    let back = setting === 'left' ? 'left' : 'right'; 
+    // Set default to being left handed. Will need to
+    let front = setting === 'right' ? 'left' : 'right';
+    let back = setting === 'right' ? 'right' : 'left'; 
     let throwingDirection = {
         front,
         back
@@ -40,8 +41,6 @@ function Home(){
             values:[]
         }
     })
-
-    // I want to use handleCHange as a controller, where depending on values we are going to fire off different functions, for example a findset() function. Within that function, I'm going to use an outside updateState function to pass in the key and the value, we want to update. Since all my values are second level this should be easy, it's just a questions on whether it's actually going to work or not. Hopefully this gives me some seperation between the incomming data and the updating work. 
 
     function findSet(key){
         // console.log(key)
@@ -96,6 +95,7 @@ function Home(){
             setPositions({...updatedSet}); 
         } 
     }
+
     let directionArray = [];
     const Average = arr => arr.reduce((prev, current) => prev + current, 0) / arr.length; 
     
@@ -128,7 +128,8 @@ function Home(){
             console.log('Moving Down');
             let updatedBalance = {...positions};
             updatedBalance['balance'].prevDif = AverageDirection;
-            updatedBalance['balance'].isBalanced = true; 
+            updatedBalance['balance'].isBalanced = true;
+            updatedBalance['landing'].values = key;  
             setPositions({...updatedBalance})
         }
 
@@ -137,20 +138,30 @@ function Home(){
             let updatedBalance = {...positions};
             updatedBalance['balance'].peakDif = currentDirection;
             updatedBalance['balance'].values = key;
+            setPositions({...updatedBalance})
         }
     }
 
     function findLanding(key){
-        console.log(key);
-
+        // console.log(key);
+        // So I'm going to check and make sure front foot is moving, either horizontally or vertiacally.
+        let updatedLanding = {...positions};
+        let vertMovement = Math.abs(key[`${front}_ankle`]['y'] - positions.landing.values[`${front}_ankle`]['y']).toFixed(0);
+        let horMovement = Math.abs(key[`${front}_ankle`]['x'] - positions.landing.values[`${front}_ankle`]['x']).toFixed(0);
+        if(vertMovement == 0 && horMovement == 0){
+            console.log('foot not moving');
+            updatedLanding['landing'].isLanded = true; 
+        } else if(vertMovement === 0 && horMovement !== 0){
+            console.log('foot moving horizontally')
+        } else {
+            console.log('foot moving vertiacally')
+        }
+        
+        updatedLanding['landing'].values = key; 
+        setPositions({...updatedLanding}); 
     }
 
-    // First check is directional. If our average is moving up, then we know that we haven't hit the peak yet. As soon as our average start moving down, then we know we have hit the peak and we can set balanced to true.
-    // Second check is for the actual balance point values. We can just do single value checks for this. If our peak value is lower than current value, then we set the new peak value with the keys. 
-
-
-
-    function handleChange(keypoints) {
+    function handleChange(keypoints, keypoints3D) {
         if(keypoints === undefined){
             console.log('undefined');
             return 0; 
@@ -190,6 +201,41 @@ function Home(){
             right_heel: keypoints[30],
             left_foot_index: keypoints[31],
             right_foot_index: keypoints[32]
+        }
+        let key3D = { 
+            nose: keypoints3D[0], 
+            left_eye_inner: keypoints3D[1],
+            left_eye: keypoints3D[2],
+            left_eye_outer: keypoints3D[3],
+            right_eye_inner: keypoints3D[4],
+            right_eye: keypoints3D[5],
+            right_eye_outer: keypoints3D[6],
+            left_ear: keypoints3D[7],
+            right_ear:keypoints3D[8],
+            left_mouth: keypoints3D[9],
+            right_mouth: keypoints3D[10],
+            left_shoulder: keypoints3D[11],
+            right_shoulder: keypoints3D[12],
+            left_elbow:keypoints3D[13],
+            right_elbow: keypoints3D[14], 
+            left_wrist: keypoints3D[15],
+            right_wrist: keypoints3D[16],
+            left_pinky: keypoints3D[17],
+            right_pinky: keypoints3D[18],
+            left_index: keypoints3D[19],
+            right_index: keypoints3D[20],
+            left_thumb: keypoints3D[21],
+            right_thumb: keypoints3D[22],
+            left_hip: keypoints3D[23],
+            right_hip: keypoints3D[24],
+            left_knee: keypoints3D[25],
+            right_knee: keypoints3D[26],
+            left_ankle: keypoints3D[27],
+            right_ankle: keypoints3D[28],
+            left_heel: keypoints3D[29],
+            right_heel: keypoints3D[30],
+            left_foot_index: keypoints3D[31],
+            right_foot_index: keypoints3D[32]
         }
 
         if(positions.set.isReady === false){
