@@ -20,9 +20,11 @@ function WebcamSection({training, positions, handleChange}) {
     const mySet = useRef(null);
 
     const detectorConfig = {
-        modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
+        // modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
         enableTracking: true,
-        trackerType: poseDetection.TrackerType.BoundingBox
+        trackerType: poseDetection.TrackerType.BoundingBox,
+        runtime: 'tfjs', // or 'tfjs'
+        modelType: 'full'
     }
     const videoConstraints = {
         width: `${'60vw'}`,
@@ -50,7 +52,7 @@ function WebcamSection({training, positions, handleChange}) {
 
     const runPoseDetector = async () => {
         const detector = await poseDetection
-                        .createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
+                        .createDetector(poseDetection.SupportedModels.BlazePose, detectorConfig)
 
         let detectInterval = setInterval(() => {
                                 if(disabled.current === false){
@@ -59,8 +61,8 @@ function WebcamSection({training, positions, handleChange}) {
                                 } else {
                                     console.log('Model Closed'); 
                                     clearInterval(detectInterval);
-                                    const ctx = canvasRef.current.getContext('2d')
-                                    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+                                    // const ctx = canvasRef.current.getContext('2d')
+                                    // ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
                                 }
                                 }, 100)
         
@@ -91,10 +93,10 @@ function WebcamSection({training, positions, handleChange}) {
                         handleChange(poses[0].keypoints)
                     }
                     let myTraining = training ? training : backupTraining;
-                    if(canvasRef.current !== null && myTraining !== undefined){
-                        const ctx = canvasRef.current.getContext('2d')
-                        drawing(poses, ctx, myTraining)
-                    }
+                    // if(canvasRef.current !== null && myTraining !== undefined){
+                    //     const ctx = canvasRef.current.getContext('2d')
+                    //     drawing(poses, ctx, myTraining)
+                    // }
                 }
             }
         } catch {

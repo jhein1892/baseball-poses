@@ -79,7 +79,8 @@ function TrainingTypes({setTraining, training}){
                             type='checkbox' 
                             name='shoulders' 
                             onChange={handleChange}
-                            checked={checked === 'shoulders'}/>
+                            checked={checked === 'shoulders'}
+                        />
                         <h4>Shoulders</h4>
                     </div>
                     <p>An assessment of your shoulder position and tilt will be done throughout your entire delivery</p>

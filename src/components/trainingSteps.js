@@ -11,19 +11,19 @@ function TrainingSteps({positions}){
 
     function subSteps(key){
         if(key === 'set'){
-            let leftShoulder = positions[key].values['L_shoulder'];
-            let rightShoulder = positions[key].values['R_shoulder'];
-            let leftFoot = positions[key].values['L_ankle'];
-            let rightFoot = positions[key].values['R_ankle']; 
+            let leftShoulder = positions[key].values['left_shoulder'];
+            let rightShoulder = positions[key].values['right_shoulder'];
+            let leftFoot = positions[key].values['left_ankle'];
+            let rightFoot = positions[key].values['right_ankle']; 
             let shouldersClass;
             let feetClass;
             let pauseClass; 
 
-            if(positions[key]['isReady'] === true){
+            if(positions.set['isReady'] === true){
                 let shoulderDistance = Math.abs(leftShoulder['x'] - rightShoulder['x']); 
                 let footDistance = Math.abs(leftFoot['x'] - rightFoot['x'])
                 // console.log(Math.abs(shoulderDistance - footDistance))
-                console.log(shoulderDistance, footDistance)
+                // console.log(shoulderDistance, footDistance)
                 pauseClass = 'training_subSteps active';
                 if(Math.abs(shoulderDistance - footDistance) < (shoulderDistance * .2) ){
                     feetClass = 'training_subSteps active'
@@ -58,23 +58,43 @@ function TrainingSteps({positions}){
             )
         }
         else if (key === 'balance'){
+            let right_shoulder = positions.balance.values.right_shoulder;
+            let left_shoulder = positions.balance.values.left_shoulder;
+            let right_hip = positions.balance.values.right_hip;
+            let right_knee = positions.balance.values.right_knee;
             let balanceClass = 'training_subSteps'; 
-            
-            if(positions[key]['isBalanced'] === true){
-                balanceClass += ' active';
+            let kneeYClass = balanceClass; 
+            let kneeXClass = balanceClass
+            let shoulderClass = balanceClass; 
+            if(positions.balance['isBalanced'] === true){
+                if(Math.abs(left_shoulder['y'] - right_shoulder['y']) < 5){
+                    shoulderClass += " active";
+                } else {
+                    shoulderClass += " warning";
+                }
+                if(right_knee['y'] < right_hip['y']){
+                    kneeYClass += " active"
+                } else {
+                    kneeYClass += " warning"
+                }
+                if(right_knee['x'] > right_hip['x']){
+                    kneeXClass += " active"
+                } else {
+                    kneeXClass += " warning"
+                }
                 console.log(positions.balance.values)
             }
             return (
                 <>
-                <div className={balanceClass}>
+                <div className={kneeYClass}>
                     <CheckCircleIcon />
                     <h4>Knee at/above 90</h4>
                 </div>
-                <div className={balanceClass}>
+                <div className={kneeXClass}>
                     <CheckCircleIcon />
                     <h4>Knee behind hip</h4>
                 </div>
-                <div className={balanceClass}>
+                <div className={shoulderClass}>
                     <CheckCircleIcon />
                     <h4>Even Shoulders</h4>
                 </div>

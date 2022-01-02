@@ -1,8 +1,8 @@
 /* Webcam.js */
 #canvas {
     position: absolute;
-    top: 28px;
-    left: 596px;
+    /* top: 28px;
+    left: 596px; */
     /* background: #0000ff29; */
     height: 75vh;
     width: 55vw;

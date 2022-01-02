@@ -20,72 +20,82 @@ export const drawing = (predictions, ctx, training) => {
     if(predictions.length > 0){
         // console.log(predictions[0].keypoints)
         let keypoints = predictions[0].keypoints
+        for(let i = 0; i < keypoints.length; i++){
+            ctx.beginPath();
+            ctx.moveTo(
+                keypoints[i]['x'],
+                keypoints[i]['y']
+            )
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
         // if(training.includes('shoulders')){
         //     keypoints = keypoints.slice(5, 11)
         //     // console.log(keypoints)
         // }
         // loop through body parts
-        for(let j = 0; j < Object.keys(bodyParts).length; j++){
-            // console.log(Object.keys(bodyParts)[j])
-            let part = Object.keys(bodyParts)[j];
-            for(let k = 0; k < bodyParts[part].length - 1; k++){
-                const firstConnectionIndex = bodyParts[part][k];
+        // for(let j = 0; j < Object.keys(bodyParts).length; j++){
+        //     // console.log(Object.keys(bodyParts)[j])
+        //     let part = Object.keys(bodyParts)[j];
+        //     for(let k = 0; k < bodyParts[part].length - 1; k++){
+        //         // const firstConnectionIndex = bodyParts[part][k];
                 
-                const secondConnectionIndex = bodyParts[part][k+1]
+        //         // const secondConnectionIndex = bodyParts[part][k+1]
                     
-                // console.log(keypoints[firstConnectionIndex]['x'])
+        //         // console.log(keypoints[firstConnectionIndex]['x'])
 
 
-                if(training === 'shoulders'){
+        //         // if(training === 'shoulders'){
                     
-                    if(secondConnectionIndex === 6){
-                        if(keypoints[firstConnectionIndex]['y'] < keypoints[secondConnectionIndex]['y']){
-                            ctx.beginPath();
-                            ctx.moveTo(
-                                keypoints[firstConnectionIndex]['x'],
-                                keypoints[firstConnectionIndex]['y']
-                            )
-                            ctx.lineTo(
-                                keypoints[secondConnectionIndex]['x'],
-                                keypoints[secondConnectionIndex]['y']
-                            )
-                            ctx.strokeStyle = 'red';
-                        } else {
-                            ctx.beginPath();
-                            ctx.moveTo(
-                                keypoints[firstConnectionIndex]['x'],
-                                keypoints[firstConnectionIndex]['y']
-                            )
-                            ctx.lineTo(
-                                keypoints[secondConnectionIndex]['x'],
-                                keypoints[secondConnectionIndex]['y']
-                            )
-                            ctx.strokeStyle = 'green';
-                        }
-                    } 
-                    ctx.lineWidth = 4;
-                    ctx.stroke()
-                }
+        //         //     if(secondConnectionIndex === 6){
+        //         //         if(keypoints[firstConnectionIndex]['y'] < keypoints[secondConnectionIndex]['y']){
+        //         //             ctx.beginPath();
+        //         //             ctx.moveTo(
+        //         //                 keypoints[firstConnectionIndex]['x'],
+        //         //                 keypoints[firstConnectionIndex]['y']
+        //         //             )
+        //         //             ctx.lineTo(
+        //         //                 keypoints[secondConnectionIndex]['x'],
+        //         //                 keypoints[secondConnectionIndex]['y']
+        //         //             )
+        //         //             ctx.strokeStyle = 'red';
+        //         //         } else {
+        //         //             ctx.beginPath();
+        //         //             ctx.moveTo(
+        //         //                 keypoints[firstConnectionIndex]['x'],
+        //         //                 keypoints[firstConnectionIndex]['y']
+        //         //             )
+        //         //             ctx.lineTo(
+        //         //                 keypoints[secondConnectionIndex]['x'],
+        //         //                 keypoints[secondConnectionIndex]['y']
+        //         //             )
+        //         //             ctx.strokeStyle = 'green';
+        //         //         }
+        //         //     } 
+        //         //     ctx.lineWidth = 4;
+        //         //     ctx.stroke()
+        //         // }
                 
                 
-                else {
+        //         // else {
                     
-                    ctx.beginPath();
-                    ctx.moveTo(
-                        keypoints[firstConnectionIndex]['x'],
-                        keypoints[firstConnectionIndex]['y']
-                    )
-                    ctx.lineTo(
-                        keypoints[secondConnectionIndex]['x'],
-                        keypoints[secondConnectionIndex]['y']
-                    )
-                    ctx.strokeStyle = 'black';
-                    ctx.lineWidth = 4;
-                    ctx.stroke();
-                }
+        //         //     ctx.beginPath();
+        //         //     ctx.moveTo(
+        //         //         keypoints[firstConnectionIndex]['x'],
+        //         //         keypoints[firstConnectionIndex]['y']
+        //         //     )
+        //         //     ctx.lineTo(
+        //         //         keypoints[secondConnectionIndex]['x'],
+        //         //         keypoints[secondConnectionIndex]['y']
+        //         //     )
+        //         //     ctx.strokeStyle = 'black';
+        //         //     ctx.lineWidth = 1;
+        //         //     ctx.stroke();
+        //         // }
 
-            }
-        }
+        //     }
+        // }
     }
 }
 
