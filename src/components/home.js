@@ -8,7 +8,13 @@ import TrainingSteps from '../components/trainingSteps';
 import TrainingSettings from '../components/trainingSettings'; 
 function Home(){
     const [training, setTraining] = useState();
-    const [setting, setSetting] = useState(); 
+    const [setting, setSetting] = useState();
+    let front = setting === 'left' ? 'right' : 'left';
+    let back = setting === 'left' ? 'left' : 'right'; 
+    let throwingDirection = {
+        front,
+        back
+    }
     const [positions, setPositions] = useState({
         set:{
             isTrue: false, 
@@ -23,11 +29,11 @@ function Home(){
             isBalanced: false,
             peakDif: 0,
             prevDif: 0,
-            // difCount: 0
         },
         landing:{
             isTrue: false, 
-            values:[]
+            values:[],
+            isLanded: false
         },
         finish:{
             isTrue: false, 
@@ -94,7 +100,8 @@ function Home(){
     const Average = arr => arr.reduce((prev, current) => prev + current, 0) / arr.length; 
     
     function findBalance(key){
-        let currentDirection = key.right_knee['y'] - positions.balance.values['right_knee']['y'];
+        
+        let currentDirection = key[`${front}_knee`]['y'] - positions.balance.values[`${front}_knee`]['y'];
         currentDirection = Math.round(currentDirection);
         currentDirection = Math.abs(currentDirection);
         if(directionArray.length < 10){
@@ -133,13 +140,17 @@ function Home(){
         }
     }
 
+    function findLanding(key){
+        console.log(key);
+
+    }
+
     // First check is directional. If our average is moving up, then we know that we haven't hit the peak yet. As soon as our average start moving down, then we know we have hit the peak and we can set balanced to true.
     // Second check is for the actual balance point values. We can just do single value checks for this. If our peak value is lower than current value, then we set the new peak value with the keys. 
 
 
 
     function handleChange(keypoints) {
-        console.log(setting)
         if(keypoints === undefined){
             console.log('undefined');
             return 0; 
@@ -186,56 +197,10 @@ function Home(){
             findSet(key);
         } else if (positions.set.isReady === true && positions.balance.isBalanced === false){
             findBalance(key);
+        } else if (positions.balance.isBalanced === true && positions.landing.isLanded === false){
+            findLanding(key); 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // function handleChange(keypoints){
-    //     if(keypoints === undefined){
-    //         console.log('undefined')
-    //         return 0;
-    //     }
-
-    //     // Pre Set position
-    //     if(positions.set.isReady === false){
- 
-    //     }
-    //     // Set Position established. Ready to move to balance point.
-
-    //     // As soon as we hit this value to detection glitches out. 
-    //     //  I wonder if moving these to outside functions is going to help this out. 
-    //     else if (positions.set.isReady === true && positions.balance.isBalanced === false){
-
-    //     } else if (positions.balance.isBalanced === true){
-    //         console.log('BALANCE POINT'); 
-    //     } else {
-    //         console .log('Nothing')
-    //     }
-
-    // }
 
     return (
         <div className='home__wrapper'>
@@ -246,7 +211,7 @@ function Home(){
                 <TrainingTypes setTraining={setTraining}/>
                 <WebcamSection positions={positions} handleChange={handleChange} training={training}/>
             </div>
-                <TrainingSteps positions={positions} />
+                <TrainingSteps positions={positions}  throwingDirection={throwingDirection}/>
                 {/* <TrainingData positions={positions} /> */}
         </div>
     )

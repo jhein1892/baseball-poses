@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import '../styles/trainingSteps.css'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-function TrainingSteps({positions}){
-
+function TrainingSteps({positions, throwingDirection}){
+    const { front, back } = throwingDirection; 
     useEffect(() => {
-        // console.log(positions)
+        // console.log(positions)  
     }, [positions])
 
 
@@ -58,10 +58,11 @@ function TrainingSteps({positions}){
             )
         }
         else if (key === 'balance'){
+            console.log(front)
             let right_shoulder = positions.balance.values.right_shoulder;
             let left_shoulder = positions.balance.values.left_shoulder;
-            let right_hip = positions.balance.values.right_hip;
-            let right_knee = positions.balance.values.right_knee;
+            let front_hip = positions.balance.values[`${front}_hip`];
+            let front_knee = positions.balance.values[`${front}_knee`]; 
             let balanceClass = 'training_subSteps'; 
             let kneeYClass = balanceClass; 
             let kneeXClass = balanceClass
@@ -72,16 +73,25 @@ function TrainingSteps({positions}){
                 } else {
                     shoulderClass += " warning";
                 }
-                if(right_knee['y'] < right_hip['y']){
+                if(front === 'left'){
+                    if(front_knee['x'] < front_hip['x']){
+                        kneeXClass += " active"
+                    } else {
+                        kneeXClass += " warning"
+                    }
+                } else {
+                    if(front_knee['x'] > front_hip['x']){
+                        kneeXClass += " active"
+                    } else {
+                        kneeXClass += " warning"
+                    }
+                }
+                if(front_knee['y'] < front_hip['y']){
                     kneeYClass += " active"
                 } else {
                     kneeYClass += " warning"
                 }
-                if(right_knee['x'] > right_hip['x']){
-                    kneeXClass += " active"
-                } else {
-                    kneeXClass += " warning"
-                }
+
                 console.log(positions.balance.values)
             }
             return (
