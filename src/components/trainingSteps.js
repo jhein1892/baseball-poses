@@ -111,8 +111,49 @@ function TrainingSteps({positions, throwingDirection}){
                 )
         } 
         else if (key === 'landing'){
+            let strideClass;
+            let aboveClass;
+            let degreeClass;
+            let tiltClass;
+
+            let backShoulder = positions.landing.values[`${back}_shoulder`];
+            let frontShoulder = positions.landing.values[`${front}_shoulder`]; 
+            let backElbow = positions.landing.values[`${back}_elbow`];
+            let backWrist = positions.landing.values[`${back}_wrist`];
+
+
+            
             if(positions.landing['isLanded'] === true){
-                console.log(positions.landing.values);
+                // Distance from shoulder to elbow
+                let lowArmDist = Math.sqrt(Math.pow(Math.abs((backShoulder['x'] - backElbow['x'])) , 2) + Math.pow(Math.abs((backShoulder['y'] - backElbow['y'])) , 2));
+                // Distance from elbow to wrist
+                let highArmDist = Math.sqrt(Math.pow(Math.abs((backElbow['x'] - backWrist['x'])) , 2) + Math.pow(Math.abs((backElbow['y'] - backWrist['y'])) , 2));
+                // Distance from shoulder to wrist
+                let hypoArmDist = Math.sqrt(Math.pow(Math.abs((backShoulder['x'] - backWrist['x'])) , 2) + Math.pow(Math.abs((backShoulder['y'] - backWrist['y'])) , 2));
+
+                let consineElbow = (((highArmDist ** 2) + (lowArmDist ** 2 ) - (hypoArmDist ** 2) ) / (2 * highArmDist * lowArmDist));
+                let degreeElbow = consineElbow * 180 / Math.PI; 
+                console.log(lowArmDist, highArmDist, hypoArmDist, consineElbow, degreeElbow);
+                // Since we are looking for the angle between our elbow and our shoulder. We Are looking for the cosineElbow.
+                // consineElbow = highArmDist ** 2 + lowArmDist ** 2 - hypoArmDist ** 2 / (2 * highArmDist * lowarmDist)
+                // use Math.acos(return Number)
+                // Then we need to translate this from radians to degrees
+                // RAD * 180 / pi 
+
+
+
+                // console.log(lowArmDist, highArmDist, hypoArmDist);
+                console.log(positions.landing.values); 
+                if(backElbow['y'] < backShoulder['y']){
+                    aboveClass = 'training_subSteps active';
+                } else {
+                    aboveClass = 'training_subSteps warning';
+                }
+                if(backShoulder['y'] > frontShoulder['y']){
+                    tiltClass = 'training_subSteps active'
+                } else {
+                    tiltClass = 'training_subSteps warning';
+                }
             }
             return (
                 <>
@@ -120,15 +161,15 @@ function TrainingSteps({positions, throwingDirection}){
                     <CheckCircleIcon />
                     <h4>Stride Length</h4>
                 </div>
-                <div className='training_subSteps'>
+                <div className={aboveClass}>
                     <CheckCircleIcon />
                     <h4>Elbows Above Shoulders</h4>
                 </div>
                 <div className='training_subSteps'>
                     <CheckCircleIcon />
-                    <h4>Throwing arm at 90</h4>
+                    <h4>Throwing arm from 85&#176;-95&#176; </h4>
                 </div>
-                <div className='training_subSteps'>
+                <div className={tiltClass}>
                     <CheckCircleIcon />
                     <h4>Shoulders tilted back</h4>
                 </div>

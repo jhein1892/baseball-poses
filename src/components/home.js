@@ -6,6 +6,12 @@ import TrainingTypes from '../components/trainingTypes';
 import TrainingSteps from '../components/trainingSteps'; 
 // import TrainingData from '../components/trainingData'; 
 import TrainingSettings from '../components/trainingSettings'; 
+
+// I'm going to have to switch everything over to the 3d keypoints. it's much more consistent
+
+
+
+
 function Home(){
     const [training, setTraining] = useState();
     const [setting, setSetting] = useState();
@@ -42,7 +48,7 @@ function Home(){
         }
     })
 
-    function findSet(key){
+    function findSet(key, key3D){
         // console.log(key)
         // Logic for finding set positions
         console.log(positions.set.count)
@@ -50,6 +56,8 @@ function Home(){
         // If your hands are together
         if (Math.abs(key.left_wrist['x'] - key.right_wrist['x']) < 70 &&
         Math.abs(key.left_wrist['y'] - key.right_wrist['y']) < 20) {
+            console.log(key3D.left_wrist['x'] - key3D.right_wrist['x'], (key.left_wrist['x'] - key.right_wrist['x']))
+            console.log(key3D.left_wrist['y'] - key3D.right_wrist['y'], (key.left_wrist['y'] - key.right_wrist['y']))
             console.log('Together')
             // // The first instance of having them together
             if(positions.set.isTrue === false){
@@ -74,20 +82,22 @@ function Home(){
                     setPositions({...updatedSet}); 
                 }
                 // if it's been more than a second. 
-                if(positions.set.count >= 20){
-                    console.log('1 second');
-                    let updatedSet = {...positions};
-                    updatedSet['set'].values = key;
-                    updatedSet['set'].count = updatedSet['set'].count + 1;
-                    updatedSet['set'].isReady = true;
-                    updatedSet['balance'].values = key;
-                    setPositions({...updatedSet}); 
-                }
+                // if(positions.set.count >= 20){
+                //     console.log('1 second');
+                //     let updatedSet = {...positions};
+                //     updatedSet['set'].values = key;
+                //     updatedSet['set'].count = updatedSet['set'].count + 1;
+                //     updatedSet['set'].isReady = true;
+                //     updatedSet['balance'].values = key;
+                //     setPositions({...updatedSet}); 
+                // }
             }                       
             
         } 
         // // If your hands are not together then reset everything. 
         else {
+            console.log(key3D.left_wrist['x'] - key3D.right_wrist['x'], (key.left_wrist['x'] - key.right_wrist['x']))
+            console.log(key3D.left_wrist['y'] - key3D.right_wrist['y'], (key.left_wrist['y'] - key.right_wrist['y']))
             console.log('not together')
             let updatedSet = {...positions}
             updatedSet['set'].count = 0;
@@ -142,12 +152,13 @@ function Home(){
         }
     }
 
-    function findLanding(key){
+    function findLanding(key, key3D){
         // console.log(key);
         // So I'm going to check and make sure front foot is moving, either horizontally or vertiacally.
         let updatedLanding = {...positions};
         let vertMovement = Math.abs(key[`${front}_ankle`]['y'] - positions.landing.values[`${front}_ankle`]['y']).toFixed(0);
         let horMovement = Math.abs(key[`${front}_ankle`]['x'] - positions.landing.values[`${front}_ankle`]['x']).toFixed(0);
+        console.log(horMovement, vertMovement); 
         if(vertMovement == 0 && horMovement == 0){
             console.log('foot not moving');
             updatedLanding['landing'].isLanded = true; 
@@ -240,11 +251,11 @@ function Home(){
 
         if(positions.set.isReady === false){
             // Need to make this function
-            findSet(key);
+            findSet(key, key3D);
         } else if (positions.set.isReady === true && positions.balance.isBalanced === false){
             findBalance(key);
         } else if (positions.balance.isBalanced === true && positions.landing.isLanded === false){
-            findLanding(key); 
+            findLanding(key, key3D); 
         }
     }
 
