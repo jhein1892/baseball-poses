@@ -6,6 +6,7 @@ import TrainingTypes from '../components/trainingTypes';
 import TrainingSteps from '../components/trainingSteps'; 
 // import TrainingData from '../components/trainingData'; 
 import TrainingSettings from '../components/trainingSettings'; 
+import { math } from '@tensorflow/tfjs';
 
 // I'm going to have to switch everything over to the 3d keypoints. it's much more consistent
 
@@ -48,68 +49,79 @@ function Home(){
         }
     })
 
-    function findSet(key, key3D){
-        // console.log(key)
+    function findSet(key3D){
         // Logic for finding set positions
         console.log(positions.set.count)
-
         // If your hands are together
-        if (Math.abs(key.left_wrist['x'] - key.right_wrist['x']) < 70 &&
-        Math.abs(key.left_wrist['y'] - key.right_wrist['y']) < 20) {
-            console.log(key3D.left_wrist['x'] - key3D.right_wrist['x'], (key.left_wrist['x'] - key.right_wrist['x']))
-            console.log(key3D.left_wrist['y'] - key3D.right_wrist['y'], (key.left_wrist['y'] - key.right_wrist['y']))
-            console.log('Together')
-            // // The first instance of having them together
+        if(Math.abs(key3D.left_wrist['x'] - key3D.right_wrist['x']) < 0.2 &&
+            Math.abs(key3D.left_wrist['y'] - key3D.right_wrist['y']) < 0.05){
+            console.log('together');
+            // The first instance of having them together
             if(positions.set.isTrue === false){
                 let updatedSet = {...positions};
                 updatedSet['set'].isTrue = true;
                 updatedSet['set'].count = 1;
-                updatedSet['set'].values = key; 
+                updatedSet['set'].values = key3D; 
                 setPositions({...updatedSet}); 
             } 
+
             // Else if it's not the first instance
             else {
-                let strL_wrist = positions.set.values['left_wrist']
-                let strR_wrist = positions.set.values['right_wrist']
-                let strX = (strL_wrist['x'] + strR_wrist['x']) / 2;
-                let curX = (key.left_wrist['x'] + key.right_wrist['x']) / 2;
-                let strY = (strL_wrist['y'] + strR_wrist['y']) / 2;
-                let curY = (key.left_wrist['y'] + key.right_wrist['y']) / 2;
-                // If it's not the first instance your hands are not moving, and it's been less than a second. 
-                if(Math.abs(strX - curX) < (strX/10) && Math.abs(strY - curY) < (strY/10) && positions.set.count < 20){
-                    let updatedSet = {...positions};
-                    updatedSet['set'].count = updatedSet['set'].count + 1 ;
-                    setPositions({...updatedSet}); 
+                let strL_wrist = positions.set.values['left_wrist'];
+                let strR_wrist = positions.set.values['right_wrist'];
+                // let strX = (strL_wrist['x'] + strR_wrist['x']) / 2;
+                // let curX = (key3D.left_wrist['x'] + key3D.right_wrist['x']) / 2;
+                // let strY = (strL_wrist['y'] + strR_wrist['y']) / 2;
+                // let curY = (key3D.left_wrist['y'] + key3D.right_wrist['y']) / 2;
+                // // console.log(strL_wrist['x'], strR_wrist['x'], key3D.left_wrist['x'], key3D.right_wrist['x'])
+
+
+                // This seems to be working. 
+                if((Math.abs(strL_wrist['x'] - key3D.left_wrist['x']) < Math.abs(strL_wrist['x']) / 2) && (Math.abs(strL_wrist['y'] - key3D.left_wrist['y']) < Math.abs(strL_wrist['y']) / 2))
+                {
+                    console.log('Same Spot');
+                    // do the normal stuff from below
+                } else {
+                    console.log('Not the same spot')
+                    // remember to set a new set of positions in here. 
                 }
-                // if it's been more than a second. 
-                // if(positions.set.count >= 20){
-                //     console.log('1 second');
+
+                
+                // If it's not the first instance your hands are not moving, and it's been less than a second. 
+                // if(Math.abs(strX - curX) < Math.abs(strX/2) && Math.abs(strY - curY) < Math.abs(strY/2)){
                 //     let updatedSet = {...positions};
-                //     updatedSet['set'].values = key;
-                //     updatedSet['set'].count = updatedSet['set'].count + 1;
-                //     updatedSet['set'].isReady = true;
-                //     updatedSet['balance'].values = key;
+                //     updatedSet['set'].count = updatedSet['set'].count + 1 ;
+
+                //     if(positions.set.count >= 20){
+                //         console.log('1 second');
+                //         updatedSet['set'].values = key3D;
+                //         updatedSet['set'].isReady = true;
+                //         updatedSet['balance'].values = key3D;
+                //     }
+                //     setPositions({...updatedSet}); 
+                // } else {
+                //     let updatedSet = {...positions}
+                //     updatedSet['set'].count = 0;
+                //     updatedSet['set'].isTrue = false;
                 //     setPositions({...updatedSet}); 
                 // }
-            }                       
-            
-        } 
-        // // If your hands are not together then reset everything. 
-        else {
-            console.log(key3D.left_wrist['x'] - key3D.right_wrist['x'], (key.left_wrist['x'] - key.right_wrist['x']))
-            console.log(key3D.left_wrist['y'] - key3D.right_wrist['y'], (key.left_wrist['y'] - key.right_wrist['y']))
-            console.log('not together')
+                // if it's been more than a second. 
+
+            }    
+
+        } else {
+            console.log('Not together');
             let updatedSet = {...positions}
             updatedSet['set'].count = 0;
             updatedSet['set'].isTrue = false;
             setPositions({...updatedSet}); 
-        } 
+        }
     }
 
     let directionArray = [];
     const Average = arr => arr.reduce((prev, current) => prev + current, 0) / arr.length; 
     
-    function findBalance(key){
+    function findBalance(key, key3D){
         
         let currentDirection = key[`${front}_knee`]['y'] - positions.balance.values[`${front}_knee`]['y'];
         currentDirection = Math.round(currentDirection);
@@ -251,12 +263,14 @@ function Home(){
 
         if(positions.set.isReady === false){
             // Need to make this function
-            findSet(key, key3D);
-        } else if (positions.set.isReady === true && positions.balance.isBalanced === false){
-            findBalance(key);
-        } else if (positions.balance.isBalanced === true && positions.landing.isLanded === false){
-            findLanding(key, key3D); 
-        }
+            findSet(key3D);
+        } 
+        // else if (positions.set.isReady === true && positions.balance.isBalanced === false){
+        //     findBalance(key, key3D);
+        // } 
+        // else if (positions.balance.isBalanced === true && positions.landing.isLanded === false){
+        //     findLanding(key, key3D); 
+        // }
     }
 
     return (

@@ -30,7 +30,7 @@ function TrainingSteps({positions, throwingDirection}){
                 } else {
                     feetClass = 'training_subSteps warning'
                 }
-
+                console.log(leftShoulder['y'], rightShoulder['y'])
                 if(Math.abs(leftShoulder['y'] - rightShoulder['y']) < 50){
                     shouldersClass = 'training_subSteps active'
                 } else {
