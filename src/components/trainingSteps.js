@@ -30,7 +30,7 @@ function TrainingSteps({positions, throwingDirection}){
                 } else {
                     feetClass = 'training_subSteps warning'
                 }
-                console.log(leftShoulder['y'], rightShoulder['y'])
+                // console.log(leftShoulder['y'], rightShoulder['y'])
                 if(Math.abs(leftShoulder['y'] - rightShoulder['y']) < 50){
                     shouldersClass = 'training_subSteps active'
                 } else {
@@ -58,16 +58,21 @@ function TrainingSteps({positions, throwingDirection}){
             )
         }
         else if (key === 'balance'){
-            let right_shoulder = positions.balance.values.right_shoulder;
-            let left_shoulder = positions.balance.values.left_shoulder;
-            let front_hip = positions.balance.values[`${front}_hip`];
-            let front_knee = positions.balance.values[`${front}_knee`]; 
+            let right_shoulder = positions.balance.peakValues.right_shoulder;
+            let left_shoulder = positions.balance.peakValues.left_shoulder;
+            let front_hip = positions.balance.peakValues[`${front}_hip`];
+            let front_knee = positions.balance.peakValues[`${front}_knee`]; 
             let balanceClass = 'training_subSteps'; 
             let kneeYClass = balanceClass; 
             let kneeXClass = balanceClass
             let shoulderClass = balanceClass; 
-            if(positions.balance['isBalanced'] === true){
-                if(Math.abs(left_shoulder['y'] - right_shoulder['y']) < 5){
+            if(positions.landing['isLanded'] === true){
+                console.log(positions)
+                console.log(Math.abs(left_shoulder['y'] - right_shoulder['y']))
+                console.log(front_knee['x'], front_hip['x'])
+                console.log(front_knee['y'], front_hip['y'])
+                console.log(positions.balance.peakVal)
+                if(Math.abs(left_shoulder['y'] - right_shoulder['y']) < 0.05){
                     shoulderClass += " active";
                 } else {
                     shoulderClass += " warning";
@@ -85,13 +90,14 @@ function TrainingSteps({positions, throwingDirection}){
                         kneeXClass += " warning"
                     }
                 }
-                if(front_knee['y'] < front_hip['y']){
+                if(positions.balance.peakVal < 0){
                     kneeYClass += " active"
                 } else {
                     kneeYClass += " warning"
                 }
 
-                // console.log(positions.balance.values)
+                // // console.log(positions.balance.values)
+                // }
             }
             return (
                 <>
@@ -131,14 +137,11 @@ function TrainingSteps({positions, throwingDirection}){
                 // Distance from shoulder to wrist
                 let hypoArmDist = Math.sqrt(Math.pow(Math.abs((backShoulder['x'] - backWrist['x'])) , 2) + Math.pow(Math.abs((backShoulder['y'] - backWrist['y'])) , 2));
 
-                let consineElbow = (((highArmDist ** 2) + (lowArmDist ** 2 ) - (hypoArmDist ** 2) ) / (2 * highArmDist * lowArmDist));
-                let degreeElbow = consineElbow * 180 / Math.PI; 
+                let consineElbow = Math.acos(((highArmDist ** 2) + (lowArmDist ** 2 ) - (hypoArmDist ** 2) ) / (2 * highArmDist * lowArmDist));
+                let degreeElbow = (consineElbow * 180)/ Math.PI; 
                 console.log(lowArmDist, highArmDist, hypoArmDist, consineElbow, degreeElbow);
-                // Since we are looking for the angle between our elbow and our shoulder. We Are looking for the cosineElbow.
-                // consineElbow = highArmDist ** 2 + lowArmDist ** 2 - hypoArmDist ** 2 / (2 * highArmDist * lowarmDist)
-                // use Math.acos(return Number)
-                // Then we need to translate this from radians to degrees
-                // RAD * 180 / pi 
+                // Getting a proper number now, but the angles are kind of off. Might need to find a way to gather initial information about the players height and the distance between body parts before we start. Something like making them stand still in neutral position before starting the session would be good. For now I'm just going to expand the angles a little more than I would like to make up for it. 
+
 
 
 

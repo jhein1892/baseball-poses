@@ -8,7 +8,13 @@ import TrainingSteps from '../components/trainingSteps';
 import TrainingSettings from '../components/trainingSettings'; 
 import { math } from '@tensorflow/tfjs';
 
-// I'm going to have to switch everything over to the 3d keypoints. it's much more consistent
+/*
+# THINGS THAT NEED TO BE CLEANED UP
+# 1) Landing is pretty inconsistent. It's getting a lot closer to right on(most of the time it is, but it's not 100%)
+# 2) Arm Angles are actually mostly good. Just need to clean up the actual length of body parts before we start, that should help 
+# 3) Loosened up set position to allow for a little more consistency, but it's opened the door to slow consisten movements, as well as vigorous movements held in the same position. I'm not sure how to fix at this point. 
+# 4) Need to be able to reset everything without breaking the video.
+*/
 
 
 
@@ -34,9 +40,10 @@ function Home(){
         balance:{
             isTrue: false, 
             values:[],
+            startingHeight: 0, 
             isBalanced: false,
-            peakDif: 0,
-            prevDif: 0,
+            peakVal: 0,
+            peakValues: []
         },
         landing:{
             isTrue: false, 
@@ -53,8 +60,8 @@ function Home(){
         // Logic for finding set positions
         console.log(positions.set.count)
         // If your hands are together
-        if(Math.abs(key3D.left_wrist['x'] - key3D.right_wrist['x']) < 0.2 &&
-            Math.abs(key3D.left_wrist['y'] - key3D.right_wrist['y']) < 0.05){
+        if(Math.abs(key3D.left_wrist['x'] - key3D.right_wrist['x']) < 0.3 &&
+            Math.abs(key3D.left_wrist['y'] - key3D.right_wrist['y']) < 0.075){
             console.log('together');
             // The first instance of having them together
             if(positions.set.isTrue === false){
@@ -64,51 +71,36 @@ function Home(){
                 updatedSet['set'].values = key3D; 
                 setPositions({...updatedSet}); 
             } 
-
             // Else if it's not the first instance
             else {
                 let strL_wrist = positions.set.values['left_wrist'];
                 let strR_wrist = positions.set.values['right_wrist'];
-                // let strX = (strL_wrist['x'] + strR_wrist['x']) / 2;
-                // let curX = (key3D.left_wrist['x'] + key3D.right_wrist['x']) / 2;
-                // let strY = (strL_wrist['y'] + strR_wrist['y']) / 2;
-                // let curY = (key3D.left_wrist['y'] + key3D.right_wrist['y']) / 2;
-                // // console.log(strL_wrist['x'], strR_wrist['x'], key3D.left_wrist['x'], key3D.right_wrist['x'])
-
 
                 // This seems to be working. 
-                if((Math.abs(strL_wrist['x'] - key3D.left_wrist['x']) < Math.abs(strL_wrist['x']) / 2) && (Math.abs(strL_wrist['y'] - key3D.left_wrist['y']) < Math.abs(strL_wrist['y']) / 2))
+                if(((Math.abs(strL_wrist['x'] - key3D.left_wrist['x']) < Math.abs(strL_wrist['x']) / 1.75) && (Math.abs(strL_wrist['y'] - key3D.left_wrist['y']) < Math.abs(strL_wrist['y']) / 1.75)) && (Math.abs(strR_wrist['x'] - key3D.right_wrist['x']) < Math.abs(strR_wrist['x']) / 1.75) && (Math.abs(strR_wrist['y'] - key3D.right_wrist['y']) < Math.abs(strR_wrist['y']) / 1.75))
                 {
                     console.log('Same Spot');
                     // do the normal stuff from below
+                    let updatedSet = {...positions};
+                    // updatedSet['set'].values = key3D;
+                    updatedSet['set'].count = updatedSet['set'].count + 1 ;
+                    if(positions.set.count >= 25){
+                        console.log('1 second');
+                        updatedSet['set'].isReady = true;
+                        updatedSet['balance'].values = key3D;
+                        updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 
+                        updatedSet['balance'].peakVal = key3D[`${front}_knee`]['y']; 
+                    }
+                    setPositions({...updatedSet}); 
                 } else {
-                    console.log('Not the same spot')
+                    console.log('Not the same spot');
+                    let updatedSet = {...positions}
+                    updatedSet['set'].count = 0;
+                    updatedSet['set'].isTrue = false;
+                    setPositions({...updatedSet}); 
                     // remember to set a new set of positions in here. 
                 }
-
-                
-                // If it's not the first instance your hands are not moving, and it's been less than a second. 
-                // if(Math.abs(strX - curX) < Math.abs(strX/2) && Math.abs(strY - curY) < Math.abs(strY/2)){
-                //     let updatedSet = {...positions};
-                //     updatedSet['set'].count = updatedSet['set'].count + 1 ;
-
-                //     if(positions.set.count >= 20){
-                //         console.log('1 second');
-                //         updatedSet['set'].values = key3D;
-                //         updatedSet['set'].isReady = true;
-                //         updatedSet['balance'].values = key3D;
-                //     }
-                //     setPositions({...updatedSet}); 
-                // } else {
-                //     let updatedSet = {...positions}
-                //     updatedSet['set'].count = 0;
-                //     updatedSet['set'].isTrue = false;
-                //     setPositions({...updatedSet}); 
-                // }
-                // if it's been more than a second. 
-
             }    
-
         } else {
             console.log('Not together');
             let updatedSet = {...positions}
@@ -122,45 +114,43 @@ function Home(){
     const Average = arr => arr.reduce((prev, current) => prev + current, 0) / arr.length; 
     
     function findBalance(key, key3D){
-        
-        let currentDirection = key[`${front}_knee`]['y'] - positions.balance.values[`${front}_knee`]['y'];
-        currentDirection = Math.round(currentDirection);
-        currentDirection = Math.abs(currentDirection);
-        if(directionArray.length < 10){
-            directionArray.unshift(currentDirection);
-        } else {
-            directionArray.pop()
-            directionArray.unshift(currentDirection);
-        }
-        // Logic for finding the Direction of our leg.
-        let AverageDirection = Average(directionArray); 
-        // console.log(AverageDirection,positions.balance.prevDif)
-        if(AverageDirection < 10){
-            console.log('Leg on Ground')
-            let updatedBalance = {...positions};
-            updatedBalance['balance'].prevDif = AverageDirection;
-            // updatedBalance['balance'].difCount = 0; 
-            setPositions({...updatedBalance})
-        } else if (AverageDirection > positions.balance.prevDif){
-            console.log('Moving Up')
-            let updatedBalance = {...positions};
-            updatedBalance['balance'].prevDif = AverageDirection;
-            setPositions({...updatedBalance})
-        } else {
-            console.log('Moving Down');
-            let updatedBalance = {...positions};
-            updatedBalance['balance'].prevDif = AverageDirection;
-            updatedBalance['balance'].isBalanced = true;
-            updatedBalance['landing'].values = key;  
-            setPositions({...updatedBalance})
-        }
+        let currentVal = parseFloat(key3D[`${front}_knee`]['y'].toFixed(3));
+        let prevVal = parseFloat(positions.balance.values[`${front}_knee`]['y'].toFixed(3));
+        let currentAnkleValX = parseFloat(key3D[`${front}_ankle`]['x'].toFixed(3));
+        let prevAnkleValX = parseFloat(positions.balance.values[`${front}_ankle`]['x'].toFixed(3)); 
+        let currentAnkleValY = parseFloat(key3D[`${front}_ankle`]['y'].toFixed(3));
+        let prevAnkleValY = parseFloat(positions.balance.values[`${front}_ankle`]['y'].toFixed(3)); 
+        // console.log('current Ankle values: ', currentAnkleValY, currentAnkleValX)
 
-        // Logic for finding our peak points
-        if(currentDirection > positions.balance.peakDif){
+        if(key3D[`${front}_knee`]['score'] > 0.8){
             let updatedBalance = {...positions};
-            updatedBalance['balance'].peakDif = currentDirection;
-            updatedBalance['balance'].values = key;
-            setPositions({...updatedBalance})
+                // This is for top of balance. 
+                if(currentVal < prevVal){
+                    console.log('Leg Moving Up', currentVal);
+                    // Setting updated peakVal if current is lower than previous
+                    if(Math.abs(currentVal - prevVal) > 0.05){
+                        updatedBalance['balance']['isBalanced'] = true; 
+                    }
+                    if(currentVal < updatedBalance['balance']['peakVal']){
+                        updatedBalance['balance']['peakVal'] = currentVal; 
+                        updatedBalance['balance']['peakValues'] = key3D;
+                    }
+                } else if(currentVal > prevVal){
+                    console.log('Leg Moving Down');
+                } 
+                // This is finding our landing
+                console.log(positions.set.values[`${front}_ankle`]['x'], currentAnkleValX)
+                if (positions.balance.isBalanced && (Math.abs(prevAnkleValX - currentAnkleValX) <= 0.01) && (Math.abs(prevAnkleValY - currentAnkleValY) <= 0.01) && positions.balance.startingHeight - currentVal <=0.1 && parseFloat(positions.set.values[`${front}_ankle`]['x']) > currentAnkleValX) { 
+                    console.log('is Landed');
+                    updatedBalance['landing']['isLanded'] = true;
+                    updatedBalance['landing']['values'] = key3D;
+                }
+            updatedBalance['balance']['values'] = key3D; 
+            setPositions({...updatedBalance});
+            
+        } else {
+            console.log("currentVal:", currentVal, "prevVal:",prevVal);
+            console.log('unsure')
         }
     }
 
@@ -265,9 +255,9 @@ function Home(){
             // Need to make this function
             findSet(key3D);
         } 
-        // else if (positions.set.isReady === true && positions.balance.isBalanced === false){
-        //     findBalance(key, key3D);
-        // } 
+        else if (positions.set.isReady === true && positions.landing.isLanded === false){
+            findBalance(key, key3D);
+        } 
         // else if (positions.balance.isBalanced === true && positions.landing.isLanded === false){
         //     findLanding(key, key3D); 
         // }
@@ -280,7 +270,7 @@ function Home(){
             </div>
             <div className='home__top'>
                 <TrainingTypes setTraining={setTraining}/>
-                <WebcamSection positions={positions} handleChange={handleChange} training={training}/>
+                <WebcamSection positions={positions} handleChange={handleChange} training={training} setPositions={setPositions}/>
             </div>
                 <TrainingSteps positions={positions}  throwingDirection={throwingDirection}/>
                 {/* <TrainingData positions={positions} /> */}

@@ -8,7 +8,7 @@ import '../styles/webcam.css'
 // 1) I would like to figure out how to gather the results and display some of them below
 // 2) Figure out how to tell when someone is going to be set, and know that this
 // is when we need to start keeping track
-function WebcamSection({training, positions, handleChange}) {
+function WebcamSection({ training, positions, handleChange, setPositions }) {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
     // let [set, setSet] = useState(false)
@@ -18,7 +18,33 @@ function WebcamSection({training, positions, handleChange}) {
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
     const mySet = useRef(null);
+    // Change this if we ever add anything else
+    const defaultPositions = {
+        set:{
+            isTrue: false, 
+            values:[],
+            count: 0,
+            isReady: false,
 
+        },
+        balance:{
+            isTrue: false, 
+            values:[],
+            startingHeight: 0, 
+            isBalanced: false,
+            peakVal: 0,
+            peakValues: []
+        },
+        landing:{
+            isTrue: false, 
+            values:[],
+            isLanded: false
+        },
+        finish:{
+            isTrue: false, 
+            values:[]
+        }
+    }
     const detectorConfig = {
         // modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
         enableTracking: true,
@@ -40,14 +66,20 @@ function WebcamSection({training, positions, handleChange}) {
 
     const stopCam = () => {
         setIsShowVideo(false)
-        // console.log(mySet.current)
-        // handleChange([], 'set')
+        if(videoElement.current){
+            let stream = videoElement.current.video.srcObject;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+            videoElement.current.video.srcObject = null;
+            disabled.current = true; 
+        }
         
-        let stream = videoElement.current.video.srcObject;
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-        videoElement.current.video.srcObject = null;
-        disabled.current = true; 
+
+    }
+
+    const handleReset = () => {
+        console.log('handle Reset'); 
+        setPositions(defaultPositions); 
     }
 
     const runPoseDetector = async () => {
@@ -55,17 +87,16 @@ function WebcamSection({training, positions, handleChange}) {
                         .createDetector(poseDetection.SupportedModels.BlazePose, detectorConfig)
 
         let detectInterval = setInterval(() => {
-                                if(disabled.current === false){
-                                   
-                                    detect(detector);
-                                } else {
-                                    console.log('Model Closed'); 
-                                    clearInterval(detectInterval);
-                                    // const ctx = canvasRef.current.getContext('2d')
-                                    // ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                                }
-                                }, 100)
-        
+            if(disabled.current === false){
+                
+                detect(detector);
+            } else {
+                console.log('Model Closed'); 
+                clearInterval(detectInterval);
+                // const ctx = canvasRef.current.getContext('2d')
+                // ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+            }
+            }, 100)
     }
 
     const detect = async (detector) => {
@@ -138,6 +169,7 @@ function WebcamSection({training, positions, handleChange}) {
             <div className='button__container'>
                 <button onClick={startCam} disabled={buttonDisabled}>Start Video</button>
                 <button onClick={() => {stopCam()}}>Stop Video</button>
+                <button onClick={handleReset}>Reset Model</button>
             </div>
         </div>
     );
