@@ -1,5 +1,8 @@
 /* General Styling */
-
+.app{
+  display: flex;
+  flex-direction: column;
+}
 table, thead, tbody {
   border: 1px solid black; 
   border-collapse: collapse;
@@ -21,3 +24,5 @@ button:disabled {
   border: 1px solid grey;
   color: grey
 }
+
+
