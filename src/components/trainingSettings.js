@@ -1,17 +1,24 @@
+import { op } from '@tensorflow/tfjs';
 import React, {useState} from 'react';
 import '../styles/trainingSettings.css'
 
-function TrainingSettings({setSetting}) {
+function TrainingSettings({setThrowing, setHeight}) {
     const [checked, setChecked] = useState('left');
 
     const handleChange = (event) => {
         let targetTraining = event.target.name
-        if(event.target.checked === true){
-            setSetting(targetTraining);
-            setChecked(targetTraining)
+        if(event.target.type === 'checkbox'){
+            if(event.target.checked === true){
+                setThrowing(targetTraining);
+                setChecked(targetTraining)
+            } else {
+                setThrowing('')
+                setChecked('')
+            }
         } else {
-            setSetting('')
-            setChecked('')
+            let targetName = event.target.name;
+            let targetValue = parseInt(event.target.value);
+            setHeight(prev => ({...prev, [`${targetName}`]:targetValue }));
         }
     }
     
@@ -36,6 +43,35 @@ function TrainingSettings({setSetting}) {
                         onChange={handleChange}
                         checked={checked === 'right'}
                     />
+                </div>
+            </div>
+            <div className='settings__height'>
+                <h4>Please Enter your Height:</h4>
+                <div>
+                    <label>Feet</label>
+                    <select name='feet' onChange={handleChange}>
+                        <option value={4}>4</option>
+                        <option selected value={5}>5</option>
+                        <option value={6}>6</option>
+                        <option value={7}>7</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Inches</label>
+                    <select name='inches' onChange={handleChange}>
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                        <option value={4}>4</option>
+                        <option value={5}>5</option>
+                        <option value={6}>6</option>
+                        <option value={7}>7</option>
+                        <option value={8}>8</option>
+                        <option value={9}>9</option>
+                        <option selected value={10}>10</option>
+                        <option value={11}>11</option>
+                        <option value={12}>12</option>
+                    </select>
                 </div>
             </div>
         </div>

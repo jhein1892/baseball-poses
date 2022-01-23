@@ -13,18 +13,19 @@ import { math } from '@tensorflow/tfjs';
 # 1) Landing is pretty inconsistent. It's getting a lot closer to right on(most of the time it is, but it's not 100%)
 # 2) Arm Angles are actually mostly good. Just need to clean up the actual length of body parts before we start, that should help 
 # 3) Loosened up set position to allow for a little more consistency, but it's opened the door to slow consisten movements, as well as vigorous movements held in the same position. I'm not sure how to fix at this point. 
-# 4) Need to be able to reset everything without breaking the video.
 */
-
-
-
 
 function Home(){
     const [training, setTraining] = useState();
-    const [setting, setSetting] = useState();
+    const [throwing, setThrowing] = useState();
+    const [height, setHeight] = useState({
+        feet: 5, 
+        inches: 10
+    })
     // Set default to being left handed. Will need to
-    let front = setting === 'right' ? 'left' : 'right';
-    let back = setting === 'right' ? 'right' : 'left'; 
+    let front = throwing === 'right' ? 'left' : 'right';
+    let back = throwing === 'right' ? 'right' : 'left'; 
+    let cmeterHeight = (height.feet * 30) + (height.inches * 2.54); 
     let throwingDirection = {
         front,
         back
@@ -38,7 +39,7 @@ function Home(){
 
         },
         balance:{
-            isTrue: false, 
+            // isTrue: false, 
             values:[],
             startingHeight: 0, 
             isBalanced: false,
@@ -46,12 +47,13 @@ function Home(){
             peakValues: []
         },
         landing:{
-            isTrue: false, 
+            // isTrue: false, 
             values:[],
             isLanded: false
         },
         finish:{
-            isTrue: false, 
+            // isTrue: false, 
+            isFinshed: false, 
             values:[]
         }
     })
@@ -110,10 +112,7 @@ function Home(){
         }
     }
 
-    let directionArray = [];
-    const Average = arr => arr.reduce((prev, current) => prev + current, 0) / arr.length; 
-    
-    function findBalance(key, key3D){
+    function findBalance(key3D){
         let currentVal = parseFloat(key3D[`${front}_knee`]['y'].toFixed(3));
         let prevVal = parseFloat(positions.balance.values[`${front}_knee`]['y'].toFixed(3));
         let currentAnkleValX = parseFloat(key3D[`${front}_ankle`]['x'].toFixed(3));
@@ -154,67 +153,16 @@ function Home(){
         }
     }
 
-    function findLanding(key, key3D){
-        // console.log(key);
-        // So I'm going to check and make sure front foot is moving, either horizontally or vertiacally.
-        let updatedLanding = {...positions};
-        let vertMovement = Math.abs(key[`${front}_ankle`]['y'] - positions.landing.values[`${front}_ankle`]['y']).toFixed(0);
-        let horMovement = Math.abs(key[`${front}_ankle`]['x'] - positions.landing.values[`${front}_ankle`]['x']).toFixed(0);
-        console.log(horMovement, vertMovement); 
-        if(vertMovement == 0 && horMovement == 0){
-            console.log('foot not moving');
-            updatedLanding['landing'].isLanded = true; 
-        } else if(vertMovement === 0 && horMovement !== 0){
-            console.log('foot moving horizontally')
-        } else {
-            console.log('foot moving vertiacally')
-        }
+    function findFinish(key3D){
         
-        updatedLanding['landing'].values = key; 
-        setPositions({...updatedLanding}); 
     }
 
-    function handleChange(keypoints, keypoints3D) {
-        if(keypoints === undefined){
+    function handleChange(keypoints3D) {
+        if(keypoints3D === undefined){
             console.log('undefined');
             return 0; 
         }
         // console.log(keypoints);
-        let key = { 
-            nose: keypoints[0], 
-            left_eye_inner: keypoints[1],
-            left_eye: keypoints[2],
-            left_eye_outer: keypoints[3],
-            right_eye_inner: keypoints[4],
-            right_eye: keypoints[5],
-            right_eye_outer: keypoints[6],
-            left_ear: keypoints[7],
-            right_ear:keypoints[8],
-            left_mouth: keypoints[9],
-            right_mouth: keypoints[10],
-            left_shoulder: keypoints[11],
-            right_shoulder: keypoints[12],
-            left_elbow:keypoints[13],
-            right_elbow: keypoints[14], 
-            left_wrist: keypoints[15],
-            right_wrist: keypoints[16],
-            left_pinky: keypoints[17],
-            right_pinky: keypoints[18],
-            left_index: keypoints[19],
-            right_index: keypoints[20],
-            left_thumb: keypoints[21],
-            right_thumb: keypoints[22],
-            left_hip: keypoints[23],
-            right_hip: keypoints[24],
-            left_knee: keypoints[25],
-            right_knee: keypoints[26],
-            left_ankle: keypoints[27],
-            right_ankle: keypoints[28],
-            left_heel: keypoints[29],
-            right_heel: keypoints[30],
-            left_foot_index: keypoints[31],
-            right_foot_index: keypoints[32]
-        }
         let key3D = { 
             nose: keypoints3D[0], 
             left_eye_inner: keypoints3D[1],
@@ -256,23 +204,25 @@ function Home(){
             findSet(key3D);
         } 
         else if (positions.set.isReady === true && positions.landing.isLanded === false){
-            findBalance(key, key3D);
+            findBalance(key3D);
         } 
-        // else if (positions.balance.isBalanced === true && positions.landing.isLanded === false){
-        //     findLanding(key, key3D); 
-        // }
+        else if (positions.landing.isLanded === true && positions.finish.isFinshed === false){
+            findFinish(key3D); 
+        }
     }
-
+    useEffect(() => {
+        console.log(height, cmeterHeight)
+    }, [height])
     return (
         <div className='home__wrapper'>
             <div className='home__settings'>
-                <TrainingSettings setSetting={setSetting}/>
+                <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>
             </div>
             <div className='home__top'>
                 <TrainingTypes setTraining={setTraining}/>
                 <WebcamSection positions={positions} handleChange={handleChange} training={training} setPositions={setPositions}/>
             </div>
-                <TrainingSteps positions={positions}  throwingDirection={throwingDirection}/>
+                <TrainingSteps positions={positions} throwingDirection={throwingDirection} cmeterHeight={cmeterHeight}/>
                 {/* <TrainingData positions={positions} /> */}
         </div>
     )
