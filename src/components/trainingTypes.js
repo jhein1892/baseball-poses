@@ -1,89 +1,67 @@
 import React, {useState} from 'react'
-import '../styles/trainingType.css'
+import '../styles/trainingType.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+
 
 function TrainingTypes({setTraining, training}){
     const [checked, setChecked] = useState('')
     
-    const handleChange = (event) => {
-        let targetTraining = event.target.name
-        if(event.target.checked === true){
-            setTraining(targetTraining);
-            setChecked(targetTraining)
-        } else {
-            setTraining('')
-            setChecked('')
-        }
+    const handleChange = (type) => {
+        console.log(type)
+        setTraining(type);
+        setChecked(type);
     }
 
 
     return(
         <div className='trainingType__container'>
-            <h1>Choose Training Type:</h1>
-            <p>The type of training you decide to do depends on the Models that are run on your mechanics. If you would like to switch your training, please stop the video, choose another training type and start the video again</p>
+            <h1>Training Type</h1>
             <div className='trainingType__inner'>
-                <div className='training_selection'>
+                <div 
+                    className='training_selection' 
+                    onClick={() => handleChange('full')}
+                >
                     <div>
-                        <input 
-                            key='full' 
-                            type='checkbox' 
-                            name='full' 
-                            onChange={handleChange}
-                            checked={checked === 'full'}
-                        />
-                        <h4>Full Assessment:</h4>
+                    <FontAwesomeIcon icon={faCheckCircle} className={checked ==='full' ? 'trainingType__icon active' : 'trainingType__icon'}/>
+                        <h3>Full Assessment</h3>
                     </div>
-                    <p>A full assessment if your complete delivery will be run.</p>
                 </div>
-                <div className='training_selection'>
+                <div 
+                    className='training_selection disabled' 
+                    // onClick={() => handleChange('legLift')}
+                >
                     <div>
-                        <input 
-                            type='checkbox' 
-                            disabled 
-                            name='legLift' 
-                            onChange={handleChange}
-                            checked={checked === 'legLift'}
-                        />
-                        <h4>Leg Lift</h4>
+                        <FontAwesomeIcon icon={faCheckCircle} className={checked ==='legLift' ? 'trainingType__icon active' : 'trainingType__icon'}/>
+                        <h3>Leg Lift</h3>
                     </div>
-                    <p>An assessment of your front leg angle from set to balance point will be run.</p>
                 </div>
-                <div className='training_selection'>
+                <div 
+                    className='training_selection disabled' 
+                    // onClick={() => handleChange('bal-land')}
+                >
                     <div>
-                        <input 
-                            type='checkbox' 
-                            disabled 
-                            name='bal-land' 
-                            onChange={handleChange}
-                            checked={checked === 'bal-land'}
-                        />
-                        <h4>Balance-Landing</h4>
+                        <FontAwesomeIcon icon={faCheckCircle} className={checked ==='bal-land' ? 'trainingType__icon active' : 'trainingType__icon'}/>
+                        <h3>Balance-Landing</h3>
                     </div>
-                    <p>An assessment of your mechanics from your balance point to your landing spot will be done</p>
                 </div>
-                <div className='training_selection'>
+                <div 
+                    className='training_selection disabled' 
+                    // onClick={() => handleChange('land-fin')}
+                >
                     <div>
-                        <input 
-                            type='checkbox' 
-                            disabled 
-                            name='land-fin' 
-                            onChange={handleChange}
-                            checked={checked === 'land-fin'}
-                        />
-                        <h4>Landing-Finish</h4>
+                        <FontAwesomeIcon icon={faCheckCircle} className={checked ==='land-fin' ? 'trainingType__icon active' : 'trainingType__icon'}/>
+                        <h3>Landing-Finish</h3>
                     </div>
-                    <p>An assessment of your position from your landing spot until your release point will be done</p>
                 </div>
-                <div className='training_selection'>
+                <div 
+                    className='training_selection disabled' 
+                    // onClick={() => handleChange('shoulders')}
+                >
                     <div>
-                        <input 
-                            type='checkbox' 
-                            name='shoulders' 
-                            onChange={handleChange}
-                            checked={checked === 'shoulders'}
-                        />
-                        <h4>Shoulders</h4>
+                        <FontAwesomeIcon icon={faCheckCircle} className={checked ==='shoulders' ? 'trainingType__icon active' : 'trainingType__icon'}/>
+                        <h3>Shoulders</h3>
                     </div>
-                    <p>An assessment of your shoulder position and tilt will be done throughout your entire delivery</p>
                 </div>
             </div>
         </div>

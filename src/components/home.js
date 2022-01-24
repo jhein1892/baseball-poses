@@ -215,14 +215,14 @@ function Home(){
     }, [height])
     return (
         <div className='home__wrapper'>
-            <div className='home__settings'>
-                <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>
-            </div>
-            <div className='home__top'>
-                <TrainingTypes setTraining={setTraining}/>
+            <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>
+            <hr/>
+            <TrainingTypes setTraining={setTraining}/>
+            <hr/>
+            <div className='assessment__wrapper'>
                 <WebcamSection positions={positions} handleChange={handleChange} training={training} setPositions={setPositions}/>
-            </div>
                 <TrainingSteps positions={positions} throwingDirection={throwingDirection} cmeterHeight={cmeterHeight}/>
+            </div>
                 {/* <TrainingData positions={positions} /> */}
         </div>
     )

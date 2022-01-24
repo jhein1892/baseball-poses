@@ -1,12 +1,15 @@
 .training_steps__wrapper {
     text-align: center;
+    width: 20%;
     margin-bottom: 2vh;
 }
 
 .training_steps__inner {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
+    width: 95%;
+    margin: auto;
 }
 
 /* .training_steps__inner > div {
@@ -15,16 +18,18 @@
 } */
 
 .training_steps {
-    font-size: 1rem ;
+    font-size: 1rem;
     display: flex;
     flex-direction: column;
-    width: 20%
+    margin-bottom: 10px;
+    /* width: 20%; */
 }
 
 .training_steps_icons {
     display: flex;
     align-items: center;
     border-bottom: 1px solid black;
+    margin: 0px 0 10px;
 }
 
 
@@ -43,6 +48,7 @@
 
 .training_steps h1 {
     text-transform: capitalize;
+    margin: 0;
 }
 .active  {
     color: green !important;
@@ -50,3 +56,4 @@
 .warning {
     color: red !important; 
 }
+

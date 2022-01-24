@@ -1,7 +1,8 @@
 /* General Styling */
-.app{
+.App{
   display: flex;
   flex-direction: column;
+  background-color: #E2E0E0;
 }
 table, thead, tbody {
   border: 1px solid black; 
@@ -9,13 +10,14 @@ table, thead, tbody {
 }
 
 button {
-  padding: 1%;
+  padding: 0.5%;
   width: 30%;
-  color: #238adc;
+  /* color: #238adc; */
   background-color: inherit;
   margin: 1%;
+  font-size: 1.5rem;
   border-radius: 8px;
-  border: 1px solid #238adc;
+  /* border: 1px solid #238adc; */
   /* border: none */
 }
 

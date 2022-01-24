@@ -167,9 +167,9 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
             
             </div>
             <div className='button__container'>
-                <button onClick={startCam} disabled={buttonDisabled}>Start Video</button>
-                <button onClick={() => {stopCam()}}>Stop Video</button>
-                <button onClick={handleReset}>Reset Model</button>
+                <button className='button__start' onClick={startCam} disabled={buttonDisabled}>Start Assessment</button>
+                <button className='button__stop' onClick={() => {stopCam()}}>Stop</button>
+                <button className='button__reset' onClick={handleReset}>Reset Model</button>
             </div>
         </div>
     );

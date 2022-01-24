@@ -53,6 +53,7 @@
 select {
     border: none;
     border-bottom: 1px solid #3A3849;
+    background: inherit;
 }
 
 select:focus-visible {

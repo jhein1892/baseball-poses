@@ -2,23 +2,40 @@
 
 .trainingType__container {
     /* background-color: #238adc; */
-    border-right: 2px solid #238adc;
-    width: 30%;
-    height: 75vh;
+    /* border-right: 2px solid #238adc; */
+    /* width: 30%; */
+    text-align: center;
+    width: 90%;
+    margin: auto;
+    height: 26vh;
 }
 
 .trainingType__container > p {
-    width: 90%;
-    margin: auto;
+    width: 50%;
+    margin: 20px auto;
     
 }
 
+.trainingType__inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.trainingType__icon {
+    font-size: 2rem;
+}
+
 .training_selection {
-    padding-bottom: 2%;
+    /* padding-bottom: 2%; */
+    width: 18%;
+    border: 1px solid black;
+    border-radius: 8px;
 }
 
 .training_selection div {
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .training_selection input {
@@ -27,8 +44,12 @@
     margin-left: 2%;
 }
 
-.training_selection h4 {
-    margin: 1%;
+.training_selection svg {
+    margin-top: 10px;
+}
+
+.training_selection h3 {
+    cursor: pointer; 
 }
 
 .training_selection p {
@@ -36,4 +57,9 @@
     /* margin-left: 11%; */
     margin: 0 11%;
     text-align: left;
+}
+
+.disabled {
+    background-color: lightgrey;
+    color: grey;
 }

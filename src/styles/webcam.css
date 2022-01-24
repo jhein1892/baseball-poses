@@ -15,9 +15,9 @@
 
 .cam__view {
     height: 75vh;
-    width: 55vw;
+    width: 75vw;
     /* background-color: aqua; */
-    border: 4px dotted #238adc;
+    border: 4px dotted #3A3849;
     border-radius: 8px;
     margin-bottom: 1%;
 }
@@ -31,4 +31,22 @@
 .button__container {
     display: flex;
     justify-content: center;
+}
+
+.button__start {
+    border: 1px solid #3A3849;
+    background-color: #3A3849;
+    color: #E2E0E0;
+}
+
+.button__stop {
+    border: 1px solid #983539;
+    background-color: #983539;
+    color: #E2E0E0;
+}
+
+.button__reset {
+    border: 1px solid #9D7770;
+    background-color: #9D7770;
+    color: #E2E0E0;
 }
