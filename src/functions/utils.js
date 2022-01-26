@@ -1,5 +1,5 @@
 import { train } from "@tensorflow/tfjs";
-
+const audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
 // points for model
 const bodyParts = {
     head:[3,1,0,2,4],
@@ -30,90 +30,30 @@ export const drawing = (predictions, ctx, training) => {
             ctx.lineWidth = 1;
             ctx.stroke();
         }
-        // if(training.includes('shoulders')){
-        //     keypoints = keypoints.slice(5, 11)
-        //     // console.log(keypoints)
-        // }
-        // loop through body parts
-        // for(let j = 0; j < Object.keys(bodyParts).length; j++){
-        //     // console.log(Object.keys(bodyParts)[j])
-        //     let part = Object.keys(bodyParts)[j];
-        //     for(let k = 0; k < bodyParts[part].length - 1; k++){
-        //         // const firstConnectionIndex = bodyParts[part][k];
-                
-        //         // const secondConnectionIndex = bodyParts[part][k+1]
-                    
-        //         // console.log(keypoints[firstConnectionIndex]['x'])
-
-
-        //         // if(training === 'shoulders'){
-                    
-        //         //     if(secondConnectionIndex === 6){
-        //         //         if(keypoints[firstConnectionIndex]['y'] < keypoints[secondConnectionIndex]['y']){
-        //         //             ctx.beginPath();
-        //         //             ctx.moveTo(
-        //         //                 keypoints[firstConnectionIndex]['x'],
-        //         //                 keypoints[firstConnectionIndex]['y']
-        //         //             )
-        //         //             ctx.lineTo(
-        //         //                 keypoints[secondConnectionIndex]['x'],
-        //         //                 keypoints[secondConnectionIndex]['y']
-        //         //             )
-        //         //             ctx.strokeStyle = 'red';
-        //         //         } else {
-        //         //             ctx.beginPath();
-        //         //             ctx.moveTo(
-        //         //                 keypoints[firstConnectionIndex]['x'],
-        //         //                 keypoints[firstConnectionIndex]['y']
-        //         //             )
-        //         //             ctx.lineTo(
-        //         //                 keypoints[secondConnectionIndex]['x'],
-        //         //                 keypoints[secondConnectionIndex]['y']
-        //         //             )
-        //         //             ctx.strokeStyle = 'green';
-        //         //         }
-        //         //     } 
-        //         //     ctx.lineWidth = 4;
-        //         //     ctx.stroke()
-        //         // }
-                
-                
-        //         // else {
-                    
-        //         //     ctx.beginPath();
-        //         //     ctx.moveTo(
-        //         //         keypoints[firstConnectionIndex]['x'],
-        //         //         keypoints[firstConnectionIndex]['y']
-        //         //     )
-        //         //     ctx.lineTo(
-        //         //         keypoints[secondConnectionIndex]['x'],
-        //         //         keypoints[secondConnectionIndex]['y']
-        //         //     )
-        //         //     ctx.strokeStyle = 'black';
-        //         //     ctx.lineWidth = 1;
-        //         //     ctx.stroke();
-        //         // }
-
-        //     }
-        // }
     }
 }
 
-// // My Keypoints are:
-// 0: nose
-// 1: left_eye
-// 2: right_eye
-// 3: left_ear
-// 4: right_ear
-// 5: left_shoulder
-// 6: right_shoulder
-// 7: left_elbow
-// 8: right_elbow
-// 9: left_wrist
-// 10:right_wrist
-// 11: left_hip
-// 12: right_hip
-// 13:left_knee
-// 14: right_knee
-// 15: left_ankle
-// 16: right_ankle
+
+
+//All arguments are optional:
+
+//duration of the tone in milliseconds. Default is 500
+//frequency of the tone in hertz. default is 440
+//volume of the tone. Default is 1, off is 0.
+//type of tone. Possible values are sine, square, sawtooth, triangle, and custom. Default is sine.
+//callback to use on end of tone
+export function beep(duration, frequency, volume, type, callback) {
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    if (volume){gainNode.gain.value = volume;}
+    if (frequency){oscillator.frequency.value = frequency;}
+    if (type){oscillator.type = type;}
+    if (callback){oscillator.onended = callback;}
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + ((duration || 500) / 1000));
+};
+

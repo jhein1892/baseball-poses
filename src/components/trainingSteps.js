@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import '../styles/trainingSteps.css'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {beep} from '../functions/utils';
 
 function TrainingSteps({positions, throwingDirection, cmeterHeight}){
+
     const { front, back } = throwingDirection; 
     useEffect(() => {
         // console.log(positions)  
@@ -20,6 +22,7 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight}){
             let pauseClass = trainingStep
 
             if(positions.set['isReady'] === true){
+
                 let shoulderDistance = Math.abs(leftShoulder['x'] - rightShoulder['x']); 
                 let footDistance = Math.abs(leftFoot['x'] - rightFoot['x'])
                 // console.log(Math.abs(shoulderDistance - footDistance))

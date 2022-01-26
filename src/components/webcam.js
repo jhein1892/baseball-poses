@@ -2,12 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
-import {drawing} from '../functions/utils';
+import {drawing, beep} from '../functions/utils';
 import '../styles/webcam.css'
 
 // 1) I would like to figure out how to gather the results and display some of them below
-// 2) Figure out how to tell when someone is going to be set, and know that this
-// is when we need to start keeping track
 function WebcamSection({ training, positions, handleChange, setPositions }) {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
@@ -59,6 +57,7 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     }
 
     const startCam = () => {
+
         setIsShowVideo(true)
         disabled.current = false; 
         runPoseDetector();
@@ -79,7 +78,8 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
 
     const handleReset = () => {
         console.log('handle Reset'); 
-        setPositions(defaultPositions); 
+
+        setPositions(defaultPositions);
     }
 
     const runPoseDetector = async () => {

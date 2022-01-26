@@ -7,6 +7,7 @@ import TrainingSteps from '../components/trainingSteps';
 // import TrainingData from '../components/trainingData'; 
 import TrainingSettings from '../components/trainingSettings'; 
 import { math } from '@tensorflow/tfjs';
+import {beep} from '../functions/utils';
 
 /*
 # THINGS THAT NEED TO BE CLEANED UP
@@ -86,8 +87,9 @@ function Home(){
                     let updatedSet = {...positions};
                     // updatedSet['set'].values = key3D;
                     updatedSet['set'].count = updatedSet['set'].count + 1 ;
-                    if(positions.set.count >= 25){
+                    if(positions.set.count >= 20){
                         console.log('1 second');
+                        beep(300, 740, 0.6, 'triangle');
                         updatedSet['set'].isReady = true;
                         updatedSet['balance'].values = key3D;
                         updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 

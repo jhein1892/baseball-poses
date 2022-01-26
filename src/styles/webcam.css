@@ -9,23 +9,31 @@
 }
 
 #video {
-    height: 75vh;
-    width: 55vw;
+    height: 48vw;
+    width: 64vw;
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0px; */
+    border-radius: 8px;
 }
 
 .cam__view {
-    height: 75vh;
-    width: 75vw;
+    height: 48vw;
+    width: 64vw;
     /* background-color: aqua; */
-    border: 4px dotted #3A3849;
+    /* border: 4px dotted #3A3849; */
+    /* position: relative; */
     border-radius: 8px;
+    /* left: -71%; */
     margin-bottom: 1%;
+    box-shadow: 0px 0px 8px 1px black;
 }
 
 
 .webcam__container {
     display: flex;
     flex-direction: column;
+    width: 64vw;
 }
 
 .button__container {
