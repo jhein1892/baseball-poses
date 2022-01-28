@@ -1,0 +1,15 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-benchcoach-dev-200043-authRole",
+      "UnauthRoleArn": "arn:aws:iam::548473503985:role/amplify-benchcoach-dev-200043-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::548473503985:role/amplify-benchcoach-dev-200043-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-benchcoach-dev-200043-deployment",
+      "UnauthRoleName": "amplify-benchcoach-dev-200043-unauthRole",
+      "StackName": "amplify-benchcoach-dev-200043",
+      "StackId": "arn:aws:cloudformation:us-west-1:548473503985:stack/amplify-benchcoach-dev-200043/df39e4a0-7fee-11ec-b7f7-021f99fc4cd9",
+      "AmplifyAppId": "d2pyltfes5fddd"
+    }
+  }
+}
