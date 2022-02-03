@@ -109,7 +109,6 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
                 if(videoElement.current.stream !== null){
 
                     const video = videoElement.current.video;
-                    console.log(videoElement.current.video)
                     const videoWidth = videoElement.current.video.videoWidth;
                     const videoHeight = videoElement.current.video.videoHeight;
                     videoElement.current.video.width = videoWidth;
@@ -119,7 +118,6 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
                     canvasRef.current.height = videoHeight; 
                     
                     const poses = await detector.estimatePoses(video); 
-                    console.log('here')
                     if(poses){
                         // console.log(poses)
                         handleChange(poses[0].keypoints3D);
@@ -154,10 +152,10 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     return (
         <div className='webcam__container'>
             <div className="cam__view">
-                {/* {isShowVideo && */}
+                {isShowVideo &&
                     
                     <Webcam id='video' audio={false} ref={videoElement} videoConstraints={videoConstraints} />
-            
+                }
                         <canvas
                         id='canvas'
                         ref={canvasRef}

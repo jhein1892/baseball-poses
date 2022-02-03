@@ -87,7 +87,7 @@ function Home(){
                     let updatedSet = {...positions};
                     // updatedSet['set'].values = key3D;
                     updatedSet['set'].count = updatedSet['set'].count + 1 ;
-                    if(positions.set.count >= 20){
+                    if(positions.set.count >= 10){
                         console.log('1 second');
                         beep(300, 740, 0.6, 'triangle');
                         updatedSet['set'].isReady = true;
