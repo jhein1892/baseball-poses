@@ -85,7 +85,7 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     const runPoseDetector = async () => {
         const detector = await poseDetection
                         .createDetector(poseDetection.SupportedModels.BlazePose, detectorConfig)
-
+        console.log(detector)
         let detectInterval = setInterval(() => {
             if(disabled.current === false){
                 
@@ -106,25 +106,25 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
             if(typeof videoElement.current !== undefined 
                 && videoElement.current !== null 
             ) {
-                
                 if(videoElement.current.stream !== null){
 
                     const video = videoElement.current.video;
+                    console.log(videoElement.current.video)
                     const videoWidth = videoElement.current.video.videoWidth;
                     const videoHeight = videoElement.current.video.videoHeight;
-        
                     videoElement.current.video.width = videoWidth;
                     videoElement.current.video.height = videoHeight;
-        
+                    
                     canvasRef.current.width = videoWidth; 
                     canvasRef.current.height = videoHeight; 
-        
+                    
                     const poses = await detector.estimatePoses(video); 
+                    console.log('here')
                     if(poses){
                         // console.log(poses)
                         handleChange(poses[0].keypoints3D);
                     }
-                    let myTraining = training ? training : backupTraining;
+                    // let myTraining = training ? training : backupTraining;
                     // if(canvasRef.current !== null && myTraining !== undefined){
                     //     const ctx = canvasRef.current.getContext('2d')
                     //     drawing(poses, ctx, myTraining)
@@ -154,10 +154,10 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     return (
         <div className='webcam__container'>
             <div className="cam__view">
-                {isShowVideo &&
+                {/* {isShowVideo && */}
                     
                     <Webcam id='video' audio={false} ref={videoElement} videoConstraints={videoConstraints} />
-                }
+            
                         <canvas
                         id='canvas'
                         ref={canvasRef}
