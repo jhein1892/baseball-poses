@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
-import {drawing, beep} from '../functions/utils';
 import '../styles/webcam.css'
 
 // 1) I would like to figure out how to gather the results and display some of them below
 function WebcamSection({ training, positions, handleChange, setPositions, resetRef }) {
-    let backupTraining;
+    // let backupTraining = useRef(training); 
     let [isShowVideo, setIsShowVideo] = useState(false);
     // let [set, setSet] = useState(false)
     // const [count, setCount] = useState(0); 
@@ -16,41 +15,9 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
     const PositionsRef = useRef(false); 
-    const mySet = useRef(null);
     // Change this if we ever add anything else
-    const defaultPositions = {
-        set:{
-            isTrue: false, 
-            values:[],
-            count: 0,
-            isReady: false,
 
-        },
-        balance:{
-            isTrue: false, 
-            values:[],
-            startingHeight: 0, 
-            isBalanced: false,
-            peakVal: 0,
-            peakValues: []
-        },
-        landing:{
-            isTrue: false, 
-            values:[],
-            isLanded: false
-        },
-        finish:{
-            isTrue: false, 
-            values:[]
-        }
-    }
-    const detectorConfig = {
-        // modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
-        enableTracking: true,
-        trackerType: poseDetection.TrackerType.BoundingBox,
-        runtime: 'tfjs', // or 'tfjs'
-        modelType: 'full'
-    }
+
     const videoConstraints = {
         width: `${'60vw'}`,
         height: '75vh',
@@ -77,19 +44,79 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
 
     }
 
-    const handleReset = () => {
+    const handleReset = useCallback(() => {
+        const defaultPositions = {
+            set:{
+                isTrue: false, 
+                values:[],
+                count: 0,
+                isReady: false,
+    
+            },
+            balance:{
+                isTrue: false, 
+                values:[],
+                startingHeight: 0, 
+                isBalanced: false,
+                peakVal: 0,
+                peakValues: []
+            },
+            landing:{
+                isTrue: false, 
+                values:[],
+                isLanded: false
+            },
+            finish:{
+                isTrue: false, 
+                values:[]
+            }
+        }
         setPositions(defaultPositions);
         console.log(PositionsRef.current)
         PositionsRef.current = true;
         console.log('handle Reset'); 
         console.log(PositionsRef.current)
-    }
+    },[PositionsRef, setPositions])
 
-    
 
-    const runPoseDetector = async () => {
+
+    const runPoseDetector = useCallback(async () => {
         console.log('starting Pose');
-        // PositionsRef.current = false;
+        const detectorConfig = {
+            // modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
+            enableTracking: true,
+            trackerType: poseDetection.TrackerType.BoundingBox,
+            runtime: 'tfjs', // or 'tfjs'
+            modelType: 'full'
+        }
+        const detect = async (detector) => {
+        
+            try{
+                
+                if(typeof videoElement.current !== undefined 
+                    && videoElement.current !== null 
+                ) {
+                    if(videoElement.current.stream !== null){
+    
+                        const video = videoElement.current.video;
+                        const videoWidth = videoElement.current.video.videoWidth;
+                        const videoHeight = videoElement.current.video.videoHeight;
+                        videoElement.current.video.width = videoWidth;
+                        videoElement.current.video.height = videoHeight;
+                        
+                        canvasRef.current.width = videoWidth; 
+                        canvasRef.current.height = videoHeight; 
+                        
+                        const poses = await detector.estimatePoses(video); 
+                        if(poses){
+                            handleChange(poses[0].keypoints3D);
+                        }
+                    }
+                }
+            } catch {
+                console.log('Not loaded yet')
+            }
+        }
         const detector = await poseDetection
                         .createDetector(poseDetection.SupportedModels.BlazePose, detectorConfig)
         let detectInterval = setInterval(() => {
@@ -105,41 +132,13 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
                 console.log('running')
                 detect(detector);
             }, 100)
-    }
+    },[resetRef, handleReset, handleChange]); 
 
-    const detect = async (detector) => {
-        
-        try{
-            
-            if(typeof videoElement.current !== undefined 
-                && videoElement.current !== null 
-            ) {
-                if(videoElement.current.stream !== null){
 
-                    const video = videoElement.current.video;
-                    const videoWidth = videoElement.current.video.videoWidth;
-                    const videoHeight = videoElement.current.video.videoHeight;
-                    videoElement.current.video.width = videoWidth;
-                    videoElement.current.video.height = videoHeight;
-                    
-                    canvasRef.current.width = videoWidth; 
-                    canvasRef.current.height = videoHeight; 
-                    
-                    const poses = await detector.estimatePoses(video); 
-                    if(poses){
-                        handleChange(poses[0].keypoints3D);
-                    }
-                }
-            }
-        } catch {
-            console.log('Not loaded yet')
-        }
-    }
 
     useEffect(() => {
         console.log('useEffect 1')
         if(training !== undefined){
-            backupTraining = training;
             // runPoseDetector();
             disabled.current = false;
             // console.log(training ,training.length)
@@ -159,7 +158,7 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
                 PositionsRef.current = false;
             })
         }
-    }, [positions])
+    }, [positions,runPoseDetector, resetRef])
 
     return (
         <div className='webcam__container'>

@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import '@tensorflow/tfjs-backend-webgl';
 import "../styles/home.css"
 import WebcamSection from '../components/webcam';
 import TrainingTypes from '../components/trainingTypes';
 import TrainingSteps from '../components/trainingSteps'; 
-// import TrainingData from '../components/trainingData'; 
 import TrainingSettings from '../components/trainingSettings'; 
-import { math } from '@tensorflow/tfjs';
 import {beep} from '../functions/utils';
 
 /*
@@ -24,7 +22,7 @@ function Home(){
         feet: 5, 
         inches: 10
     })
-    // Set default to being left handed. Will need to
+
     let front = throwing === 'right' ? 'left' : 'right';
     let back = throwing === 'right' ? 'right' : 'left'; 
     let cmeterHeight = (height.feet * 30) + (height.inches * 2.54); 
@@ -65,7 +63,6 @@ function Home(){
         // If your hands are together
         if(Math.abs(key3D.left_wrist['x'] - key3D.right_wrist['x']) < 0.3 &&
             Math.abs(key3D.left_wrist['y'] - key3D.right_wrist['y']) < 0.075){
-            // console.log('together');
             // The first instance of having them together
             if(positions.set.isTrue === false){
                 let updatedSet = {...positions};
@@ -79,16 +76,12 @@ function Home(){
                 let strL_wrist = positions.set.values['left_wrist'];
                 let strR_wrist = positions.set.values['right_wrist'];
 
-                // This seems to be working. 
                 if(((Math.abs(strL_wrist['x'] - key3D.left_wrist['x']) < Math.abs(strL_wrist['x']) / 1.75) && (Math.abs(strL_wrist['y'] - key3D.left_wrist['y']) < Math.abs(strL_wrist['y']) / 1.75)) && (Math.abs(strR_wrist['x'] - key3D.right_wrist['x']) < Math.abs(strR_wrist['x']) / 1.75) && (Math.abs(strR_wrist['y'] - key3D.right_wrist['y']) < Math.abs(strR_wrist['y']) / 1.75))
                 {
-                    // console.log('Same Spot');
-                    // do the normal stuff from below
                     let updatedSet = {...positions};
-                    // updatedSet['set'].values = key3D;
                     updatedSet['set'].count = updatedSet['set'].count + 1 ;
+                    
                     if(positions.set.count >= 10){
-                        // console.log('1 second');
                         beep(300, 740, 0.6, 'triangle');
                         updatedSet['set'].isReady = true;
                         updatedSet['balance'].values = key3D;
@@ -100,16 +93,13 @@ function Home(){
                     }
                     setPositions({...updatedSet}); 
                 } else {
-                    // console.log('Not the same spot');
                     let updatedSet = {...positions}
                     updatedSet['set'].count = 0;
                     updatedSet['set'].isTrue = false;
                     setPositions({...updatedSet}); 
-                    // remember to set a new set of positions in here. 
                 }
             }    
         } else {
-            // console.log('Not together');
             let updatedSet = {...positions}
             updatedSet['set'].count = 0;
             updatedSet['set'].isTrue = false;
@@ -124,7 +114,6 @@ function Home(){
         let prevAnkleValX = parseFloat(positions.balance.values[`${front}_ankle`]['x'].toFixed(3)); 
         let currentAnkleValY = parseFloat(key3D[`${front}_ankle`]['y'].toFixed(3));
         let prevAnkleValY = parseFloat(positions.balance.values[`${front}_ankle`]['y'].toFixed(3)); 
-        // console.log('current Ankle values: ', currentAnkleValY, currentAnkleValX)
 
         if(key3D[`${front}_knee`]['score'] > 0.8){
             let updatedBalance = {...positions};
@@ -167,7 +156,6 @@ function Home(){
             console.log('undefined');
             return 0; 
         }
-        // console.log(keypoints);
         let key3D = { 
             nose: keypoints3D[0], 
             left_eye_inner: keypoints3D[1],
@@ -207,9 +195,7 @@ function Home(){
         if(resetRef.current){
             console.log('here')
         }
-
         if(positions.set.isReady === false && !resetRef.current){
-            // Need to make this function
             findSet(key3D);
         } 
         else if (positions.set.isReady === true && positions.landing.isLanded === false && !resetRef.current){
@@ -219,9 +205,9 @@ function Home(){
             findFinish(key3D); 
         }
     }
-    useEffect(() => {
-        console.log(height, cmeterHeight)
-    }, [height])
+    // useEffect(() => {
+    //     console.log(height, cmeterHeight)
+    // }, [height])
     return (
         <div className='home__wrapper'>
             <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>

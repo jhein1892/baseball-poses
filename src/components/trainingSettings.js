@@ -1,4 +1,3 @@
-import { op } from '@tensorflow/tfjs';
 import React, {useState} from 'react';
 import '../styles/trainingSettings.css'
 
@@ -34,7 +33,7 @@ function TrainingSettings({setThrowing, setHeight}) {
                             <input 
                                 type='checkbox'
                                 name='left'
-                                onClick={handleChange}
+                                onChange={handleChange}
                                 checked={checked === 'left'}
                             />
                         </div>
@@ -55,16 +54,16 @@ function TrainingSettings({setThrowing, setHeight}) {
                     <div className="inner__setting height_section">
                         <div>
                             <h4>Feet</h4>
-                            <select name='feet' onChange={handleChange}>
+                            <select name='feet' defaultValue={5} onChange={handleChange}>
                                 <option value={4}>4</option>
-                                <option selected value={5}>5</option>
+                                <option value={5}>5</option>
                                 <option value={6}>6</option>
                                 <option value={7}>7</option>
                             </select>
                         </div>
                         <div>
                             <h4>Inches</h4>
-                            <select name='inches' onChange={handleChange}>
+                            <select name='inches' defaultValue={10} onChange={handleChange}>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
                                 <option value={3}>3</option>
@@ -74,7 +73,7 @@ function TrainingSettings({setThrowing, setHeight}) {
                                 <option value={7}>7</option>
                                 <option value={8}>8</option>
                                 <option value={9}>9</option>
-                                <option selected value={10}>10</option>
+                                <option value={10}>10</option>
                                 <option value={11}>11</option>
                                 <option value={12}>12</option>
                             </select>

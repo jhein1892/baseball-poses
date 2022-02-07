@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import '../styles/trainingSteps.css'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import {beep} from '../functions/utils';
+
 
 function TrainingSteps({positions, throwingDirection, cmeterHeight}){
 
@@ -62,7 +62,7 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight}){
             let left_shoulder = positions.balance.peakValues.left_shoulder;
             let front_hip = positions.balance.peakValues[`${front}_hip`];
             let front_knee = positions.balance.peakValues[`${front}_knee`]; 
-            let balanceClass = 'training_subSteps'; 
+            // let balanceClass = 'training_subSteps'; 
             let kneeYClass = trainingStep
             let kneeXClass = trainingStep
             let shoulderClass = trainingStep
@@ -128,8 +128,6 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight}){
             let backWrist = positions.landing.values[`${back}_wrist`];
             let frontFoot = positions.landing.values[`${front}_foot_index`];
             let backFoot = positions.landing.values[`${back}_foot_index`]; 
-
-            let myHeight = 185; 
             
             /*
                  ok, so going to make an imput for height, then we know how many meters they are tall. Then I can take that and compare to the difference between front and back foot for the stride length to height. 
@@ -239,7 +237,7 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight}){
                 classname = 'training_steps'
             }
             return(
-                <div id={key} className={classname}>
+                <div id={key} key={key} className={classname}>
                     <div className='training_steps_icons'>
                         <CheckCircleIcon />
                         <h1>{key}</h1>

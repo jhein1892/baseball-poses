@@ -1,12 +1,11 @@
-import { train } from "@tensorflow/tfjs";
 const audioCtx = new (window.AudioContext || window.webkitAudioContext || window.audioContext);
 // points for model
-const bodyParts = {
-    head:[3,1,0,2,4],
-    upper:[9,7,5,6,8,10],
-    lowerLeft:[11,13,15],
-    lowerRight:[12,14,16]
-}
+// const bodyParts = {
+//     head:[3,1,0,2,4],
+//     upper:[9,7,5,6,8,10],
+//     lowerLeft:[11,13,15],
+//     lowerRight:[12,14,16]
+// }
 
 // const poses
 

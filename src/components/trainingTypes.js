@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import '../styles/trainingType.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 
 function TrainingTypes({setTraining, training}){
