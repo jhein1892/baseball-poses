@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import '@tensorflow/tfjs-backend-webgl';
 import "../styles/home.css"
 import WebcamSection from '../components/webcam';
@@ -19,6 +19,7 @@ import {beep} from '../functions/utils';
 function Home(){
     const [training, setTraining] = useState();
     const [throwing, setThrowing] = useState();
+    const resetRef = useRef(false); 
     const [height, setHeight] = useState({
         feet: 5, 
         inches: 10
@@ -37,7 +38,6 @@ function Home(){
             values:[],
             count: 0,
             isReady: false,
-
         },
         balance:{
             // isTrue: false, 
@@ -65,7 +65,7 @@ function Home(){
         // If your hands are together
         if(Math.abs(key3D.left_wrist['x'] - key3D.right_wrist['x']) < 0.3 &&
             Math.abs(key3D.left_wrist['y'] - key3D.right_wrist['y']) < 0.075){
-            console.log('together');
+            // console.log('together');
             // The first instance of having them together
             if(positions.set.isTrue === false){
                 let updatedSet = {...positions};
@@ -82,22 +82,23 @@ function Home(){
                 // This seems to be working. 
                 if(((Math.abs(strL_wrist['x'] - key3D.left_wrist['x']) < Math.abs(strL_wrist['x']) / 1.75) && (Math.abs(strL_wrist['y'] - key3D.left_wrist['y']) < Math.abs(strL_wrist['y']) / 1.75)) && (Math.abs(strR_wrist['x'] - key3D.right_wrist['x']) < Math.abs(strR_wrist['x']) / 1.75) && (Math.abs(strR_wrist['y'] - key3D.right_wrist['y']) < Math.abs(strR_wrist['y']) / 1.75))
                 {
-                    console.log('Same Spot');
+                    // console.log('Same Spot');
                     // do the normal stuff from below
                     let updatedSet = {...positions};
                     // updatedSet['set'].values = key3D;
                     updatedSet['set'].count = updatedSet['set'].count + 1 ;
                     if(positions.set.count >= 10){
-                        console.log('1 second');
+                        // console.log('1 second');
                         beep(300, 740, 0.6, 'triangle');
                         updatedSet['set'].isReady = true;
                         updatedSet['balance'].values = key3D;
                         updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 
                         updatedSet['balance'].peakVal = key3D[`${front}_knee`]['y']; 
+                        resetRef.current = true; 
                     }
                     setPositions({...updatedSet}); 
                 } else {
-                    console.log('Not the same spot');
+                    // console.log('Not the same spot');
                     let updatedSet = {...positions}
                     updatedSet['set'].count = 0;
                     updatedSet['set'].isTrue = false;
@@ -106,7 +107,7 @@ function Home(){
                 }
             }    
         } else {
-            console.log('Not together');
+            // console.log('Not together');
             let updatedSet = {...positions}
             updatedSet['set'].count = 0;
             updatedSet['set'].isTrue = false;
@@ -201,11 +202,15 @@ function Home(){
             right_foot_index: keypoints3D[32]
         }
 
-        if(positions.set.isReady === false){
+        if(resetRef.current){
+            console.log('here')
+        }
+
+        if(positions.set.isReady === false && !resetRef.current){
             // Need to make this function
             findSet(key3D);
         } 
-        else if (positions.set.isReady === true && positions.landing.isLanded === false){
+        else if (positions.set.isReady === true && positions.landing.isLanded === false && !resetRef.current){
             findBalance(key3D);
         } 
         else if (positions.landing.isLanded === true && positions.finish.isFinshed === false){
@@ -222,7 +227,7 @@ function Home(){
             <TrainingTypes setTraining={setTraining}/>
             <hr/>
             <div className='assessment__wrapper'>
-                <WebcamSection positions={positions} handleChange={handleChange} training={training} setPositions={setPositions}/>
+                <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} training={training} setPositions={setPositions}/>
                 <TrainingSteps positions={positions} throwingDirection={throwingDirection} cmeterHeight={cmeterHeight}/>
             </div>
                 {/* <TrainingData positions={positions} /> */}

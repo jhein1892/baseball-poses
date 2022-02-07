@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
@@ -6,7 +6,7 @@ import {drawing, beep} from '../functions/utils';
 import '../styles/webcam.css'
 
 // 1) I would like to figure out how to gather the results and display some of them below
-function WebcamSection({ training, positions, handleChange, setPositions }) {
+function WebcamSection({ training, positions, handleChange, setPositions, resetRef }) {
     let backupTraining;
     let [isShowVideo, setIsShowVideo] = useState(false);
     // let [set, setSet] = useState(false)
@@ -15,6 +15,7 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     let [buttonDisabled, setButtonDisabled] = useState(true); 
     const videoElement = useRef(null);
     const canvasRef = useRef(null);
+    const PositionsRef = useRef(false); 
     const mySet = useRef(null);
     // Change this if we ever add anything else
     const defaultPositions = {
@@ -77,25 +78,32 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     }
 
     const handleReset = () => {
-        console.log('handle Reset'); 
-
         setPositions(defaultPositions);
+        console.log(PositionsRef.current)
+        PositionsRef.current = true;
+        console.log('handle Reset'); 
+        console.log(PositionsRef.current)
     }
 
+    
+
     const runPoseDetector = async () => {
+        console.log('starting Pose');
+        // PositionsRef.current = false;
         const detector = await poseDetection
                         .createDetector(poseDetection.SupportedModels.BlazePose, detectorConfig)
-        console.log(detector)
         let detectInterval = setInterval(() => {
-            if(disabled.current === false){
-                
-                detect(detector);
-            } else {
+            if(resetRef.current){
                 console.log('Model Closed'); 
+                handleReset(); 
                 clearInterval(detectInterval);
-                // const ctx = canvasRef.current.getContext('2d')
-                // ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+                // return; 
             }
+            if(disabled.current){
+                clearInterval(detectInterval);
+            }
+                console.log('running')
+                detect(detector);
             }, 100)
     }
 
@@ -119,14 +127,8 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
                     
                     const poses = await detector.estimatePoses(video); 
                     if(poses){
-                        // console.log(poses)
                         handleChange(poses[0].keypoints3D);
                     }
-                    // let myTraining = training ? training : backupTraining;
-                    // if(canvasRef.current !== null && myTraining !== undefined){
-                    //     const ctx = canvasRef.current.getContext('2d')
-                    //     drawing(poses, ctx, myTraining)
-                    // }
                 }
             }
         } catch {
@@ -135,9 +137,10 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
     }
 
     useEffect(() => {
+        console.log('useEffect 1')
         if(training !== undefined){
             backupTraining = training;
-            runPoseDetector();
+            // runPoseDetector();
             disabled.current = false;
             // console.log(training ,training.length)
             if(training.length > 0){
@@ -147,7 +150,16 @@ function WebcamSection({ training, positions, handleChange, setPositions }) {
             }
         }
 
-    }, [training])
+    }, [training]);
+
+    useEffect(() => {
+        if(!positions.set.isTrue && PositionsRef.current){
+            resetRef.current = false;
+            runPoseDetector().then(() => {
+                PositionsRef.current = false;
+            })
+        }
+    }, [positions])
 
     return (
         <div className='webcam__container'>
