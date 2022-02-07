@@ -94,6 +94,8 @@ function Home(){
                         updatedSet['balance'].values = key3D;
                         updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 
                         updatedSet['balance'].peakVal = key3D[`${front}_knee`]['y']; 
+                        
+                        // ***IMPORTANT*** Move this to where we want data to be stored and model reset
                         resetRef.current = true; 
                     }
                     setPositions({...updatedSet}); 
