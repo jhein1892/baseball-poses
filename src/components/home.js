@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import '@tensorflow/tfjs-backend-webgl';
-import "../styles/home.css"
+import "../styles/home.css";
+import axios from 'axios'; 
 import WebcamSection from '../components/webcam';
 import TrainingTypes from '../components/trainingTypes';
 import TrainingSteps from '../components/trainingSteps'; 
@@ -206,8 +207,11 @@ function Home(){
         }
     }
     // useEffect(() => {
-    //     console.log(height, cmeterHeight)
-    // }, [height])
+    //     axios.get(`${process.env.REACT_APP_API}`)
+    //     .then((response) => {
+    //         console.log(response);
+    //     })
+    // }, [])
     return (
         <div className='home__wrapper'>
             <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>
