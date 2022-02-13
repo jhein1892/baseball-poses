@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/trainingSteps.css';
 import AssessmentPitch from '../components/assessmentPitch';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -50,7 +50,8 @@ const Data =
 
 
 function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
-
+    const [assessmentData, setAssessmentDate] = useState(null);
+    const [assessment, setAssessment] = useState(null); 
     const { front, back } = throwingDirection; 
 
     function createData(){
@@ -157,6 +158,8 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
             axios.get(`http://localhost:3001/assessments/${userid}`)
             .then((response) => {
                 console.log(response.data)
+                setAssessmentDate(response.data.pitches);
+                setAssessment(response.data.assessments); 
             })
         }
         fetchAssessmentData();
@@ -171,7 +174,7 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
 
     function previousPitches() {
 
-        return Data.map((pitch) => {
+        return assessmentData.map((pitch) => {
             return (
                 <AssessmentPitch pitch={pitch}/>
             )
@@ -197,7 +200,9 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
                     </tr>
                 </thead>
                 <tbody>
-                    {previousPitches()}
+                    {assessmentData &&
+                        previousPitches()
+                    }
                 </tbody>
             </table>
         </div>
