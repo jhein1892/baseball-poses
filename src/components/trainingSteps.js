@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import '../styles/trainingSteps.css';
 import AssessmentPitch from '../components/assessmentPitch';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import axios from 'axios';
 
 const Data = 
 [
@@ -149,6 +150,17 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
 
         Data.push(newData);
     }
+
+    useEffect(() => {
+       function fetchAssessmentData() {
+           let userid = 1
+            axios.get(`http://localhost:3001/assessments/${userid}`)
+            .then((response) => {
+                console.log(response.data)
+            })
+        }
+        fetchAssessmentData();
+    },[])
 
     useEffect(() => {
         if(resetRef.current){
