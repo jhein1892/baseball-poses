@@ -1,21 +1,16 @@
 .training_steps__wrapper {
     text-align: center;
-    width: 20%;
-    margin-bottom: 2vh;
-}
-
-.training_steps__inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
     width: 95%;
+    margin-bottom: 2vh;
+    /* background: red; */
+    height: 40vh;
     margin: auto;
 }
 
-/* .training_steps__inner > div {
-    display: flex;
-    align-items: center;
-} */
+#assessment__table {
+    width: 100%;
+    table-layout: fixed;
+}
 
 .training_steps {
     font-size: 1rem;

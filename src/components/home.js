@@ -88,9 +88,6 @@ function Home(){
                         updatedSet['balance'].values = key3D;
                         updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 
                         updatedSet['balance'].peakVal = key3D[`${front}_knee`]['y']; 
-                        
-                        // ***IMPORTANT*** Move this to where we want data to be stored and model reset
-                        resetRef.current = true; 
                     }
                     setPositions({...updatedSet}); 
                 } else {
@@ -138,6 +135,9 @@ function Home(){
                     console.log('is Landed');
                     updatedBalance['landing']['isLanded'] = true;
                     updatedBalance['landing']['values'] = key3D;
+
+                    // ***IMPORTANT*** Move this to where we want data to be stored and model reset
+                    resetRef.current = true; 
                 }
             updatedBalance['balance']['values'] = key3D; 
             setPositions({...updatedBalance});
@@ -206,12 +206,12 @@ function Home(){
             findFinish(key3D); 
         }
     }
-    // useEffect(() => {
-    //     axios.get(`${process.env.REACT_APP_API}`)
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
-    // }, [])
+    useEffect(() => {
+        axios.get(`http://localhost:3001/users`)
+        .then((response) => {
+            console.log(response.data);
+        })
+    }, [])
     return (
         <div className='home__wrapper'>
             <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>
@@ -220,8 +220,8 @@ function Home(){
             <hr/>
             <div className='assessment__wrapper'>
                 <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} training={training} setPositions={setPositions}/>
-                <TrainingSteps positions={positions} throwingDirection={throwingDirection} cmeterHeight={cmeterHeight}/>
             </div>
+                <TrainingSteps positions={positions} throwingDirection={throwingDirection} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
                 {/* <TrainingData positions={positions} /> */}
         </div>
     )
