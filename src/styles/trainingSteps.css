@@ -1,15 +1,41 @@
 .training_steps__wrapper {
     text-align: center;
     width: 95%;
-    margin-bottom: 2vh;
+    margin-bottom: 6vh;
     /* background: red; */
-    height: 40vh;
+    /* height: 40vh; */
     margin: auto;
 }
 
 #assessment__table {
+    margin-top: 10px;
     width: 100%;
     table-layout: fixed;
+}
+
+.assessment_info {
+    background-color: #3A3849;
+    color: #E2E0E0;
+    height: 8vh;
+    font-size: 1.2rem;
+    border-bottom: 1px solid black;
+}
+
+.assessment_data_head {
+    background-color: #983539;
+    height: 7vh;
+    font-size: 0.9rem;
+    font-weight: 200;
+    color: #e2e0e0;
+}
+
+.assessment_data_head > th {
+    font-weight: 300;
+}
+
+.assessment_pitch_data {
+    background-color: #e2e0e0; 
+    height: 4vh;
 }
 
 .training_steps {

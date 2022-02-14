@@ -172,39 +172,56 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
     },[resetRef.current])
 
 
-    function previousPitches() {
-
-        return assessmentData.map((pitch) => {
+    function previousPitches(id) {
+        // console.log(id)
+        let displayData = assessmentData.filter(pitch => pitch.assessment_id === id);
+        // console.log(displayData)
+        return displayData.map((pitch) => {
             return (
-                <AssessmentPitch pitch={pitch}/>
+                <AssessmentPitch pitch={pitch} height={cmeterHeight}/>
+            )
+        })
+    }
+
+    function previousAssessments(){
+        return assessment.map((assess) => {
+            let d = new Date(assess.assessment_date);
+            d = d.toDateString(); 
+            return (
+                <table id="assessment__table">
+                    <colgroup span='5'></colgroup>
+                    <colgroup span='5'></colgroup>
+                        <tr className='assessment_info'>
+                           <th colspan='5'>Assessment Type: {assess.type}</th>
+                           <th colspan='5'>Assessment Date: {d}</th>
+                        </tr>
+                        <tr className='assessment_data_head'>
+                            <th colspan='1'>Even Shoulders</th>
+                            <th colspan='1'>Feet Shoulder Width</th>
+                            <th colspan='1'>1 Second Pause</th>
+                            <th colspan='1'>Knee at/above 90</th>
+                            <th colspan='1'>Knee behind hip</th>
+                            <th colspan='1'>Even Shoulders</th>
+                            <th colspan='1'>Stride Length</th>
+                            <th colspan='1'>Elbows Above Shoulders</th>
+                            <th colspan='1'>Throwing arm from 85&#176;-95&#176;</th>
+                            <th colspan='1'>Shoulders tilted back</th>
+                        </tr>
+                    <tbody>
+                        { assessmentData &&
+                            previousPitches(assess.id)
+                        }
+                    </tbody>
+                </table>
             )
         })
     }
 
     return (
         <div className='training_steps__wrapper'>
-            <table id="assessment__table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Even Shoulders</th>
-                        <th>Feet Shoulder Width</th>
-                        <th>1 Second Pause</th>
-                        <th>Knee at/above 90</th>
-                        <th>Knee behind hip</th>
-                        <th>Even Shoulders</th>
-                        <th>Stride Length</th>
-                        <th>Elbows Above Shoulders</th>
-                        <th>Throwing arm from 85&#176;-95&#176;</th>
-                        <th>Shoulders tilted back</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {assessmentData &&
-                        previousPitches()
-                    }
-                </tbody>
-            </table>
+            {assessment && 
+                previousAssessments()
+            }
         </div>
     )
 }
