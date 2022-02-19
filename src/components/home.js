@@ -24,6 +24,8 @@ function Home(){
         inches: 10
     })
 
+    const assessmentRef = useRef(); 
+
     let front = throwing === 'right' ? 'left' : 'right';
     let back = throwing === 'right' ? 'right' : 'left'; 
     let cmeterHeight = (height.feet * 30) + (height.inches * 2.54); 
@@ -219,9 +221,9 @@ function Home(){
             <TrainingTypes setTraining={setTraining}/>
             <hr/>
             <div className='assessment__wrapper'>
-                <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} training={training} setPositions={setPositions}/>
+                <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
             </div>
-                <TrainingSteps positions={positions} throwingDirection={throwingDirection} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
+                <TrainingSteps positions={positions} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
                 {/* <TrainingData positions={positions} /> */}
         </div>
     )

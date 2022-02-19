@@ -8,7 +8,6 @@ function TrainingTypes({setTraining, training}){
     const [checked, setChecked] = useState('')
     
     const handleChange = (type) => {
-        console.log(type)
         setTraining(type);
         setChecked(type);
     }

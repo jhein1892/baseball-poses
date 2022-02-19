@@ -4,58 +4,13 @@ import AssessmentPitch from '../components/assessmentPitch';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
 
-const Data = 
-[
-    {
-        pitch_number: 1,
-        set_even_shoulders: true, 
-        set_feet_width: true, 
-        pause: true, 
-        balance_knee_y: true, 
-        balance_knee_x: false,
-        balance_even_shoulders: true, 
-        stride_length: 1.1, 
-        elbows_above_shoulders: false, 
-        arm_angle: 115,
-        shoulder_tilt: true
-    },
-    {
-        pitch_number: 2,
-        set_even_shoulders: true, 
-        set_feet_width: true, 
-        pause: true, 
-        balance_knee_y: true, 
-        balance_knee_x: false,
-        balance_even_shoulders: true, 
-        stride_length: 1.3, 
-        elbows_above_shoulders: false, 
-        arm_angle: 90,
-        shoulder_tilt: true
-    },
-    {
-        pitch_number: 3,
-        set_even_shoulders: true, 
-        set_feet_width: true, 
-        pause: true, 
-        balance_knee_y: true, 
-        balance_knee_x: false,
-        balance_even_shoulders: true, 
-        stride_length: 1.2, 
-        elbows_above_shoulders: false, 
-        arm_angle: 100,
-        shoulder_tilt: true
-    },
-
-]
-
-
-function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
+function TrainingSteps({positions, throwingDirection, assessmentRef, cmeterHeight, resetRef}){
     const [assessmentData, setAssessmentDate] = useState(null);
     const [assessment, setAssessment] = useState(null); 
     const { front, back } = throwingDirection; 
+    let newData = {}
 
     function createData(){
-        let newData = {}
         newData['pause'] = true; 
         let leftShoulderSet = positions['set'].values['left_shoulder'];
         let rightShoulderSet = positions['set'].values['right_shoulder'];
@@ -146,30 +101,25 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
         }
  
         newData['stride_length'] = strideLengthMeters; 
+        newData['assessment_id'] = assessmentRef.current;
 
         console.log(newData);
-
-        Data.push(newData);
+        submitNewPitch(newData); 
     }
 
-    useEffect(() => {
-       function fetchAssessmentData() {
-           let userid = 1
-            axios.get(`http://localhost:3001/assessments/${userid}`)
-            .then((response) => {
-                console.log(response.data)
-                setAssessmentDate(response.data.pitches);
-                setAssessment(response.data.assessments); 
-            })
-        }
-        fetchAssessmentData();
-    },[])
+    function submitNewPitch(data){
+        let userid = 1; 
+        axios.put(`http://localhost:3001/pitch/${userid}`,{data})
+        .then((response) => {
+            console.log(response); 
+        })
+    }
 
-    useEffect(() => {
-        if(resetRef.current){
-            createData(); 
-        }
-    },[resetRef.current])
+
+
+
+
+
 
 
     function previousPitches(id) {
@@ -216,6 +166,29 @@ function TrainingSteps({positions, throwingDirection, cmeterHeight, resetRef}){
             )
         })
     }
+
+    // useEffect(() => {
+    //     newData['assessment_id'] = assessmentRef.current; 
+    // },[assessmentRef.current])
+
+    useEffect(() => {
+        function fetchAssessmentData() {
+            let userid = 1
+             axios.get(`http://localhost:3001/assessments/${userid}`)
+             .then((response) => {
+                 console.log(response.data)
+                 setAssessmentDate(response.data.pitches);
+                 setAssessment(response.data.assessments); 
+             })
+         }
+         fetchAssessmentData();
+     },[])
+
+    useEffect(() => {
+        if(resetRef.current){
+            createData(); 
+        }
+    },[resetRef.current])
 
     return (
         <div className='training_steps__wrapper'>

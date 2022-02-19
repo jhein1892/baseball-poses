@@ -3,9 +3,11 @@ import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
 import '../styles/webcam.css'
+import axios from 'axios';
 
 // 1) I would like to figure out how to gather the results and display some of them below
-function WebcamSection({ training, positions, handleChange, setPositions, resetRef }) {
+function WebcamSection({ training, positions, handleChange, setPositions, resetRef, assessmentRef }) {
+    let today = new Date().toISOString().slice(0,10); 
     // let backupTraining = useRef(training); 
     let [isShowVideo, setIsShowVideo] = useState(false);
     // let [set, setSet] = useState(false)
@@ -25,7 +27,11 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
     }
 
     const startCam = () => {
-
+        let userid = 1; 
+        axios.put(`http://localhost:3001/assessments/${userid}`, {type:training, date:today})
+        .then((response) => {
+            assessmentRef.current = response.data;
+        })
         setIsShowVideo(true)
         disabled.current = false; 
         runPoseDetector();
@@ -81,7 +87,6 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
 
 
     const runPoseDetector = useCallback(async () => {
-        console.log('starting Pose');
         const detectorConfig = {
             // modelType: poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
             enableTracking: true,
@@ -114,7 +119,6 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
                     }
                 }
             } catch {
-                console.log('Not loaded yet')
             }
         }
         const detector = await poseDetection
@@ -129,7 +133,6 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
             if(disabled.current){
                 clearInterval(detectInterval);
             }
-                console.log('running')
                 detect(detector);
             }, 100)
     },[resetRef, handleReset, handleChange]); 
@@ -137,7 +140,6 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
 
 
     useEffect(() => {
-        console.log('useEffect 1')
         if(training !== undefined){
             // runPoseDetector();
             disabled.current = false;
