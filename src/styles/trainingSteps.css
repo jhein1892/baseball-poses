@@ -5,6 +5,7 @@
     /* background: red; */
     /* height: 40vh; */
     margin: auto;
+    padding-bottom: 2%;
 }
 
 #assessment__table {
@@ -16,7 +17,7 @@
 .assessment_info {
     background-color: #3A3849;
     color: #E2E0E0;
-    height: 8vh;
+    height: 5vh;
     font-size: 1.2rem;
     border-bottom: 1px solid black;
 }
