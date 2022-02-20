@@ -4,9 +4,10 @@ import AssessmentPitch from '../components/assessmentPitch';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
 
-function TrainingSteps({positions, throwingDirection, assessmentRef, cmeterHeight, resetRef}){
-    const [assessmentData, setAssessmentDate] = useState(null);
-    const [assessment, setAssessment] = useState(null); 
+function TrainingSteps({positions, training, throwingDirection, assessmentRef, cmeterHeight, resetRef}){
+    let today = new Date().toISOString().slice(0,10); 
+    const [assessmentData, setAssessmentData] = useState([]);
+    const [assessment, setAssessment] = useState([]); 
     const { front, back } = throwingDirection; 
     let newData = {}
 
@@ -88,6 +89,7 @@ function TrainingSteps({positions, throwingDirection, assessmentRef, cmeterHeigh
         just going to expand the angles a little more than I would like 
         to make up for it. 
     *******************************************************************/
+
         if(parseFloat(frontElbowLanding['y']) < parseFloat(frontShoulderLanding['y'])){
             newData['elbows_above_shoulders'] = true; 
         } else {
@@ -111,16 +113,14 @@ function TrainingSteps({positions, throwingDirection, assessmentRef, cmeterHeigh
         let userid = 1; 
         axios.put(`http://localhost:3001/pitch/${userid}`,{data})
         .then((response) => {
-            console.log(response); 
+            if(response.error){
+                console.log(response.error)
+            } 
+            data['userid'] = userid;
+            console.log(data);
+            setAssessmentData([...assessmentData, data])
         })
     }
-
-
-
-
-
-
-
 
     function previousPitches(id) {
         // console.log(id)
@@ -134,55 +134,61 @@ function TrainingSteps({positions, throwingDirection, assessmentRef, cmeterHeigh
     }
 
     function previousAssessments(){
-        return assessment.map((assess) => {
-            let d = new Date(assess.assessment_date);
-            d = d.toDateString(); 
-            return (
-                <table id="assessment__table">
-                    <colgroup span='5'></colgroup>
-                    <colgroup span='5'></colgroup>
-                        <tr className='assessment_info'>
-                           <th colspan='5'>Assessment Type: {assess.type}</th>
-                           <th colspan='5'>Assessment Date: {d}</th>
-                        </tr>
-                        <tr className='assessment_data_head'>
-                            <th colspan='1'>Even Shoulders</th>
-                            <th colspan='1'>Feet Shoulder Width</th>
-                            <th colspan='1'>1 Second Pause</th>
-                            <th colspan='1'>Knee at/above 90</th>
-                            <th colspan='1'>Knee behind hip</th>
-                            <th colspan='1'>Even Shoulders</th>
-                            <th colspan='1'>Stride Length</th>
-                            <th colspan='1'>Elbows Above Shoulders</th>
-                            <th colspan='1'>Throwing arm from 85&#176;-95&#176;</th>
-                            <th colspan='1'>Shoulders tilted back</th>
-                        </tr>
-                    <tbody>
-                        { assessmentData &&
-                            previousPitches(assess.id)
-                        }
-                    </tbody>
-                </table>
-            )
-        })
+        if(assessment.length > 0){
+            return assessment.map((assess) => {
+                let d = new Date(assess.assessment_date);
+                d = d.toDateString(); 
+                return (
+                    <table id="assessment__table">
+                        <colgroup span='5'></colgroup>
+                        <colgroup span='5'></colgroup>
+                            <tr className='assessment_info'>
+                               <th colspan='5'>Assessment Type: {assess.type}</th>
+                               <th colspan='5'>Assessment Date: {d}</th>
+                            </tr>
+                            <tr className='assessment_data_head'>
+                                <th colspan='1'>Even Shoulders</th>
+                                <th colspan='1'>Feet Shoulder Width</th>
+                                <th colspan='1'>1 Second Pause</th>
+                                <th colspan='1'>Knee at/above 90</th>
+                                <th colspan='1'>Knee behind hip</th>
+                                <th colspan='1'>Even Shoulders</th>
+                                <th colspan='1'>Stride Length</th>
+                                <th colspan='1'>Elbows Above Shoulders</th>
+                                <th colspan='1'>Throwing arm from 85&#176;-95&#176;</th>
+                                <th colspan='1'>Shoulders tilted back</th>
+                            </tr>
+                        <tbody>
+                            { assessmentData &&
+                                previousPitches(assess.id)
+                            }
+                        </tbody>
+                    </table>
+                )
+            })
+        }
     }
 
-    // useEffect(() => {
-    //     newData['assessment_id'] = assessmentRef.current; 
-    // },[assessmentRef.current])
+    function fetchAssessmentData() {
+        let userid = 1
+         axios.get(`http://localhost:3001/assessments/${userid}`)
+         .then((response) => {
+             console.log(response.data)
+             setAssessmentData(response.data.pitches);
+             setAssessment(response.data.assessments); 
+         })
+    }
 
     useEffect(() => {
-        function fetchAssessmentData() {
-            let userid = 1
-             axios.get(`http://localhost:3001/assessments/${userid}`)
-             .then((response) => {
-                 console.log(response.data)
-                 setAssessmentDate(response.data.pitches);
-                 setAssessment(response.data.assessments); 
-             })
-         }
          fetchAssessmentData();
      },[])
+     useEffect(() => {
+        fetchAssessmentData(); 
+     },[assessmentRef.current]);
+
+     useEffect(() => {
+        console.log('pitch added');
+     },[assessmentData])
 
     useEffect(() => {
         if(resetRef.current){

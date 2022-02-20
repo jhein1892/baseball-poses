@@ -223,7 +223,7 @@ function Home(){
             <div className='assessment__wrapper'>
                 <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
             </div>
-                <TrainingSteps positions={positions} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
+                <TrainingSteps positions={positions} training={training} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
                 {/* <TrainingData positions={positions} /> */}
         </div>
     )
