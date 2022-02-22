@@ -209,7 +209,7 @@ function Home(){
         }
     }
     useEffect(() => {
-        axios.get(`http://localhost:3001/users`)
+        axios.get(`${process.env.REACT_APP_API}/users`)
         .then((response) => {
             console.log(response.data);
         })

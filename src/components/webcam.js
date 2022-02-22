@@ -28,7 +28,7 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
 
     const startCam = () => {
         let userid = 1; 
-        axios.put(`http://localhost:3001/assessments/${userid}`, {type:training, date:today})
+        axios.put(`${process.env.REACT_APP_API}/${userid}`, {type:training, date:today})
         .then((response) => {
             assessmentRef.current = response.data;
         })

@@ -111,7 +111,7 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
 
     function submitNewPitch(data){
         let userid = 1; 
-        axios.put(`http://localhost:3001/pitch/${userid}`,{data})
+        axios.put(`${process.env.REACT_APP_API}/pitch/${userid}`,{data})
         .then((response) => {
             if(response.error){
                 console.log(response.error)
@@ -171,7 +171,7 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
 
     function fetchAssessmentData() {
         let userid = 1
-         axios.get(`http://localhost:3001/assessments/${userid}`)
+         axios.get(`${process.env.REACT_APP_API}/assessments/${userid}`)
          .then((response) => {
              console.log(response.data)
              setAssessmentData(response.data.pitches);
