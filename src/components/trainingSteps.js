@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/trainingSteps.css';
 import AssessmentPitch from '../components/assessmentPitch';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
 
 function TrainingSteps({positions, training, throwingDirection, assessmentRef, cmeterHeight, resetRef}){
-    let today = new Date().toISOString().slice(0,10); 
     const [assessmentData, setAssessmentData] = useState([]);
     const [assessment, setAssessment] = useState([]); 
     const { front, back } = throwingDirection; 
@@ -126,38 +124,42 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
         // console.log(id)
         let displayData = assessmentData.filter(pitch => pitch.assessment_id === id);
         // console.log(displayData)
-        return displayData.map((pitch) => {
+        return displayData.map((pitch, index) => {
             return (
-                <AssessmentPitch pitch={pitch} height={cmeterHeight}/>
+                <AssessmentPitch key={`${index}-${pitch.id}`} pitch={pitch} height={cmeterHeight}/>
             )
         })
     }
 
     function previousAssessments(){
         if(assessment.length > 0){
-            return assessment.map((assess) => {
+            return assessment.map((assess, index) => {
                 let d = new Date(assess.assessment_date);
-                d = d.toDateString(); 
+                d = d.toDateString();
                 return (
-                    <table id="assessment__table">
+                    <table key={`${assess.id}-assessment`} id="assessment__table">
                         <colgroup span='5'></colgroup>
                         <colgroup span='5'></colgroup>
-                            <tr className='assessment_info'>
-                               <th colspan='5'>Assessment Type: {assess.type}</th>
-                               <th colspan='5'>Assessment Date: {d}</th>
-                            </tr>
-                            <tr className='assessment_data_head'>
-                                <th colspan='1'>Even Shoulders</th>
-                                <th colspan='1'>Feet Shoulder Width</th>
-                                <th colspan='1'>1 Second Pause</th>
-                                <th colspan='1'>Knee at/above 90</th>
-                                <th colspan='1'>Knee behind hip</th>
-                                <th colspan='1'>Even Shoulders</th>
-                                <th colspan='1'>Stride Length</th>
-                                <th colspan='1'>Elbows Above Shoulders</th>
-                                <th colspan='1'>Throwing arm from 85&#176;-95&#176;</th>
-                                <th colspan='1'>Shoulders tilted back</th>
-                            </tr>
+                            <thead>
+                                <tr className='assessment_info'>
+                                    <th colSpan='5'>Assessment Type: {assess.type}</th>
+                                    <th colSpan='5'>Assessment Date: {d}</th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr className='assessment_data_head'>
+                                    <th colSpan='1'>Even Shoulders</th>
+                                    <th colSpan='1'>Feet Shoulder Width</th>
+                                    <th colSpan='1'>1 Second Pause</th>
+                                    <th colSpan='1'>Knee at/above 90</th>
+                                    <th colSpan='1'>Knee behind hip</th>
+                                    <th colSpan='1'>Even Shoulders</th>
+                                    <th colSpan='1'>Stride Length</th>
+                                    <th colSpan='1'>Elbows Above Shoulders</th>
+                                    <th colSpan='1'>Throwing arm from 85&#176;-95&#176;</th>
+                                    <th colSpan='1'>Shoulders tilted back</th>
+                                </tr>
+                            </thead>
                         <tbody>
                             { assessmentData &&
                                 previousPitches(assess.id)
