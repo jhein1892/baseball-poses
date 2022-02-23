@@ -10,7 +10,7 @@
 
 .settings__wrapper h2 {
     margin: 0 0 5px 0;
-    text-decoration: underline 2px #983539;
+    text-decoration: underline 2px var(--red);
     text-underline-offset: 6px;
 }
 
@@ -25,7 +25,7 @@
 
 .settings_inner__wrapper hr {
     width: 2px;
-    background-color: #3A3849;
+    background-color: var(--blue);
     border: none;
     margin: 0;
 }
@@ -52,13 +52,13 @@
 
 select {
     border: none;
-    border-bottom: 1px solid #3A3849;
+    border-bottom: 1px solid var(--blue);
     background: inherit;
 }
 
 select:focus-visible {
     border: none;
-    outline: 2px solid #3A3849;
+    outline: 2px solid var(--blue);
 }
 
 .age_select{

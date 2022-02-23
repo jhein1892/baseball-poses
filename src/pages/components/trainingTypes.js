@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import '../styles/trainingType.css';
+import '../../styles/trainingType.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 

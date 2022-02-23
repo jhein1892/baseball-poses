@@ -15,19 +15,19 @@
 }
 
 .assessment_info {
-    background-color: #3A3849;
-    color: #E2E0E0;
+    background-color: var(--blue);
+    color: var(--main-bg-color);
     height: 5vh;
     font-size: 1.2rem;
     border-bottom: 1px solid black;
 }
 
 .assessment_data_head {
-    background-color: #983539;
+    background-color: var(--red);
     height: 7vh;
     font-size: 0.9rem;
     font-weight: 200;
-    color: #e2e0e0;
+    color: var(--main-bg-color);
 }
 
 .assessment_data_head > th {
@@ -35,7 +35,7 @@
 }
 
 .assessment_pitch_data {
-    background-color: #e2e0e0; 
+    background-color: var(--main-bg-color); 
     height: 4vh;
 }
 

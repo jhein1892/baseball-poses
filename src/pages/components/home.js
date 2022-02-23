@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 import '@tensorflow/tfjs-backend-webgl';
-import "../styles/home.css";
+import "../../styles/home.css";
 import axios from 'axios'; 
 import WebcamSection from '../components/webcam';
 import TrainingTypes from '../components/trainingTypes';
 import TrainingSteps from '../components/trainingSteps'; 
 import TrainingSettings from '../components/trainingSettings'; 
-import {beep} from '../functions/utils';
+import {beep} from '../../functions/utils';
 
 /*
 # THINGS THAT NEED TO BE CLEANED UP

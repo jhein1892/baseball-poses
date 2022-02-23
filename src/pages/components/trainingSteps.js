@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import '../styles/trainingSteps.css';
-import AssessmentPitch from '../components/assessmentPitch';
+import '../../styles/trainingSteps.css';
+import AssessmentPitch from './assessmentPitch';
 import axios from 'axios';
 
 function TrainingSteps({positions, training, throwingDirection, assessmentRef, cmeterHeight, resetRef}){

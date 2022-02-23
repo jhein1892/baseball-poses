@@ -1,8 +1,19 @@
 /* General Styling */
+:root {
+  --main-bg-color: #E2E0E0;
+  --blue: #3A3849;
+  --red: #983539; 
+  --brown: #9D7770;
+}
+
+h1, h2, h3, h4, h5 {
+  margin:0;
+  padding: 10px;
+}
 .App{
   display: flex;
   flex-direction: column;
-  background-color: #E2E0E0;
+  background-color: var(--main-bg-color);
 }
 table, thead, tbody {
   border: 1px solid black; 

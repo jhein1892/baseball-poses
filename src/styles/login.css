@@ -1,0 +1,61 @@
+#login_wrapper {
+    text-align: center;
+    background-color: var(--blue);
+    height: 100vh;
+    display: flex;
+}
+
+#login_inner_wrapper {
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 5% 25% 15% 10% 25% 10% 10% ;
+    padding: 2vw;
+    height: 69vh;
+    width: 29vw;
+    margin: auto;
+    background-color: var(--main-bg-color);
+    border-radius: 8px;
+}
+
+#login_inner_wrapper > h4 {
+    grid-column-start: 2;
+    grid-row-start: 3;
+}
+
+#login_inner_wrapper > h2 {
+    grid-column-start: 2;
+    grid-row-start: 4;
+}
+
+.header_logo_alt {
+    margin: auto 50px;
+    grid-column-start: 2;
+    grid-row-start: 2;
+    color: var(--blue);
+    text-decoration: underline 5px var(--red);
+}
+
+.input_wrapper {
+    grid-column-start: 2;
+    grid-row-start: 5;
+    /* background-color: red; */
+    margin: auto;
+    width: 80%;
+}
+
+.button__signup {
+    grid-column-start: 2;
+    grid-row-start: 6;
+    margin: auto;
+    width: 80%;
+}
+
+.input_box {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.input_box > label {
+    text-align: left;
+}

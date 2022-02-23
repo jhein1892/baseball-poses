@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
-import '../styles/webcam.css'
+import '../../styles/webcam.css'
 import axios from 'axios';
 
 // 1) I would like to figure out how to gather the results and display some of them below

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import '../styles/trainingSettings.css'
+import '../../styles/trainingSettings.css'
 
 function TrainingSettings({setThrowing, setHeight}) {
     const [checked, setChecked] = useState('left');
