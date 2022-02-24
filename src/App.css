@@ -25,6 +25,7 @@ button {
   width: 30%;
   /* color: #238adc; */
   background-color: inherit;
+  cursor: pointer;
   margin: 1%;
   font-size: 1.5rem;
   border-radius: 8px;

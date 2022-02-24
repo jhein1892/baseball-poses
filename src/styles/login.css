@@ -8,7 +8,7 @@
 #login_inner_wrapper {
     display: grid;
     grid-template-columns: 10% 80% 10%;
-    grid-template-rows: 5% 25% 15% 10% 25% 10% 10% ;
+    grid-template-rows: 5% 25% 15% 10% 20% 5% 10% 10% ;
     padding: 2vw;
     height: 69vh;
     width: 29vw;
@@ -27,12 +27,23 @@
     grid-row-start: 4;
 }
 
-.header_logo_alt {
-    margin: auto 50px;
+.signup_link {
+    grid-column-start: 2;
+    grid-row-start: 6;
+    margin: 0 auto;
+    width: fit-content;
+    text-decoration: none;
+    color: black;
+}
+
+.signup_link:hover {
+    color: blue;
+    cursor: pointer;
+}
+
+#login_wrapper .header_logo_alt {
     grid-column-start: 2;
     grid-row-start: 2;
-    color: var(--blue);
-    text-decoration: underline 5px var(--red);
 }
 
 .input_wrapper {
@@ -43,9 +54,9 @@
     width: 80%;
 }
 
-.button__signup {
+.button__login {
     grid-column-start: 2;
-    grid-row-start: 6;
+    grid-row-start: 7;
     margin: auto;
     width: 80%;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-import '../styles/login.css'
+import '../styles/login.css';
+import { Link } from 'react-router-dom'; 
 
 
 function Login(){
@@ -20,7 +21,14 @@ function Login(){
                         <input></input>
                     </div>
                 </div>
-                <button className='button__signup'>Login</button>
+                {/* <p className='signup_link'>Sign Up</p> */}
+                <Link
+                    className='signup_link'
+                    to={'/signup'}
+                >
+                    Signup
+                </Link>
+                <button className='button__login'>Login</button>
             </div>
         </div>
     )
