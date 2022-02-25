@@ -20,10 +20,6 @@ function Signup(){
         setNewUser(prev => ({...prev, [name]: value}))
     }
 
-    // function displayErrorText(){
-        
-    // }
-
     function handleSubmit(event){
         event.preventDefault(); 
         axios.put(`${process.env.REACT_APP_API}/users`, {newUser})
@@ -102,28 +98,6 @@ function Signup(){
                 }
             </div>
         </div>
-
-        // <div id='signup_wrapper'>
-        //     <div id='signup_inner_wrapper'>
-        //         <Link
-        //             className='login_link'
-        //             to={'/login'}
-        //         >
-        //             Back to Login
-        //         </Link>
-        //         <h1 className='header_logo_alt'>Benchcoach</h1>
-        //         {/* <form id='signup_form'> */}
-
-
-        //             
-
-
-
-
-
-
-        //     </div>
-        // </div>
     )
 }
 
