@@ -40,18 +40,38 @@
     text-decoration: none;
 }
 
-#signup_inner_wrapper > label {
+/* #signup_form {
+    grid-column: 2/4;
+    grid-row: 3/10;
+} */
+
+#signup_inner_wrapper >  label {
     grid-column: 2;
     margin: auto 0 auto auto;
 }
 
-#signup_inner_wrapper > input {
+#signup_inner_wrapper > input, #signup_inner_wrapper > select {
     grid-column: 3;
     height: 60%;
     margin: auto 0;
     border-radius: 8px;
     border: none;
+    background-color: white;
 }
+
+#signup_inner_wrapper > div {
+    grid-column: 3;
+    height: 60%;
+    margin: auto 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 8px;
+    border: none;
+    /* background-color: white; */
+}
+
+
 
 .firstname {
     grid-row: 3;
@@ -78,5 +98,13 @@
     grid-column: 2 / 4;
     grid-row: 10;
     margin: auto;
-    width: 80%;
+    width: 100%;
+}
+
+#error {
+    display: none;
+}
+
+.show {
+    display: block !important;
 }

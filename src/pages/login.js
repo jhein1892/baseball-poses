@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/login.css';
 import { Link } from 'react-router-dom'; 
 
@@ -21,7 +21,6 @@ function Login(){
                         <input></input>
                     </div>
                 </div>
-                {/* <p className='signup_link'>Sign Up</p> */}
                 <Link
                     className='signup_link'
                     to={'/signup'}
