@@ -7,9 +7,10 @@
 
 #signup_inner_wrapper {
     display: grid;
-    grid-template-columns: 1fr 3fr 5fr 1fr;
-    grid-template-rows: 5% repeat(9, 10%) 5%;
-    column-gap: 2%;
+    grid-template-columns: 1fr 8fr 1fr;
+    grid-template-rows: 1fr 2fr 16fr 1fr;
+    /* grid-template-rows: 5% repeat(9, 10%) 5%; */
+    /* column-gap: 2%; */
     padding: 2vw;
     height: 69vh;
     width: 29vw;
@@ -19,19 +20,6 @@
     
 }
 
-#signup_inner_wrapper .header_logo_alt {
-    grid-column: 2 / 4;
-    grid-row: 2;
-    margin: auto;
-} 
-
-/* .firstname_input {
-    margin: auto;
-    grid-column-start: 2;
-    grid-column-end: 4;
-    grid-row-start: 3;
-} */
-
 .login_link {
     grid-column: 1 / 3;
     grid-row: 1;
@@ -40,27 +28,35 @@
     text-decoration: none;
 }
 
-/* #signup_form {
-    grid-column: 2/4;
-    grid-row: 3/10;
-} */
-
-#signup_inner_wrapper >  label {
+#signup_inner_wrapper .header_logo_alt {
     grid-column: 2;
-    margin: auto 0 auto auto;
+    grid-row: 3;
+    grid-row: 2;
+    margin: auto;
+} 
+
+#signup_form {
+    grid-column: 2;
+    display: grid;
+    column-gap: 3%;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: repeat(8, 1fr);
 }
 
-#signup_inner_wrapper > input, #signup_inner_wrapper > select {
-    grid-column: 3;
+#signup_form >  label {
+    grid-column: 1;
+    margin: auto 0 auto auto;
+}
+#signup_form > input, #signup_form > select {
+    grid-column: 2;
     height: 60%;
     margin: auto 0;
     border-radius: 8px;
     border: none;
     background-color: white;
 }
-
-#signup_inner_wrapper > div {
-    grid-column: 3;
+#signup_form > div {
+    grid-column: 2;
     height: 60%;
     margin: auto 0;
     display: flex;
@@ -68,43 +64,9 @@
     align-items: center;
     border-radius: 8px;
     border: none;
-    /* background-color: white; */
-}
-
-
-
-.firstname {
-    grid-row: 3;
-}
-.lastname {
-    grid-row: 4;
-}
-.email {
-    grid-row: 5;
-}
-.password {
-    grid-row: 6;
-}
-.throwing_hand {
-    grid-row: 7;
-}
-.birth_year {
-    grid-row: 8;
-}
-.height {
-    grid-row: 9;
 }
 .button__signup {
-    grid-column: 2 / 4;
-    grid-row: 10;
+    grid-column: 1/3;
     margin: auto;
     width: 100%;
-}
-
-#error {
-    display: none;
-}
-
-.show {
-    display: block !important;
 }

@@ -42,64 +42,79 @@ function Signup(){
                     Back to Login
                 </Link>
                 <h1 className='header_logo_alt'>Benchcoach</h1>
-                {/* <form id='signup_form'> */}
-
-                    <label className='firstname'>First Name:</label>
-                    <input required name='first_name' className='firstname' onChange={handleChange}></input>
-
-                    <label className='lastname'>Last Name:</label>
-                    <input required name='last_name' className='lastname' onChange={handleChange}></input>
-
-                    <label className='email'>Email:</label>
-                    <input required type='email' name='email' className='email' onChange={handleChange}></input>
-                    {/* <p id='error' className='email'>Email Already exists</p> */}
-
-                    <label className='password'>Password:</label>
-                    <input required type='password' name='password' className='password' onChange={handleChange}></input>
-
-                    <label className='throwing_hand'>Throwing Hand:</label>
-                    <select name='throwing_hand' defaultValue={newUser.throwing_hand} className='throwing_hand' onChange={handleChange}>
-                        <option value={'left'}>Left</option>
-                        <option value={'right'}>Right</option>
-                        <option value={'both'}>Both</option>
-                    </select>
-
-                    <label className='birth_year'>Birthday:</label>
-                    <input required type='date' name='birth_year' className='birth_year' onChange={handleChange}></input>
-
-                    <label className='height'>Height:</label>
-                    <div className='height'>
-                        <div>
-                            <label>Feet: </label>
-                            <select name='height_feet' defaultValue={newUser.height_feet} onChange={handleChange}>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                                <option value={6}>6</option>
-                                <option value={7}>7</option>
-                            </select>
+                    <form id='signup_form' onSubmit={handleSubmit}>
+                        <label className='firstname'>First Name:</label>
+                        <input required name='first_name' className='firstname' onChange={handleChange}></input>
+                        <label className='lastname'>Last Name:</label>
+                        <input required name='last_name' className='lastname' onChange={handleChange}></input>
+                        <label className='email'>Email:</label>
+                        <input required type='email' name='email' className='email' onChange={handleChange}></input>
+                        <label className='password'>Password:</label>
+                        <input required type='password' name='password' className='password' onChange={handleChange}></input>
+                        <label className='throwing_hand'>Throwing Hand:</label>
+                        <select name='throwing_hand' defaultValue={newUser.throwing_hand} className='throwing_hand' onChange={handleChange}>
+                            <option value={'left'}>Left</option>
+                            <option value={'right'}>Right</option>
+                            <option value={'both'}>Both</option>
+                        </select>
+                        <label className='birth_year'>Birthday:</label>
+                        <input required type='date' name='birth_year' className='birth_year' onChange={handleChange}></input>
+                        <label className='height'>Height:</label>
+                        <div className='height'>
+                            <div>
+                                <label>Feet: </label>
+                                <select name='height_feet' defaultValue={newUser.height_feet} onChange={handleChange}>
+                                    <option value={4}>4</option>
+                                    <option value={5}>5</option>
+                                    <option value={6}>6</option>
+                                    <option value={7}>7</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Inches: </label>
+                                <select name='height_inches' defaultValue={newUser.height_inches} onChange={handleChange}>
+                                    <option value={0}>0</option>
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                                    <option value={4}>4</option>
+                                    <option value={5}>5</option>
+                                    <option value={6}>6</option>
+                                    <option value={7}>7</option>
+                                    <option value={8}>8</option>
+                                    <option value={9}>9</option>
+                                    <option value={10}>10</option>
+                                    <option value={11}>11</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label>Inches: </label>
-                            <select name='height_inches' defaultValue={newUser.height_inches} onChange={handleChange}>
-                                <option value={0}>0</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                                <option value={4}>4</option>
-                                <option value={5}>5</option>
-                                <option value={6}>6</option>
-                                <option value={7}>7</option>
-                                <option value={8}>8</option>
-                                <option value={9}>9</option>
-                                <option value={10}>10</option>
-                                <option value={11}>11</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button className='button__signup' onClick={handleSubmit}>Sign Up</button>
-                    {/* </form> */}
+                        <button className='button__signup' type='submit'>Sign Up</button>
+                    </form>
+                
             </div>
         </div>
+
+        // <div id='signup_wrapper'>
+        //     <div id='signup_inner_wrapper'>
+        //         <Link
+        //             className='login_link'
+        //             to={'/login'}
+        //         >
+        //             Back to Login
+        //         </Link>
+        //         <h1 className='header_logo_alt'>Benchcoach</h1>
+        //         {/* <form id='signup_form'> */}
+
+
+        //             
+
+
+
+
+
+
+        //     </div>
+        // </div>
     )
 }
 
