@@ -14,7 +14,10 @@ function Login({ setIsLoggedIn }){
         password: ''
     })
 
+    const [currentError, setCurrentError] = useState('')
+
     function handleChange(event){
+        setCurrentError('');
         let name = event.target.name;
         let value = event.target.value
 
@@ -26,6 +29,8 @@ function Login({ setIsLoggedIn }){
         .then((response) => {
             let data = response.data;
             if(data['error_password'] || data['error_email']){
+                let myError = data['error_password'] ? 'error_password' : 'error_email';
+                setCurrentError(myError);
                 console.log('No pass Go')
             } else {
                 setIsLoggedIn(true);
@@ -44,10 +49,16 @@ function Login({ setIsLoggedIn }){
                     <div className='input_box'>
                         <label>Email</label>
                         <input name='email' onChange={handleChange}></input>
+                        { currentError === 'error_email' &&
+                            <p>Email address not correct</p>
+                        }
                     </div>
                     <div className='input_box'>
                         <label>Password</label>
                         <input type='password' name='password' onChange={handleChange}></input>
+                        { currentError === 'error_password' &&
+                            <p>Password incorrect</p>
+                        }
                     </div>
                 </div>
                 <Link

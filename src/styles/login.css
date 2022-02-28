@@ -8,7 +8,7 @@
 #login_inner_wrapper {
     display: grid;
     grid-template-columns: 10% 80% 10%;
-    grid-template-rows: 5% 25% 15% 10% 20% 5% 10% 10% ;
+    grid-template-rows: 5% 15% 15% 10% 28% 5% 10% 10%;
     padding: 2vw;
     height: 69vh;
     width: 29vw;
@@ -66,6 +66,12 @@
     flex-direction: column;
     margin: 0 auto;
 }
+
+.input_box > p {
+    margin: 0 0 5px;
+    color: var(--red);
+}
+
 
 .input_box > label {
     text-align: left;

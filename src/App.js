@@ -16,7 +16,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
   return (
     <div className="App">
-
+      {isLoggedIn && <Header />}
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
