@@ -31,7 +31,6 @@ function Login({ setIsLoggedIn }){
             if(data['error_password'] || data['error_email']){
                 let myError = data['error_password'] ? 'error_password' : 'error_email';
                 setCurrentError(myError);
-                console.log('No pass Go')
             } else {
                 setIsLoggedIn(true);
                 navigate('/'); 

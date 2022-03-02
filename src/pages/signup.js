@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import '../styles/signup.css';
 import { Link } from 'react-router-dom'; 
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-function Signup(){
-
+function Signup({ setIsLoggedIn }){
+    let navigate = useNavigate();
     const [newUser, setNewUser] = useState({
         throwing_hand:'left',
         height_feet: 5,
@@ -26,11 +27,10 @@ function Signup(){
         .then((response) => {
             let data = response.data; 
             if(data['error_exists'] ){
-                console.log('error')
                 setDisplayError(true)
             } else {
-                console.log('No error')
-                console.log(response.data); 
+                setIsLoggedIn(true);
+                navigate('/'); 
             }
         })
     }
