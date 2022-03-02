@@ -7,14 +7,13 @@ import { useNavigate } from "react-router-dom";
 
 
 function Login({ setIsLoggedIn }){
-    let navigate = useNavigate();
-
+    const [currentError, setCurrentError] = useState('')
     const [user, setUser] = useState({
         email:'',
         password: ''
     })
 
-    const [currentError, setCurrentError] = useState('')
+    let navigate = useNavigate();
 
     function handleChange(event){
         setCurrentError('');

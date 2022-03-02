@@ -3,6 +3,8 @@ import '../styles/signup.css';
 import { Link } from 'react-router-dom'; 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 function Signup({ setIsLoggedIn }){
     let navigate = useNavigate();
@@ -38,11 +40,13 @@ function Signup({ setIsLoggedIn }){
     return (
         <div id='signup_wrapper'>
             <div id='signup_inner_wrapper'>
+                
                 <Link
                     className='login_link'
                     to={'/login'}
                 >
-                    Back to Login
+                    <FontAwesomeIcon className='signup_back_icon' icon={faArrowLeft} />
+                    Login
                 </Link>
                 <h1 className='header_logo_alt'>Benchcoach</h1>
                     <form id='signup_form' onSubmit={handleSubmit}>
