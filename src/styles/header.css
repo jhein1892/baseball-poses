@@ -1,15 +1,22 @@
-.header__wrapper{
+.header__wrapper {
     background-color: var(--blue);
     width: 100%;
+    grid-template-columns: 2fr 5fr 1fr 1fr 1fr;
     height: 10vh;
-    display: flex;
+    display: grid;
     align-content: center;
+    justify-items: center;
 }
 
 .header_logo {
+    grid-column: 1;
     margin: auto 50px auto;
     color: var(--main-bg-color);
     text-decoration: underline 5px var(--red);
+}
+
+#header_profile {
+    grid-column: 3;
 }
 
 .header_logo_alt {
