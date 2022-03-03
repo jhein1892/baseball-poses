@@ -3,10 +3,12 @@ import '../styles/login.css';
 import { Link } from 'react-router-dom'; 
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 
 
 function Login({ setIsLoggedIn }){
+    const [cookies, setCookie] = useCookies(['userid'])
     const [currentError, setCurrentError] = useState('')
     const [user, setUser] = useState({
         email:'',
@@ -31,6 +33,7 @@ function Login({ setIsLoggedIn }){
                 let myError = data['error_password'] ? 'error_password' : 'error_email';
                 setCurrentError(myError);
             } else {
+                setCookie('userid', data.userid, {path:'/'});
                 setIsLoggedIn(true);
                 navigate('/'); 
             }

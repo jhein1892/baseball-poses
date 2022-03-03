@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { useCookies } from 'react-cookie';
 
 function Signup({ setIsLoggedIn }){
+    const [cookies, setCookie] = useCookies(['userid'])
     let navigate = useNavigate();
     const [newUser, setNewUser] = useState({
         throwing_hand:'left',
@@ -31,6 +33,7 @@ function Signup({ setIsLoggedIn }){
             if(data['error_exists'] ){
                 setDisplayError(true)
             } else {
+                setCookie('userid', data.insertId, {path:'/'});
                 setIsLoggedIn(true);
                 navigate('/'); 
             }
