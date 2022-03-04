@@ -208,12 +208,12 @@ function Home(){
             findFinish(key3D); 
         }
     }
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API}/users`)
-        .then((response) => {
-            console.log(response.data);
-        })
-    }, [])
+    // useEffect(() => {
+    //     axios.get(`${process.env.REACT_APP_API}/users`)
+    //     .then((response) => {
+    //         console.log(response.data);
+    //     })
+    // }, [])
     return (
         <div className='home__wrapper'>
             <TrainingSettings setThrowing={setThrowing} setHeight={setHeight}/>

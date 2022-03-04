@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 
 
 
-function Login({ setIsLoggedIn }){
+function Login({ setIsLoggedIn, setUserData}){
     const [cookies, setCookie] = useCookies(['userid'])
     const [currentError, setCurrentError] = useState('')
     const [user, setUser] = useState({
@@ -26,13 +26,14 @@ function Login({ setIsLoggedIn }){
     }
 
     function handleLogin(){
-        axios.get(`${process.env.REACT_APP_API}/users/login`, {params: {email: user.email, password: user.password}} )
+        axios.get(`${process.env.REACT_APP_API}/login`, {params: {email: user.email, password: user.password}} )
         .then((response) => {
             let data = response.data;
             if(data['error_password'] || data['error_email']){
                 let myError = data['error_password'] ? 'error_password' : 'error_email';
                 setCurrentError(myError);
             } else {
+                setUserData(data);
                 setCookie('userid', data.userid, {path:'/'});
                 setIsLoggedIn(true);
                 navigate('/'); 

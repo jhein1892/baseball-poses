@@ -1,0 +1,53 @@
+#profile_wrapper {
+    min-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 4fr 1fr;
+
+}
+
+#profile_wrapper > h1 {
+    grid-column: 2;
+    margin: auto;
+}
+
+
+#profile_form {
+    display: grid;
+    grid-column: 2;
+    grid-row: 2;
+}
+
+#profile_form > input {
+    width: 50%;
+    margin: 0 auto;
+}
+
+#profile_form > label {
+    width: 50%;
+    margin: auto;
+}
+
+#profile_form > .height {
+    width: 50%;
+    margin: auto;
+}
+
+#profile_form > button {
+    margin: 10px auto;
+}
+
+#profile_form > p {
+    color: var(--red);
+    margin: auto;
+}
+#profile_form > p {
+    color: var(--red);
+    margin: auto;
+}
+
+#profile_form > h3 {
+    color: green;
+    margin: auto;
+    padding: 0; 
+}

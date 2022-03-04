@@ -27,7 +27,7 @@ function Signup({ setIsLoggedIn }){
 
     function handleSubmit(event){
         event.preventDefault(); 
-        axios.put(`${process.env.REACT_APP_API}/users`, {newUser})
+        axios.put(`${process.env.REACT_APP_API}/signup`, {newUser})
         .then((response) => {
             let data = response.data; 
             if(data['error_exists'] ){
