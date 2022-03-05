@@ -140,12 +140,12 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
                 d = d.toDateString();
                 return (
                     <table key={`${assess.id}-assessment`} id="assessment__table">
-                        <colgroup span='5'></colgroup>
-                        <colgroup span='5'></colgroup>
+                        {/* <colgroup span='5'></colgroup>
+                        <colgroup span='5'></colgroup> */}
                             <thead>
                                 <tr className='assessment_info'>
-                                    <th colSpan='5'>Assessment Type: {assess.type}</th>
-                                    <th colSpan='5'>Assessment Date: {d}</th>
+                                    {/* <th colSpan='5'>Assessment Type: {assess.type}</th> */}
+                                    <th colSpan='10'>{d}</th>
                                 </tr>
                             </thead>
                             <thead>
@@ -175,20 +175,21 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
 
     function fetchAssessmentData() {
         let userid = cookies.userid;
-         axios.get(`${process.env.REACT_APP_API}/assessments/${userid}`)
+         axios.get(`${process.env.REACT_APP_API}/assessments/current/${userid}`)
          .then((response) => {
              console.log(response.data)
              setAssessmentData(response.data.pitches);
              setAssessment(response.data.assessments); 
          })
-    }
-
-    useEffect(() => {
-         fetchAssessmentData();
-     },[])
+    }                                                                 
+    // useEffect(() => {
+    //      fetchAssessmentData();
+    //  },[])
      useEffect(() => {
          console.log(assessmentRef.current, resetRef.current)
-        fetchAssessmentData(); 
+         if(assessmentRef.current){
+            fetchAssessmentData();              
+         }
      },[assessmentRef.current]);
 
      useEffect(() => {

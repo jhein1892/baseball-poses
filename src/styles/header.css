@@ -12,6 +12,7 @@
     grid-column: 1;
     margin: auto 50px auto;
     color: var(--main-bg-color);
+    font-family: 'Montserrat';
     text-decoration: underline 5px var(--red);
 }
 

@@ -1,0 +1,9 @@
+#assessment_wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#assessment_wrapper > h1 {
+    margin: 2vh 0;
+}

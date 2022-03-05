@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import TrainingTypes from './trainingTypes';
+import '../../styles/assessment.css';
 import WebcamSection from './webcam';
 import TrainingSteps from './trainingSteps';
 import {beep} from '../../functions/utils';
 
 
 function Assessment(){
-    const [training, setTraining] = useState();
+    const [training, setTraining] = useState('full');
     const [throwing, setThrowing] = useState();
     const [height, setHeight] = useState({
         feet: 5, 
@@ -199,9 +200,9 @@ function Assessment(){
     }
 
     return(
-        <div>
+        <div id='assessment_wrapper'>
             <h1>Assessment</h1>
-            <TrainingTypes setTraining={setTraining}/>
+            {/* <TrainingTypes setTraining={setTraining}/> */}
             <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
             <TrainingSteps positions={positions} training={training} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
         </div>

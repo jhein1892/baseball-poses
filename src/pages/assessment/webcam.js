@@ -168,9 +168,17 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
     return (
         <div className='webcam__container'>
             <div className="cam__view">
+                <div id='pitch__counter'>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
                 {isShowVideo &&
-                    
+                    <>
                     <Webcam id='video' audio={false} ref={videoElement} videoConstraints={videoConstraints} />
+                    </>
                 }
                         <canvas
                         id='canvas'
@@ -181,8 +189,8 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
             
             </div>
             <div className='button__container'>
-                <button className='button__start' onClick={startCam} disabled={buttonDisabled}>Start Assessment</button>
                 <button className='button__stop' onClick={() => {stopCam()}}>Stop</button>
+                <button className='button__start' onClick={startCam} disabled={buttonDisabled}>Start Assessment</button>
                 <button className='button__reset' onClick={handleReset}>Reset Model</button>
             </div>
         </div>
