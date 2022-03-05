@@ -4,7 +4,7 @@ import Home from './pages/components/home'
 import Header from './pages/components/header'
 import Login from './pages/login';
 import Signup from './pages/signup';
-import Assessment from './pages/assessment';
+import Assessment from './pages/assessment/assessment';
 import Profile from './pages/profile'; 
 import { render } from "react-dom";
 import {
