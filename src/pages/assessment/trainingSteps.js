@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import '../../styles/trainingSteps.css';
 import AssessmentPitch from './assessmentPitch';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 function TrainingSteps({positions, training, throwingDirection, assessmentRef, cmeterHeight, resetRef}){
+    const [cookies, setCookie] = useCookies('userid'); 
     const [assessmentData, setAssessmentData] = useState([]);
     const [assessment, setAssessment] = useState([]); 
     const { front, back } = throwingDirection; 
@@ -108,7 +110,7 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
     }
 
     function submitNewPitch(data){
-        let userid = 1; 
+        let userid = cookies.userid; 
         axios.put(`${process.env.REACT_APP_API}/pitch/${userid}`,{data})
         .then((response) => {
             if(response.error){
@@ -172,7 +174,7 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
     }
 
     function fetchAssessmentData() {
-        let userid = 1
+        let userid = cookies.userid;
          axios.get(`${process.env.REACT_APP_API}/assessments/${userid}`)
          .then((response) => {
              console.log(response.data)
@@ -185,6 +187,7 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
          fetchAssessmentData();
      },[])
      useEffect(() => {
+         console.log(assessmentRef.current, resetRef.current)
         fetchAssessmentData(); 
      },[assessmentRef.current]);
 

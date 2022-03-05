@@ -4,9 +4,12 @@ import * as poseDetection from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl';
 import '../../styles/webcam.css'
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
+
 
 // 1) I would like to figure out how to gather the results and display some of them below
 function WebcamSection({ training, positions, handleChange, setPositions, resetRef, assessmentRef }) {
+    const [cookies, setCookie] = useCookies('userid'); 
     let today = new Date().toISOString().slice(0,10); 
     // let backupTraining = useRef(training); 
     let [isShowVideo, setIsShowVideo] = useState(false);
@@ -27,8 +30,8 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
     }
 
     const startCam = () => {
-        let userid = 1; 
-        axios.put(`${process.env.REACT_APP_API}/${userid}`, {type:training, date:today})
+        let userid = cookies.userid; 
+        axios.put(`${process.env.REACT_APP_API}/assessments/${userid}`, {type:training, date:today})
         .then((response) => {
             assessmentRef.current = response.data;
         })

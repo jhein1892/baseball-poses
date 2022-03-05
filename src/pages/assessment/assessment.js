@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import TrainingTypes from './trainingTypes';
 import WebcamSection from './webcam';
+import TrainingSteps from './trainingSteps';
 import {beep} from '../../functions/utils';
 
 
@@ -202,6 +203,7 @@ function Assessment(){
             <h1>Assessment</h1>
             <TrainingTypes setTraining={setTraining}/>
             <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
+            <TrainingSteps positions={positions} training={training} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
         </div>
     )
 }
