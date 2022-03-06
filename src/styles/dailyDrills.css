@@ -1,0 +1,41 @@
+#drills_wrapper {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: white;
+}
+
+.section__wrapper {
+    width: 90%;
+
+}
+
+.drill_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 2fr ;
+    grid-template-rows: 1fr;
+    max-height: 5vh;
+    overflow-y: hidden;
+}
+
+.drill_wrapper:hover {
+    height: fit-content;
+    max-height: fit-content;
+}
+
+.drill_wrapper > .drill_name {
+    grid-column: 1;
+    margin: 0 auto;
+}
+.drill_wrapper > .drill_reps {
+    grid-column: 3;
+    margin: 0 auto;
+}
+
+.drill_wrapper > button {
+    width: 90%;
+    height: 4vh;
+}

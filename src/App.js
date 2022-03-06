@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import Home from './pages/components/home'
+import Home from './pages/home/home'
 import Header from './pages/components/header'
 import Login from './pages/login';
 import Signup from './pages/signup';
@@ -25,9 +25,9 @@ function App() {
         <Routes>
           <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />} />
           <Route path='/signup' element={<Signup setIsLoggedIn={setIsLoggedIn} />}/>
-          <Route path='/assessment' element={isLoggedIn ? <Assessment/> : <Navigate to='login'/>}/>
-          <Route path='/profile' element={isLoggedIn ? <Profile userData={userData} setUserData={setUserData}/> : <Navigate to='login'/>}/>
-          <Route path='/' element={isLoggedIn ? <Home/> : <Navigate to='login'/> }/>
+          <Route path='/assessment' element={isLoggedIn ? <Assessment/> : <Navigate to='/login'/>}/>
+          <Route path='/profile' element={isLoggedIn ? <Profile userData={userData} setUserData={setUserData}/> : <Navigate to='/login'/>}/>
+          <Route path='/' element={isLoggedIn ? <Home userData={userData}/> : <Navigate to='/login'/> }/>
         </Routes>
       </BrowserRouter>
     </div>

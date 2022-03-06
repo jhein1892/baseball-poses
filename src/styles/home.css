@@ -6,7 +6,8 @@
 .home__wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-around ;
+    align-items: center;
+    min-height: 90vh;
 }
 
 .home__wrapper > hr {
