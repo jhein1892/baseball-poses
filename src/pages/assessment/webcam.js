@@ -208,6 +208,7 @@ function WebcamSection({ training, pitchCount, setPitchCount, positions, handleC
                     <div className='completed_assessment'>
                     <h1 >Assessment Complete!</h1>
                     <h3>You can checkout the table below for the results of this assessment, or you can go straight to your home dashboard to checkout your weekly training sessions!</h3>
+                    <h4>If you would like to redo this assessment, you can hit the 'Reset Model' button. We do recommend sticking with your original daily assessment, unless there was an issue with gathering the data, as your daily training sessions are built around your strengths and weakneses.</h4>
                     </div>
                 }
                 {isShowVideo &&
