@@ -81,9 +81,9 @@ function Assessment(){
                         updatedSet['balance'].values = key3D;
                         updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 
                         updatedSet['balance'].peakVal = key3D[`${front}_knee`]['y']; 
-                        // ***IMPORTANT*** Move this to where we want data to be stored and model reset
-                        resetRef.current = true; 
-                        setPitchCount(pitchCount + 1);
+                        // // ***IMPORTANT*** Move this to where we want data to be stored and model reset
+                        // resetRef.current = true; 
+                        // setPitchCount(pitchCount + 1);
                         
                     }
                     setPositions({...updatedSet}); 
@@ -133,8 +133,9 @@ function Assessment(){
                     updatedBalance['landing']['isLanded'] = true;
                     updatedBalance['landing']['values'] = key3D;
 
-                    // // ***IMPORTANT*** Move this to where we want data to be stored and model reset
-                    // resetRef.current = true; 
+                    // ***IMPORTANT*** Move this to where we want data to be stored and model reset
+                    resetRef.current = true; 
+                    setPitchCount(pitchCount + 1);
                 }
             updatedBalance['balance']['values'] = key3D; 
             setPositions({...updatedBalance});

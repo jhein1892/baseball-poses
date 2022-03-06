@@ -199,7 +199,7 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
     useEffect(() => {
         if(resetRef.current){
             console.log('reset ref')
-            // createData(); 
+            createData(); 
         }
     },[resetRef.current])
 
