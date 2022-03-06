@@ -52,8 +52,23 @@
     border-radius: 50%;
 }
 
+#pitch__counter > img {
+    height: 2.5vh;
+    width: 2.5vh;
+}
+
 .complete {
     background-color: green !important;
+}
+
+.inProgress {
+    animation: pulsate 3s infinite;
+}
+
+@keyframes pulsate {
+    0%{background-color: yellow}
+    50%{background-color: rgba(255, 255, 0, 0.151)}
+    100%{background-color: yellow}
 }
 
 .webcam__container {
@@ -94,4 +109,20 @@
     background-color: var(--brown);
     color: var(--main-bg-color);
     height: 15vh;
+}
+
+.completed_assessment {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%);
+}
+.completed_assessment > h1 {
+    text-shadow: 0 0 10px #e2e0e0,
+    0 0 20px #e2e0e0, 
+    0 0 30px #983539, 
+    0 0 40px #983539, 
+    0 0 50px #983539,
+    0 0 60px #983539, 
+    0 0 70px #983539;
 }

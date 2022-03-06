@@ -5,6 +5,7 @@ import '@tensorflow/tfjs-backend-webgl';
 import '../../styles/webcam.css'
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import baseball from '../../images/baseball.png'; 
 
 
 // 1) I would like to figure out how to gather the results and display some of them below
@@ -13,6 +14,7 @@ function WebcamSection({ training, pitchCount, setPitchCount, positions, handleC
     let today = new Date().toISOString().slice(0,10); 
     // let backupTraining = useRef(training); 
     let [isShowVideo, setIsShowVideo] = useState(false);
+    let [assessmentComplete, setAssessmentComplete] = useState(false); 
     // let [set, setSet] = useState(false)
     // const [count, setCount] = useState(0); 
     const disabled = useRef(true)
@@ -142,6 +144,8 @@ function WebcamSection({ training, pitchCount, setPitchCount, positions, handleC
         for(let i = 0; i < 5; i++){
             if (i < pitchCount){
                 myPitches.push('complete');
+            } else if (i === pitchCount) {
+                myPitches.push('inProgress');
             } else {
                 myPitches.push('');
             }
@@ -150,9 +154,13 @@ function WebcamSection({ training, pitchCount, setPitchCount, positions, handleC
             <div id='pitch__counter'>
                 {
                     myPitches.map((element) => {
-                        return (
-                            <div className={element}></div>
-                        )
+                        let x; 
+                        if(element === 'complete'){
+                            x = <img src={baseball} alt='baseball'></img>
+                        } else {
+                            x = <div className={element}></div>
+                        }
+                        return x; 
                     })
                 }
             </div>
@@ -185,17 +193,28 @@ function WebcamSection({ training, pitchCount, setPitchCount, positions, handleC
         }
     }, [positions,runPoseDetector, resetRef])
 
-    // useEffect(() => {
-    //     console.log(pitchCount);
-    // }, [pitchCount])
+    useEffect(() => {
+        if(pitchCount === 5){
+            console.log('session Complete');
+            setAssessmentComplete(true);
+            setTimeout(stopCam, 3000);
+        }
+        console.log(pitchCount);
+    }, [pitchCount])
     return (
         <div className='webcam__container'>
             <div className="cam__view">
-                {
-                    findPitchCount()
+                {assessmentComplete &&
+                    <div className='completed_assessment'>
+                    <h1 >Assessment Complete!</h1>
+                    <h3>You can checkout the table below for the results of this assessment, or you can go straight to your home dashboard to checkout your weekly training sessions!</h3>
+                    </div>
                 }
                 {isShowVideo &&
                     <>
+                    {
+                    findPitchCount()
+                    }
                     <Webcam id='video' audio={false} ref={videoElement} videoConstraints={videoConstraints} />
                     </>
                 }
