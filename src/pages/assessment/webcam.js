@@ -8,7 +8,7 @@ import { useCookies } from 'react-cookie';
 
 
 // 1) I would like to figure out how to gather the results and display some of them below
-function WebcamSection({ training, positions, handleChange, setPositions, resetRef, assessmentRef }) {
+function WebcamSection({ training, pitchCount, setPitchCount, positions, handleChange, setPositions, resetRef, assessmentRef }) {
     const [cookies, setCookie] = useCookies('userid'); 
     let today = new Date().toISOString().slice(0,10); 
     // let backupTraining = useRef(training); 
@@ -49,6 +49,7 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
             videoElement.current.video.srcObject = null;
             disabled.current = true; 
         }
+        setPitchCount(0);
         
 
     }
@@ -81,13 +82,9 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
             }
         }
         setPositions(defaultPositions);
-        console.log(PositionsRef.current)
         PositionsRef.current = true;
         console.log('handle Reset'); 
-        console.log(PositionsRef.current)
     },[PositionsRef, setPositions])
-
-
 
     const runPoseDetector = useCallback(async () => {
         const detectorConfig = {
@@ -140,7 +137,30 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
             }, 100)
     },[resetRef, handleReset, handleChange]); 
 
+    const findPitchCount = useCallback(() => {
+        let myPitches = []
+        for(let i = 0; i < 5; i++){
+            if (i < pitchCount){
+                myPitches.push('complete');
+            } else {
+                myPitches.push('');
+            }
+        }
+        return (
+            <div id='pitch__counter'>
+                {
+                    myPitches.map((element) => {
+                        return (
+                            <div className={element}></div>
+                        )
+                    })
+                }
+            </div>
+        )
+    },[pitchCount])
+        
 
+    // let myPitchCount = findPitchCount()
 
     useEffect(() => {
         if(training !== undefined){
@@ -165,16 +185,15 @@ function WebcamSection({ training, positions, handleChange, setPositions, resetR
         }
     }, [positions,runPoseDetector, resetRef])
 
+    // useEffect(() => {
+    //     console.log(pitchCount);
+    // }, [pitchCount])
     return (
         <div className='webcam__container'>
             <div className="cam__view">
-                <div id='pitch__counter'>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
+                {
+                    findPitchCount()
+                }
                 {isShowVideo &&
                     <>
                     <Webcam id='video' audio={false} ref={videoElement} videoConstraints={videoConstraints} />

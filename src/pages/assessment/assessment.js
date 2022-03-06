@@ -9,6 +9,7 @@ import {beep} from '../../functions/utils';
 function Assessment(){
     const [training, setTraining] = useState('full');
     const [throwing, setThrowing] = useState();
+    const [pitchCount, setPitchCount] = useState(0); 
     const [height, setHeight] = useState({
         feet: 5, 
         inches: 10
@@ -80,6 +81,10 @@ function Assessment(){
                         updatedSet['balance'].values = key3D;
                         updatedSet['balance'].startingHeight = key3D[`${front}_knee`]['y']; 
                         updatedSet['balance'].peakVal = key3D[`${front}_knee`]['y']; 
+                        // ***IMPORTANT*** Move this to where we want data to be stored and model reset
+                        resetRef.current = true; 
+                        setPitchCount(pitchCount + 1);
+                        
                     }
                     setPositions({...updatedSet}); 
                 } else {
@@ -128,8 +133,8 @@ function Assessment(){
                     updatedBalance['landing']['isLanded'] = true;
                     updatedBalance['landing']['values'] = key3D;
 
-                    // ***IMPORTANT*** Move this to where we want data to be stored and model reset
-                    resetRef.current = true; 
+                    // // ***IMPORTANT*** Move this to where we want data to be stored and model reset
+                    // resetRef.current = true; 
                 }
             updatedBalance['balance']['values'] = key3D; 
             setPositions({...updatedBalance});
@@ -203,7 +208,7 @@ function Assessment(){
         <div id='assessment_wrapper'>
             <h1>Assessment</h1>
             {/* <TrainingTypes setTraining={setTraining}/> */}
-            <WebcamSection positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
+            <WebcamSection pitchCount={pitchCount} setPitchCount={setPitchCount} positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
             <TrainingSteps positions={positions} training={training} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
         </div>
     )

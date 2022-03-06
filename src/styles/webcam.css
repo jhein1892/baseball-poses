@@ -32,14 +32,17 @@
 
 #pitch__counter {
     position: absolute;
+    left: 50%;
+    transform: translate(-50%);
     top: 2%;
     display: flex;
     width: 20%;
     height: 4vh;
     align-items: center;
     justify-content: space-around;
-    background-color: var(--blue);
-    border-radius: 0 8px 8px 0;
+    background-color: var(
+    --blue);
+    border-radius:8px;
 }
 
 #pitch__counter > div {
@@ -47,6 +50,10 @@
     height: 2vh;
     width: 2vh;
     border-radius: 50%;
+}
+
+.complete {
+    background-color: green !important;
 }
 
 .webcam__container {
