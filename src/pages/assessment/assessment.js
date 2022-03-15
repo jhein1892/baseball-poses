@@ -9,7 +9,8 @@ import {beep} from '../../functions/utils';
 function Assessment(){
     const [training, setTraining] = useState('full');
     const [throwing, setThrowing] = useState();
-    const [pitchCount, setPitchCount] = useState(0); 
+    const [pitchCount, setPitchCount] = useState(0);
+    const [assessmentComplete, setAssessmentComplete] = useState(false); 
     const [height, setHeight] = useState({
         feet: 5, 
         inches: 10
@@ -209,8 +210,8 @@ function Assessment(){
         <div id='assessment_wrapper'>
             <h1>Assessment</h1>
             {/* <TrainingTypes setTraining={setTraining}/> */}
-            <WebcamSection pitchCount={pitchCount} setPitchCount={setPitchCount} positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
-            <TrainingSteps positions={positions} training={training} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
+            <WebcamSection pitchCount={pitchCount} assessmentComplete={assessmentComplete} setAssessmentComplete={setAssessmentComplete} setPitchCount={setPitchCount} positions={positions} resetRef={resetRef} handleChange={handleChange} assessmentRef={assessmentRef} training={training} setPositions={setPositions}/>
+            <TrainingSteps positions={positions} assessmentComplete={assessmentComplete} training={training} throwingDirection={throwingDirection} assessmentRef={assessmentRef} cmeterHeight={cmeterHeight} resetRef={resetRef}/>
         </div>
     )
 }

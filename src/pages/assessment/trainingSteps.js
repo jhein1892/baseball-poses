@@ -4,9 +4,16 @@ import AssessmentPitch from './assessmentPitch';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 
-function TrainingSteps({positions, training, throwingDirection, assessmentRef, cmeterHeight, resetRef}){
+function TrainingSteps({positions, training, throwingDirection, assessmentRef, cmeterHeight, resetRef, assessmentComplete }){
     const [cookies, setCookie] = useCookies('userid'); 
     const [assessmentData, setAssessmentData] = useState([]);
+    const [movementData, setMovementData] = useState({
+        balance: true,
+        landing: true,
+        arm: false,
+        set: true,
+        finish: false
+    });
     const [assessment, setAssessment] = useState([]); 
     const { front, back } = throwingDirection; 
     let newData = {}
@@ -51,34 +58,40 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
             newData['set_feet_width'] = true; 
         } else {
             newData['set_feet_width'] = false;
+            setMovementData(prev => ({...prev, ['set']: false}));
         }
         if(Math.abs(leftShoulderSet['y'] - rightShoulderSet['y']) < 50){
             newData['set_even_shoulders'] = true; 
         } else {
             newData['set_even_shoulders'] = false; 
+            setMovementData(prev => ({...prev, ['set']: false}));
         }
         if(Math.abs(leftShoulderBalance['y'] - rightShoulderBalance['y']) < 0.05){
             newData['balance_even_shoulders'] = true; 
         } else {
             newData['balance_even_shoulders'] = false;
+            setMovementData(prev => ({...prev, ['balance']: false}));
         }
         if(front === 'left'){
             if(frontKneeBalance['x'] < frontHipBalance['x']){
                 newData['balance_knee_x'] = true; 
             } else {
-                newData['balance_knee_x'] = false; 
+                newData['balance_knee_x'] = false;
+                setMovementData(prev => ({...prev, ['balance']: false}));
             }
         } else {
             if(frontKneeBalance['x'] > frontHipBalance['x']){
                 newData['balance_knee_x'] = true; 
             } else {
-                newData['balance_knee_x'] = false; 
+                newData['balance_knee_x'] = false;
+                setMovementData(prev => ({...prev, ['balance']: false}));
             }
         }
         if(positions.balance.peakVal < 0){
             newData['balance_knee_y'] = true; 
         } else {
-            newData['balance_knee_y'] = false; 
+            newData['balance_knee_y'] = false;
+            setMovementData(prev => ({...prev, ['balance']: false}));
         }
     /*******************************************************************
         Getting a proper number now, but the angles are kind of off.
@@ -93,19 +106,23 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
         if(parseFloat(frontElbowLanding['y']) < parseFloat(frontShoulderLanding['y'])){
             newData['elbows_above_shoulders'] = true; 
         } else {
-            newData['elbows_above_shoulders'] = false; 
+            newData['elbows_above_shoulders'] = false;
+            setMovementData(prev => ({...prev, ['arm']: false}));
         }
         newData['arm_angle'] = degreeElbow; 
         if(parseFloat(backShoulderLanding['y']) > parseFloat(frontShoulderLanding['y'])){
             newData['shoulder_tilt'] = true; 
         } else {
-            newData['shoulder_tilt'] = false; 
+            newData['shoulder_tilt'] = false;
+            setMovementData(prev => ({...prev, ['arm']: false}));
+        }
+        if(Math.abs((strideLengthMeters * 100) - cmeterHeight) > (cmeterHeight * 0.1)){
+            setMovementData(prev => ({...prev, ['landing']: false})); 
         }
  
         newData['stride_length'] = strideLengthMeters; 
         newData['assessment_id'] = assessmentRef.current;
 
-        console.log(newData);
         submitNewPitch(newData); 
     }
 
@@ -177,14 +194,24 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
         let userid = cookies.userid;
          axios.get(`${process.env.REACT_APP_API}/assessments/current/${userid}`)
          .then((response) => {
-             console.log(response.data)
              setAssessmentData(response.data.pitches);
              setAssessment(response.data.assessments); 
          })
     }                                                                 
-    // useEffect(() => {
-    //      fetchAssessmentData();
-    //  },[])
+
+    function updatedMovementData(){
+        let assessmentID = assessmentRef.current; 
+        axios.patch(`${process.env.REACT_APP_API}/assessments/current/${assessmentID}`, {movements:movementData, userid:cookies.userid})
+        .then((response) => {
+            let data = response.data;
+            if(data['error_patch']){
+                console.log("An error occured")
+            } else {
+                console.log(response); 
+            }
+        })
+    }
+
      useEffect(() => {
          console.log(assessmentRef.current, resetRef.current)
          if(assessmentRef.current){
@@ -196,10 +223,16 @@ function TrainingSteps({positions, training, throwingDirection, assessmentRef, c
         console.log('pitch added');
      },[assessmentData])
 
+     useEffect(() => {
+        if(assessmentComplete){
+            updatedMovementData(); 
+        }
+     },[assessmentComplete])
+
     useEffect(() => {
         if(resetRef.current){
             console.log('reset ref')
-            createData(); 
+            // createData(); 
         }
     },[resetRef.current])
 

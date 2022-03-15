@@ -9,12 +9,12 @@ import baseball from '../../images/baseball.png';
 
 
 // 1) I would like to figure out how to gather the results and display some of them below
-function WebcamSection({ training, pitchCount, setPitchCount, positions, handleChange, setPositions, resetRef, assessmentRef }) {
+function WebcamSection({ training, pitchCount, setPitchCount, positions, handleChange, setPositions, resetRef, assessmentRef, setAssessmentComplete, assessmentComplete }) {
     const [cookies, setCookie] = useCookies('userid'); 
     let today = new Date().toISOString().slice(0,10); 
     // let backupTraining = useRef(training); 
     let [isShowVideo, setIsShowVideo] = useState(false);
-    let [assessmentComplete, setAssessmentComplete] = useState(false); 
+    // let [assessmentComplete, setAssessmentComplete] = useState(false); 
     // let [set, setSet] = useState(false)
     // const [count, setCount] = useState(0); 
     const disabled = useRef(true)
@@ -194,7 +194,7 @@ function WebcamSection({ training, pitchCount, setPitchCount, positions, handleC
     }, [positions,runPoseDetector, resetRef])
 
     useEffect(() => {
-        if(pitchCount === 5){
+        if(pitchCount === 1){
             console.log('session Complete');
             setAssessmentComplete(true);
             setTimeout(stopCam, 3000);
