@@ -18,9 +18,10 @@ function DailyDrills({ setShowDrills, drillData }){
     },[])
 
     function handleShowDescription(event){
+        event.preventDefault();
         let id = event.target.id; 
         if(showDescription === id){
-            setShowDescription();
+            setShowDescription('');
         } else {
             setShowDescription(id);
         }
@@ -32,10 +33,10 @@ function DailyDrills({ setShowDrills, drillData }){
                 <>
                 <div className='drill__wrapper'>
                     <div className='drill__top'>
-                        <button id={`${drill.drillID}-armCare`} className='drill__button' onClick={(event) => handleShowDescription(event)}>Show Description</button>
                         <h4 className='drill__name'>{drill.name}</h4>
                         <p className='drill__reps'>Reps:{drill.reps}</p>
                         <p className='drill__arms'>Arms:{drill.numberOfArms}</p>
+                        <button id={`${drill.drillID}-armCare`} className='drill__button' onClick={(event) => handleShowDescription(event)}>Show Description</button>
                     </div>
                     {showDescription === `${drill.drillID}-armCare` &&
                         <p className='drill__description'>{drill.description}</p>
