@@ -23,8 +23,12 @@ function Home({ userData }){
 
     return (
         <div className='home__wrapper'>
+            {!showDrills &&
+            <>
             <h1>Good Morning, {userData.first_name}</h1>
             <h2>Are you ready to start your training session?</h2>
+            </>
+            }
             {!showDrills &&
                 <button onClick={() => {setShowDrills(true)}}>Start</button>
             }

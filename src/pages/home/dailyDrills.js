@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import { useCookies } from 'react-cookie';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player/lazy'
 import '../../styles/dailyDrills.css';
 
 
@@ -15,6 +15,7 @@ function DailyDrills({ setShowDrills, drillData }){
         setArmCare(drillData.armCare);
         setCoreDrills(drillData.core);
         setPitchingDrills(drillData.pitching);
+        console.log(drillData);
     },[])
 
 function handleCompletedTask(event, index){
@@ -61,23 +62,29 @@ function handleCompletedTask(event, index){
                     <>
                         <div className={wrapperClass}>
                             <div className='drill__top'>
-                                <h3>{drill.name}</h3>
-                                <h4>Reps: {drill.reps}</h4>
+                                <h3 className='drill__name'>{drill.name}</h3>
+                                <h4 className="drill__reps">Reps: {drill.reps}</h4>
                             </div>
                             <div className='drill__lower'>
                                 <div>
                                     <h4 className='drill__subheader'>Description</h4>
                                     <p>{drill.description}</p>
                                 </div>
-                                <ReactPlayer 
-                                    url='https://www.youtube.com/embed/pIcDbF-KjMs?start=60&end=93'
-                                    playing={true}
-                                    light={true}
+                                <div className='drill__URL'>
+                                    <ReactPlayer 
+                                        wrapper={'drill__URL'}
+                                        width='90%'
+                                        height='100%'
+                                        url='https://www.youtube.com/embed/pIcDbF-KjMs?start=60&end=93'
+                                        playing={true}
+                                        light={true}
                                     />
+                                </div>
+                                <button
+                                    id ={`armCare-${index}`}
+                                    onClick={(event) => handleCompletedTask(event, index)}>Completed
+                                </button>
                             </div>
-                            <button
-                                id ={`armCare-${index}`}
-                                onClick={(event) => handleCompletedTask(event, index)}>Completed</button>
                         </div>
                     </>
                 )
@@ -102,9 +109,9 @@ function handleCompletedTask(event, index){
                 <>
                     <div className={wrapperClass}>
                         <div className='drill__top'>
-                            <h3>{drill.name}</h3>
-                            <h4>Reps: {drill.reps}</h4>
-                            <h4>Sets: {drill.sets}</h4>
+                            <h3 className='drill__name'>{drill.name}</h3>
+                            <h4 className='drill__sets'>Sets: {drill.sets}</h4>
+                            <h4 className='drill__reps'>Reps: {drill.reps}</h4>
                         </div>
                         <div className='drill__lower'>
                             <div>
@@ -112,10 +119,11 @@ function handleCompletedTask(event, index){
                                 <p>{drill.description}</p>
                             </div>
                             {/* <p>{drill.description}</p> */}
+                            <button
+                                id ={`pitching-${index}`}
+                                onClick={(event) => handleCompletedTask(event, index)}>Completed
+                            </button>
                         </div>
-                        <button
-                            id ={`pitching-${index}`}
-                            onClick={(event) => handleCompletedTask(event, index)}>Completed</button>
                     </div>
                 </>
             )
@@ -140,9 +148,9 @@ function handleCompletedTask(event, index){
                 <>
                     <div className={wrapperClass}>
                         <div className='drill__top'>
-                            <h3>{drill.name}</h3>
-                            <h4>Reps: {drill.reps}</h4>
-                            <h4>Sets: {drill.sets}</h4>
+                            <h3 className='drill__name'>{drill.name}</h3>
+                            <h4 className='drill__sets'>Sets: {drill.sets}</h4>
+                            <h4 className='drill__reps'>Reps: {drill.reps}</h4>
                         </div>
                         <div className='drill__lower'>
                             <div>
@@ -179,7 +187,8 @@ function handleCompletedTask(event, index){
                 }
             </div>
             <div className='section__wrapper'>
-                {(drillShowing[1] === 'core'|| drillShowing[1] === 'pitching') && drillShowing[0] !== 3 &&
+                
+                {!(drillShowing[1] === 'core' && drillShowing[0] === 3)&&
                     <h2>Daily Core</h2>
                 }
                 {coreDrills &&

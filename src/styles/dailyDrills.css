@@ -1,12 +1,14 @@
 #drills_wrapper {
     width: 80%;
-    margin: 0 auto;
+    margin: 2vh auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: white;
-    max-height: 70vh;
-    overflow: hidden;
+    max-height: 86vh;
+    overflow: scroll;
+    background-color: var(--blue);
+    border: 1px solid var(--blue);
 }
 
 .section__wrapper {
@@ -15,43 +17,35 @@
 
 .section__wrapper > h2 {
     font-weight: bold;
-    color: var(--blue);
+    color: var(--main-bg-color);
     text-decoration: underline var(--red) 3px;
     text-align: center;
 }
 
-.drill__wrapper {   
+.drill__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 5vh;
-    overflow: scroll;
+    height: fit-content;
+    overflow: hidden;
     width: 98%;
     margin: 2vh auto;
     border: 1px solid black;
     padding: 1%;
+    background: #e2e0e0;
 }
 
-.drillcomplete{
-    background-color: rgb(192, 233, 192);
-    opacity: 0;
-    animation: fadeout 2s;
-    height: 0;
-    width: 0;
-    margin: 0;
-    padding: 0; 
-    border: 1px solid #8ba88b;
-    box-shadow: inset 0px 0px 8px 2px #8ba88b;
-}
-
-@keyframes fadeout {
-    0%{opacity: 1; height: 40vh; width:100%; margin-top: 2vh;}
-    50%{opacity: 0.2; height: 0; width:100%; margin-top: 1vh;}
-    100%{opacity: 0; height: 0px; width: 0; margin-top: 0;}
+.drill__wrapper > .drill__lower {
+    display: none;
 }
 
 .open {
     height: fit-content;
+}
+
+.open > .drill__lower {
+    display: flex;
+    flex-direction: column;
 }
 
 .next {
@@ -70,11 +64,30 @@
 .drill__top {
     display: grid;
     grid-template-columns: 3fr 1fr 1fr;
+    width: 90%;
+    margin: auto;
+}
+
+.drill__name {
+    padding: 0;
+}
+
+.drill__reps{
+    grid-column: 4;
+    padding: 0;
+}
+
+.drill__sets{
+    grid-column: 3;
+    padding: 0;
 }
 
 .drill__lower{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 5%;
+    margin: auto;
+    width: 90%;
 }
 
 .drill__lower p {
@@ -88,9 +101,36 @@
     text-decoration: underline 2px solid var(--blue);
 }
 
-.drill__wrapper > button {
+.drill__wrapper button {
     height: 15%;
     width: 90%;
     margin: 10px auto;
     background-color: rgb(192, 233, 192);
+}
+
+.drill__URL {
+    height: 40vh;
+}
+
+.drillcomplete{
+    background-color: rgb(192, 233, 192);
+    opacity: 0;
+    animation: fadeout 2s;
+    height: 0;
+    width: 0;
+    margin: 0;
+    padding: 0; 
+    border: 1px solid #8ba88b;
+    box-shadow: inset 0px 0px 8px 2px #8ba88b;
+}
+
+
+
+
+
+
+@keyframes fadeout {
+    0%{opacity: 1; height: 40vh; width:100%; margin-top: 2vh;}
+    50%{opacity: 0.2; height: 0; width:100%; margin-top: 1vh;}
+    100%{opacity: 0; height: 0px; width: 0; margin-top: 0;}
 }
